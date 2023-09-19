@@ -27,11 +27,11 @@ public class ExampleTeleOp extends LinearOpMode {
         initialize();
 
         while(!isStopRequested()) {
-
-            frontLeft.setPower(Math.asin(gamepad1.left_stick_y/2));
-            backLeft.setPower(Math.asin(gamepad1.left_stick_y/2));
-            frontRight.setPower(-Math.acos(gamepad1.left_stick_y/2));
-            backRight.setPower(-Math.asin(gamepad1.left_stick_y/2));
+            float theta = Math.atan(gamepad1.left_stick_y/gamepad1.left_stick_x)
+            frontLeft.setPower(Math.asin(theta));
+            backLeft.setPower(Math.asin(theta);
+            frontRight.setPower(-Math.acos(theta);
+            backRight.setPower(-Math.asin(theta);
 
             //frontLeft.setPower(-gamepad1.left_stick_y);
             //backLeft.setPower(-gamepad1.left_stick_y);
