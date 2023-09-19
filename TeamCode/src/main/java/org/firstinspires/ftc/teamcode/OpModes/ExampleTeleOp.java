@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class ExampleTeleOp extends LinearOpMode {
-    // hehehehe seb was here i wahdwahdw
+    // i will fix this horrible code -seb
 
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
 
