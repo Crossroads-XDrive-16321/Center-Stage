@@ -28,11 +28,14 @@ public class ExampleTeleOp extends LinearOpMode {
 
         while(!isStopRequested()) {
             //angle of the direction of the joystick
-            setPower(Math.atan(gamepad1.left_stick_y/gamepad1.left_stick_x)-(Math.PI/4));
+            setPower(Math.atan(gamepad1.left_stick_y/gamepad1.left_stick_x)-Math.PI/4);
 
             //quick test
             if (gamepad1.right_bumper){
                 move(Math.PI/2, 100);
+            }
+            if (gamepad1.left_bumper){
+                rotate(Math.PI);
             }
 
             //past method of going about movement
@@ -47,12 +50,11 @@ public class ExampleTeleOp extends LinearOpMode {
     }
 
     public void move(double theta, int dist) {
-        setPower(theta);
-        for (int i = dist; i>0; i--) {;}
-        frontRight.setPower(0);
-        frontLeft.setPower(0);
-        backRight.setPower(0);
-        backLeft.setPower(0);
+        ;
+    }
+
+    public void rotate(double theta){
+        ;
     }
 
     public void setPower(double theta){
