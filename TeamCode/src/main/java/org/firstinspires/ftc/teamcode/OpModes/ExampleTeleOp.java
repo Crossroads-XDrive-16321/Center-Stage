@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+// INCREDIBLY USEFUL VIDEO for mecanum wheels https://www.youtube.com/watch?v=gnSW2QpkGXQ
+
 @TeleOp
 public class ExampleTeleOp extends LinearOpMode {
 
@@ -62,11 +64,11 @@ public class ExampleTeleOp extends LinearOpMode {
     }
 
     public void move(double dir, int dist) {
-        ;
+        ; // for programmed movement
     }
 
     public void rotate(double theta){
-        ;
+        ; // for programmed rotation
     }
 
     public void drive(double theta, double speed, double turn){
