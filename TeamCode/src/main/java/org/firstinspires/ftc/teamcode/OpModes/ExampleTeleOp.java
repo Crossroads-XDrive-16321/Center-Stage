@@ -35,11 +35,11 @@ public class ExampleTeleOp extends LinearOpMode {
 
         while(!isStopRequested()) {
             //angle of the direction of the joystick
-            if(Math.abs(gamepad1.left_stick_x) > 0.1 || Math.abs(gamepad1.left_stick_y) > 0.1) {
-                double speed = Math.sqrt(gamepad1.left_stick_y*gamepad1.left_stick_y + gamepad1.left_stick_x* gamepad1.left_stick_x);
-                drive(Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x)-Math.PI/4, speed);
+            if(Math.abs(gamepad1.left_stick_x) > 0.1 || Math.abs(gamepad1.left_stick_y) > 0.1 || Math.abs(gamepad1.right_stick_x) > 0.1) {
+                double speed = Math.sqrt(gamepad1.left_stick_y*gamepad1.left_stick_y + gamepad1.left_stick_x*gamepad1.left_stick_x);
+                drive(Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x), speed, gamepad1.right_stick_x);
             } else {
-                drive(0, 0);
+                drive(0, 0, 0);
             }
 
             //quick test
@@ -69,11 +69,23 @@ public class ExampleTeleOp extends LinearOpMode {
         ;
     }
 
-    public void drive(double theta, double speed){
-        frontRight.setPower(Math.sin(theta)*speed);
-        backLeft.setPower(Math.sin(theta)*speed);
-        frontLeft.setPower(Math.cos(theta)*speed);
-        backRight.setPower(Math.cos(theta)*speed);
+    public void drive(double theta, double speed, double turn){
+        double sin = Math.sin(theta - Math.PI/4);
+        double cos = Math.cos(theta - Math.PI/4);
+        double max = Math.max(Math.abs(sin), Math.abs(cos));
+
+        if(speed + Math.abs(turn) > 1) {
+            frontRight.setPower((sin * speed / max - turn) / (speed + turn));
+            backLeft.setPower((sin * speed / max + turn) / (speed + turn));
+            frontLeft.setPower((cos * speed / max + turn) / (speed + turn));
+            backRight.setPower((cos * speed / max - turn) / (speed + turn));
+        } else {
+            frontRight.setPower((sin * speed / max - turn));
+            backLeft.setPower((sin * speed / max + turn));
+            frontLeft.setPower((cos * speed / max + turn));
+            backRight.setPower((cos * speed / max - turn));
+        }
+
     }
 
 
