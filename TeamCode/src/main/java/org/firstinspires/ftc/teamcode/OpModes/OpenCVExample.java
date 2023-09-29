@@ -107,6 +107,14 @@ public class OpenCVExample extends OpMode {
             telemetry.addData("Mid Avg:", midAvg);
             telemetry.addData("Right Avg:", rightAvg);
             return(output);
+            //idea: this code works fine but were just trying to detect a color against a white background, which is 255
+            //in all three colors, so with just the red channel for eg. theres no difference between (255,0,0) and (255,255,255)
+            //maybe instead of finding the highest target color value, we should find the lowest values of all other colors
+            //and so cyan = blue+green so detect for least red and pink = red+1/2green+1/2blue so detect least green+blue
+
+            //idea2: throw the whole ycrcb or whatever out the trash and use only rgb - google says the only reason why
+            // ycbcr exists is for more efficient data transfer, which im sure isnt a major concern for robotics when
+            // compared to getting the code to work at all
 
         }
 
