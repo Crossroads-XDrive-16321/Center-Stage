@@ -35,6 +35,8 @@ public class ExampleTeleOp extends LinearOpMode {
 
         initialize();
 
+        waitForStart();
+
         while(!isStopRequested()) {
             //angle of the direction of the joystick
             if(Math.abs(gamepad1.left_stick_x) > 0.1 || Math.abs(gamepad1.left_stick_y) > 0.1 || Math.abs(gamepad1.right_stick_x) > 0.1) {
