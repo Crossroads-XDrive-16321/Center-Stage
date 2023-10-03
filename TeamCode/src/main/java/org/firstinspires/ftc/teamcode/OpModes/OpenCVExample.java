@@ -15,6 +15,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Autonomous
 public class OpenCVExample extends OpMode {
 
@@ -50,13 +53,9 @@ public class OpenCVExample extends OpMode {
 
     class examplePipeline extends OpenCvPipeline {
 
-        Mat YCbCr = new Mat();
         Mat leftCrop;
         Mat midCrop;
         Mat rightCrop;
-        double leftAvg;
-        double midAvg;
-        double rightAvg;
         Mat output = new Mat();
         Scalar leftCol = new Scalar(255.0, 0.0, 0.0);
         Scalar midCol = new Scalar(0.0, 255.0, 0.0);
@@ -65,7 +64,6 @@ public class OpenCVExample extends OpMode {
 
         public Mat processFrame(Mat input) {
 
-            Imgproc.cvtColor(input, YCbCr, Imgproc.COLOR_RGB2YCrCb);
             telemetry.addLine("pipeline running");
 
             Rect leftRect = new Rect(1, 1, 219, 359);
@@ -77,35 +75,24 @@ public class OpenCVExample extends OpMode {
             Imgproc.rectangle(output, midRect, midCol, 1);
             Imgproc.rectangle(output, rightRect, rightCol, 1);
 
-            leftCrop = YCbCr.submat(leftRect);
-            midCrop = YCbCr.submat(midRect);
-            rightCrop = YCbCr.submat(rightRect);
-
-            //color value is 2 for red
-            Core.extractChannel(leftCrop, leftCrop, 0);
-            Core.extractChannel(midCrop, midCrop, 0);
-            Core.extractChannel(rightCrop, rightCrop, 0);
+            leftCrop = input.submat(leftRect);
+            midCrop = input.submat(midRect);
+            rightCrop = input.submat(rightRect);
 
             Scalar leftavg = Core.mean(leftCrop);
             Scalar midavg = Core.mean(midCrop);
             Scalar rightavg = Core.mean(rightCrop);
 
-            //make sure the '2' matches with the thing
-            leftAvg = leftavg.val[0];
-            midAvg = midavg.val[0];
-            rightAvg = rightavg.val[0];
-
-            if(leftAvg > midAvg && leftAvg > rightAvg) {
-                telemetry.addLine("WOOOOO LEFT");
-            } else if(midAvg > leftAvg && midAvg > rightAvg) {
-                telemetry.addLine("WOOOOO MIDDLEEE");
-            } else {
-                telemetry.addLine("WOOOOO DERECHA");
+            for (int i = 0; i<=2; i++) {
+                leftavg.val[i] = Math.floor(leftavg.val[i]);
+                midavg.val[i] = Math.floor(midavg.val[i]);
+                rightavg.val[i] = Math.floor(rightavg.val[i]);
             }
 
-            telemetry.addData("Left Avg:", leftAvg);
-            telemetry.addData("Mid Avg:", midAvg);
-            telemetry.addData("Right Avg:", rightAvg);
+            telemetry.addData("Left Avg:", leftavg);
+            telemetry.addData("Mid Avg:", midavg);
+            telemetry.addData("Right Avg:", rightavg);
+
             return(output);
             //idea: this code works fine but were just trying to detect a color against a white background, which is 255
             //in all three colors, so with just the red channel for eg. theres no difference between (255,0,0) and (255,255,255)
