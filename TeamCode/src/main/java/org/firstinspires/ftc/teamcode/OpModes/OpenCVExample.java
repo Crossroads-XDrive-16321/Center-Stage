@@ -61,6 +61,12 @@ public class OpenCVExample extends OpMode {
         Scalar midCol = new Scalar(0.0, 255.0, 0.0);
         Scalar rightCol = new Scalar(0.0, 0.0, 255.0);
 
+        Scalar targetPink = new Scalar(255.0, 0.0, 0.0); //pure red for now, match once we have an actual shade
+        Scalar targetSky = new Scalar(0.0, 0.0, 255.0); //again, pure blue, match once we know what shade were using
+
+        Scalar differencePink = new Scalar(0, 0, 0);
+        Scalar differenceSky = new Scalar(0, 0, 0);
+
 
         public Mat processFrame(Mat input) {
 
@@ -83,15 +89,19 @@ public class OpenCVExample extends OpMode {
             Scalar midavg = Core.mean(midCrop);
             Scalar rightavg = Core.mean(rightCrop);
 
-            for (int i = 0; i<=2; i++) {
-                leftavg.val[i] = Math.floor(leftavg.val[i]);
-                midavg.val[i] = Math.floor(midavg.val[i]);
-                rightavg.val[i] = Math.floor(rightavg.val[i]);
-            }
+//          idea for easy threshold: compare the average color values with target color values and calculate a percentage
+//          similarity, then if that percentage is above a threshold boom
 
-            telemetry.addData("Left Avg:", leftavg);
-            telemetry.addData("Mid Avg:", midavg);
-            telemetry.addData("Right Avg:", rightavg);
+
+//            for (int i = 0; i<=2; i++) {
+//                leftavg.val[i] = Math.floor(leftavg.val[i]);
+//                midavg.val[i] = Math.floor(midavg.val[i]);
+//                rightavg.val[i] = Math.floor(rightavg.val[i]);
+//            }
+
+//            telemetry.addData("Left Avg:", leftavg);
+//            telemetry.addData("Mid Avg:", midavg);
+//            telemetry.addData("Right Avg:", rightavg);
 
             return(output);
             //idea: this code works fine but were just trying to detect a color against a white background, which is 255
