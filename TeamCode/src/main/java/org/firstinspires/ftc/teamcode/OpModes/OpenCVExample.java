@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Helpers.HelperFunctions;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -14,6 +15,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,11 +63,10 @@ public class OpenCVExample extends OpMode {
         Scalar midCol = new Scalar(0.0, 255.0, 0.0);
         Scalar rightCol = new Scalar(0.0, 0.0, 255.0);
 
-        Scalar targetPink = new Scalar(255.0, 0.0, 0.0); //pure red for now, match once we have an actual shade
-        Scalar targetSky = new Scalar(0.0, 0.0, 255.0); //again, pure blue, match once we know what shade were using
+//                                              target pink (red)               target sky (blue)
+        Scalar[] targetCols = new Scalar[]{new Scalar(255.0, 0.0, 0.0), new Scalar(0.0, 0.0, 255.0)};
 
-        Scalar differencePink = new Scalar(0, 0, 0);
-        Scalar differenceSky = new Scalar(0, 0, 0);
+        Scalar[] colDiff = new Scalar[]{new Scalar(0.0, 0.0, 0.0), new Scalar(0.0, 0.0, 0.0)};
 
 
         public Mat processFrame(Mat input) {
@@ -89,8 +90,20 @@ public class OpenCVExample extends OpMode {
             Scalar midavg = Core.mean(midCrop);
             Scalar rightavg = Core.mean(rightCrop);
 
-//          idea for easy threshold: compare the average color values with target color values and calculate a percentage
-//          similarity, then if that percentage is above a threshold boom
+//            idea for easy threshold: compare the average color values with target color values and calculate a percentage
+//            similarity, then if that percentage is above a threshold boom
+
+
+            for (int i = 0; i < targetCols.length; i++){
+                Double leftAvg = HelperFunctions.compareScalars(leftavg, targetCols[i])/3;
+                Double midAvg = HelperFunctions.compareScalars(midavg, targetCols[i])/3;
+                Double rightAvg = HelperFunctions.compareScalars(rightavg, targetCols[i])/3;
+
+                telemetry.addData("Left sim to"+i, leftAvg);
+                telemetry.addData("Mid sim to"+i, midAvg);
+                telemetry.addData("Right sim to"+i, rightAvg);
+
+            }
 
 
 //            for (int i = 0; i<=2; i++) {
