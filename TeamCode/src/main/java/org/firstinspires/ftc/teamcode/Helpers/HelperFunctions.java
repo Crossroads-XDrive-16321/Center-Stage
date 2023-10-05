@@ -7,15 +7,15 @@ public class HelperFunctions {
         double sum = 0.0;
 
         for (int i = 0; i<=2; i++) {
-            diffs.val[i] = Math.abs(scal1.val[i]-scal2.val[i])/255;
-            sum += diffs.val[i];
+            diffs.val[i] = Math.abs(scal1.val[i]-scal2.val[i]);
+            sum += Math.pow(diffs.val[i], 2);
         }
 
-        return sum;
+        return Math.sqrt(sum);
     }
 
-    public static double averageScalar() {
+    //public static double averageScalar() {
 
-    }
+    //}
 
 }

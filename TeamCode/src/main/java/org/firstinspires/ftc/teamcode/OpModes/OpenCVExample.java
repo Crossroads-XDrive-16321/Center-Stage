@@ -65,8 +65,7 @@ public class OpenCVExample extends OpMode {
 
 //                                              target pink (red)               target sky (blue)
         Scalar[] targetCols = new Scalar[]{new Scalar(255.0, 0.0, 0.0), new Scalar(0.0, 0.0, 255.0)};
-
-        Scalar[] colDiff = new Scalar[]{new Scalar(0.0, 0.0, 0.0), new Scalar(0.0, 0.0, 0.0)};
+        Double threshold = 8.0;
 
 
         public Mat processFrame(Mat input) {
@@ -95,15 +94,24 @@ public class OpenCVExample extends OpMode {
 
 
             for (int i = 0; i < targetCols.length; i++){
-                Double leftAvg = HelperFunctions.compareScalars(leftavg, targetCols[i])/3;
-                Double midAvg = HelperFunctions.compareScalars(midavg, targetCols[i])/3;
-                Double rightAvg = HelperFunctions.compareScalars(rightavg, targetCols[i])/3;
+                Double leftAvg = Math.floor(HelperFunctions.compareScalars(leftavg, targetCols[i])/3);
+                Double midAvg = Math.floor(HelperFunctions.compareScalars(midavg, targetCols[i])/3);
+                Double rightAvg = Math.floor(HelperFunctions.compareScalars(rightavg, targetCols[i])/3);
 
-                telemetry.addData("Left sim to"+i, leftAvg);
-                telemetry.addData("Mid sim to"+i, midAvg);
-                telemetry.addData("Right sim to"+i, rightAvg);
-
+                if (leftAvg < midAvg - threshold && leftAvg < rightAvg - threshold) {
+                    telemetry.addData("Left is ",i);
+                }
+                if (midAvg < leftAvg - threshold && midAvg < rightAvg - threshold) {
+                    telemetry.addData("Mid is ",i);
+                }
+                if (rightAvg < leftAvg - threshold && rightAvg < midAvg - threshold) {
+                    telemetry.addData("Right is ",i);
+                }
+//                telemetry.addData("Left:"+i, leftAvg);
+//                telemetry.addData("Mid:"+i, midAvg);
+//                telemetry.addData("Right:"+i, rightAvg);
             }
+
 
 
 //            for (int i = 0; i<=2; i++) {
