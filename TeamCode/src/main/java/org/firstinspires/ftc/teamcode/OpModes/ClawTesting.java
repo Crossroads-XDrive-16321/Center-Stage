@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.Toggler;
 
 
@@ -18,12 +19,15 @@ public class ClawTesting extends LinearOpMode {
 
 
     Servo leftClaw, rightClaw, clawServo;
+    ClawController clawController;
 
     void initialize() {
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");
         rightClaw = hardwareMap.get(Servo.class, "rightClaw");
         clawServo = hardwareMap.get(Servo.class, "clawServo");
+
+        clawController = new ClawController(leftClaw, rightClaw, clawServo);
 
     }
     
@@ -40,6 +44,7 @@ public class ClawTesting extends LinearOpMode {
             leftClaw.setPosition(leftClaw.getPosition() + (0.001 * gamepad1.left_stick_x));
             clawServo.setPosition(clawServo.getPosition() + (0.001 * gamepad1.right_trigger) - (0.001 * gamepad1.left_trigger));
 
+            clawController.checkAndToggle(gamepad1.a);
 
             telemetry.addData("Left Claw Pos:", leftClaw.getPosition());
             telemetry.addData("Right Claw Pos:", rightClaw.getPosition());
