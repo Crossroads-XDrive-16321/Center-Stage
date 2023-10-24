@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.Helpers;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.checkerframework.checker.units.qual.C;
-
 // left open = 0.85, closed = 0.5
 // right open = 0.25, closed = 0.6
 
