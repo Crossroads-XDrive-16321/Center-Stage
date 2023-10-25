@@ -170,10 +170,18 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
             double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
             double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
 
-            telemetry.addData(""," ");
-            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+            if (x < 640/3 && x >= 0) {
+                telemetry.addLine("OBJECT DETECTED, LEFT");
+            } else if (x < 2*640/3 && x >= 640/3) {
+                telemetry.addLine("OBJECT DETECTED, MIDDLE");
+            } else {
+                telemetry.addLine("OBJECT DETECTED, RIGHT");
+            }
+
+            //telemetry.addData(""," ");
+            //telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+            //telemetry.addData("- Position", "%.0f / %.0f", x, y);
+            //telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
         }   // end for() loop
 
     }   // end method telemetryTfod()
