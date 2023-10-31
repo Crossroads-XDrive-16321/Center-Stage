@@ -135,7 +135,7 @@ public class CameraAuto extends LinearOpMode {
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(false)
                 .setModelInputSize(640)
-                .setModelAspectRatio(16/9)
+                .setModelAspectRatio(16/9f)
 
                 .build();
 
