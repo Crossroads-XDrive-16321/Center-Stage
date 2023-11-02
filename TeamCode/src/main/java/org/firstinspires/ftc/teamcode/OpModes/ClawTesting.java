@@ -44,7 +44,7 @@ public class ClawTesting extends LinearOpMode {
             leftClaw.setPosition(leftClaw.getPosition() + (0.001 * gamepad1.left_stick_x));
             clawServo.setPosition(clawServo.getPosition() + (0.001 * gamepad1.right_trigger) - (0.001 * gamepad1.left_trigger));
 
-            clawController.checkAndToggle(gamepad1.a);
+            clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
 
             telemetry.addData("Left Claw Pos:", leftClaw.getPosition());
             telemetry.addData("Right Claw Pos:", rightClaw.getPosition());

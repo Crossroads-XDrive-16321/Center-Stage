@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 public class ExampleTeleOp extends LinearOpMode {
 
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotator, slideMotor;
     DriveController driveController;
 
     void initialize() {
@@ -22,8 +22,10 @@ public class ExampleTeleOp extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+        slideRotator = hardwareMap.get(DcMotorEx.class, "slideRotator");
+        slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor);
         driveController.init();
 
     }

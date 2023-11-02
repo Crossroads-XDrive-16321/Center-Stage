@@ -25,7 +25,7 @@ import java.util.List;
 @Autonomous
 public class CameraAuto extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotator, slideMotor;
     DriveController driveController;
 
     Servo leftClaw, rightClaw, clawServo;
@@ -39,8 +39,10 @@ public class CameraAuto extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+        slideRotator = hardwareMap.get(DcMotorEx.class, "slideRotator");
+        slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor);
         driveController.init();
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");

@@ -6,15 +6,17 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class DriveController {
 
-    DcMotorEx frontLeft, backLeft, frontRight, backRight;
+    DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor;
 
 //    int tilesToPos = 1050; to be configured
 
-    public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight) {
+    public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight, DcMotorEx slideRotator, DcMotorEx slideMotor) {
         this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
         this.backRight = backRight;
+        this.slideRotator = slideRotator;
+        this.slideMotor = slideMotor;
     }
 
     public void init() {
@@ -31,6 +33,8 @@ public class DriveController {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideRotator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
@@ -105,6 +109,14 @@ public class DriveController {
         backLeft.setMode(mode);
         frontRight.setMode(mode);
         backRight.setMode(mode);
+    }
+
+    public void rotateArm(float power) {
+        slideRotator.setPower(power);
+    }
+
+    public void moveSlide(float power) {
+        slideMotor.setPower(power);
     }
 
 }

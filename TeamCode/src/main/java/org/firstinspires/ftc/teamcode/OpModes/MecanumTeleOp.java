@@ -11,10 +11,10 @@ import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotator, slideMotor;
     DriveController driveController;
 
-    Servo leftClaw, rightClaw, clawServo;
+    Servo leftClaw, rightClaw, clawServo, planeLauncher;
     ClawController clawController;
 
     void initialize() {
@@ -22,9 +22,13 @@ public class MecanumTeleOp extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+        slideRotator = hardwareMap.get(DcMotorEx.class, "slideRotator");
+        slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor);
         driveController.init();
+
+        planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");
         rightClaw = hardwareMap.get(Servo.class, "rightClaw");
@@ -44,12 +48,20 @@ public class MecanumTeleOp extends LinearOpMode {
             //angle of the direction of the joystick
             driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
 
-            clawController.checkAndToggle(gamepad2.a);
-            clawController.moveClaw(gamepad2.right_trigger - gamepad2.left_trigger);
+            clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
             clawController.toggleClawPosition(gamepad2.y);
 
+            if(gamepad2.dpad_up) {
+                planeLauncher.setPosition(0);
+            }
+
+            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger)/4);
+            driveController.moveSlide(-gamepad2.left_stick_y/4);
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
+            telemetry.addData("Slide Rotator:", slideRotator.getCurrentPosition());
+            telemetry.addData("Slide Motor:", slideMotor.getCurrentPosition());
+            telemetry.addData("Plane Servo:", planeLauncher.getPosition());
             telemetry.update();
 
         }
