@@ -38,6 +38,22 @@ public class MecanumTeleOp extends LinearOpMode {
         clawController = new ClawController(leftClaw, rightClaw, clawServo);
     }
 
+    public void park (boolean isRedAlliance, boolean isLeft) {
+        //move .1 feet forward
+        if (isRedAlliance) { //robot on red alliance
+            if (isLeft) { //robot on red alliance - left
+                //move left 4 feet
+                ;
+            } else { //robot on red alliance - right
+
+            }
+        } else { //robot on blue alliance
+            if (isLeft) {
+                //move right 7 feet
+            }
+        }
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -53,7 +69,7 @@ public class MecanumTeleOp extends LinearOpMode {
             clawController.toggleClawPosition(gamepad2.y);
 
             if(gamepad2.dpad_up) {
-                planeLauncher.setPosition(0);
+                planeLauncher.setPosition(0.5);
             }
 
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
