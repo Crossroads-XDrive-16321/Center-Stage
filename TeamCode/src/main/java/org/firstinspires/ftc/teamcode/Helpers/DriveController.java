@@ -6,16 +6,17 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class DriveController {
 
-    DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor;
+    DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
 
 //    int tilesToPos = 1050; to be configured
 
-    public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight, DcMotorEx slideRotator, DcMotorEx slideMotor) {
+    public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight, DcMotorEx slideRotatorLeft, DcMotorEx slideRotatorRight, DcMotorEx slideMotor) {
         this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
         this.backRight = backRight;
-        this.slideRotator = slideRotator;
+        this.slideRotatorLeft = slideRotatorLeft;
+        this.slideRotatorRight = slideRotatorRight;
         this.slideMotor = slideMotor;
     }
 
@@ -33,8 +34,12 @@ public class DriveController {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideRotator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideRotatorLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideRotatorRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
@@ -112,7 +117,16 @@ public class DriveController {
     }
 
     public void rotateArm(float power) {
-        slideRotator.setPower(power);
+        slideRotatorRight.setTargetPosition(slideRotatorRight.getCurrentPosition() + 10);
+        slideRotatorLeft.setTargetPosition(slideRotatorLeft.getCurrentPosition() + 10);
+
+        if(power == 0) {
+            slideRotatorLeft.setTargetPosition(slideRotatorLeft.getCurrentPosition());
+            slideRotatorRight.setTargetPosition(slideRotatorRight.getCurrentPosition());
+        }
+
+        slideRotatorRight.setPower(power);
+        slideRotatorLeft.setPower(power);
     }
 
     public void moveSlide(float power) {

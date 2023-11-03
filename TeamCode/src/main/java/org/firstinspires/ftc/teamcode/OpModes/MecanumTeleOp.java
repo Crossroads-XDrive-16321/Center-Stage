@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotator, slideMotor;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher;
@@ -22,10 +22,11 @@ public class MecanumTeleOp extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
-        slideRotator = hardwareMap.get(DcMotorEx.class, "slideRotator");
+        slideRotatorLeft = hardwareMap.get(DcMotorEx.class, "slideRotatorLeft");
+        slideRotatorRight = hardwareMap.get(DcMotorEx.class, "slideRotatorRight");
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
@@ -55,11 +56,14 @@ public class MecanumTeleOp extends LinearOpMode {
                 planeLauncher.setPosition(0);
             }
 
-            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger)/4);
-            driveController.moveSlide(-gamepad2.left_stick_y/4);
+            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
+            driveController.moveSlide(-gamepad2.left_stick_y);
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
-            telemetry.addData("Slide Rotator:", slideRotator.getCurrentPosition());
+            telemetry.addData("Claw Left:", leftClaw.getPosition());
+            telemetry.addData("Claw Right:", rightClaw.getPosition());
+            telemetry.addData("Slide Rotator Left:", slideRotatorLeft.getCurrentPosition());
+            telemetry.addData("Slide Rotator Right", slideRotatorRight.getCurrentPosition());
             telemetry.addData("Slide Motor:", slideMotor.getCurrentPosition());
             telemetry.addData("Plane Servo:", planeLauncher.getPosition());
             telemetry.update();
