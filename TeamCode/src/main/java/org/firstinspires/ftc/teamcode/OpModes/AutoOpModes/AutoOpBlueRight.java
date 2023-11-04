@@ -45,13 +45,10 @@ public class AutoOpBlueRight extends LinearOpMode {
 
         waitForStart();
 
-        //parking from start
-        while (!isStopRequested()) {
 
-            driveController.forwards(0.1, 0.3);
-            driveController.left(4.5, 0.7);
 
-        }
+        driveController.forwards(0.1, 0.3);
+        driveController.left(4.5, 0.7);
 
     }
 
