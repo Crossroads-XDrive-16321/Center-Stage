@@ -47,7 +47,9 @@ public class AutoOpBlueRight extends LinearOpMode {
 
         while (!isStopRequested()) {
 
-            // blue right auto code goes here
+            driveController.forwards(0.1, 0.3);
+            driveController.left(4.5, 0.7);
+
         }
 
     }

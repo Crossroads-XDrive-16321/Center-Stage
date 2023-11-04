@@ -14,6 +14,8 @@ public class DriveController {
     int slideRotatorStoppedPosLeft = 0;
     int slideMotorStoppedPos = 0;
 
+    int tilesToPos = 1050;
+
     Toggler slideRotatorToggler = new Toggler();
     Toggler slideMotorToggler = new Toggler();
 
@@ -113,18 +115,6 @@ public class DriveController {
         backRight.setPower(v4 * speedFactor);
     }
 
-    public void turn(double leftPower, double rightPower) {
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontLeft.setPower(leftPower);
-        frontRight.setPower(rightPower);
-        backLeft.setPower(leftPower);
-        backRight.setPower(rightPower);
-    }
-
     void setMode(DcMotor.RunMode mode) {
         frontLeft.setMode(mode);
         backLeft.setMode(mode);
@@ -180,6 +170,84 @@ public class DriveController {
         } else {
             slideMotor.setPower(0.5);
         }
+    }
+
+    /**
+     *
+     * @param tiles distance in floor tiles to move.
+     *
+     * @implNote will only work if the drive controller was initialized with encoder mode as true.
+     */
+
+    public void forwards(double tiles, double power) {
+        frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) Math.round(tiles * tilesToPos));
+        frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) Math.round(tiles * tilesToPos));
+        backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) Math.round(tiles * tilesToPos));
+        backRight.setTargetPosition(backRight.getCurrentPosition() + (int) Math.round(tiles * tilesToPos));
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        waitForMotors();
+    }
+
+    /**
+     *
+     * @param tiles distance in floor tiles to move.
+     *
+     */
+
+    public void backwards(double tiles, double power) {
+        frontLeft.setTargetPosition(frontLeft.getCurrentPosition() - (int) Math.round(tiles * tilesToPos ));
+        frontRight.setTargetPosition(frontRight.getCurrentPosition() - (int) Math.round(tiles * tilesToPos));
+        backLeft.setTargetPosition(backLeft.getCurrentPosition() - (int) Math.round(tiles * tilesToPos));
+        backRight.setTargetPosition(backRight.getCurrentPosition() - (int) Math.round(tiles * tilesToPos));
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        waitForMotors();
+    }
+
+    /**
+     *
+     * @param tiles distance in floor tiles to move.
+     *
+     */
+
+    public void left(double tiles, double power) {
+        frontLeft.setTargetPosition((int) Math.round(frontLeft.getCurrentPosition() - (int) Math.round(tiles * tilesToPos) * 1.15));
+        frontRight.setTargetPosition((int) Math.round(frontRight.getCurrentPosition() + (int) Math.round(tiles * tilesToPos) * 1.15));
+        backLeft.setTargetPosition((int) Math.round(backLeft.getCurrentPosition() + (int) Math.round(tiles * tilesToPos) * 1.15));
+        backRight.setTargetPosition((int) Math.round(backRight.getCurrentPosition() - (int) Math.round(tiles * tilesToPos) * 1.15));
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        waitForMotors();
+    }
+
+    /**
+     *
+     * @param tiles distance in floor tiles to move.
+     *
+     */
+
+    public void right(double tiles, double power) {
+        frontLeft.setTargetPosition((int) Math.round(frontLeft.getCurrentPosition() + (int) Math.round(tiles * tilesToPos) * 1.15));
+        frontRight.setTargetPosition((int) Math.round(frontRight.getCurrentPosition() - (int) Math.round(tiles * tilesToPos) * 1.15));
+        backLeft.setTargetPosition((int) Math.round(backLeft.getCurrentPosition() - (int) Math.round(tiles * tilesToPos) * 1.15));
+        backRight.setTargetPosition((int) Math.round(backRight.getCurrentPosition() + (int) Math.round(tiles * tilesToPos) * 1.15));
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        waitForMotors();
+
     }
 
 }

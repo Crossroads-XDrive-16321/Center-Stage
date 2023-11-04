@@ -47,10 +47,9 @@ public class AutoOpBlueLeft extends LinearOpMode {
 
         while (!isStopRequested()) {
 
-            //parking
-                //move forward 1inch
+            driveController.forwards(0.1, 0.3);
+            driveController.left(2.3, 0.7);
 
-                //move left short dist
         }
 
     }
