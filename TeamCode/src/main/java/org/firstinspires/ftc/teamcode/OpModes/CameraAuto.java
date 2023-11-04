@@ -6,6 +6,7 @@ import static com.google.blocks.ftcrobotcontroller.util.CurrentGame.TFOD_MODEL_A
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,7 +26,7 @@ import java.util.List;
 @Autonomous
 public class CameraAuto extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotator, slideMotor;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
 
     Servo leftClaw, rightClaw, clawServo;
@@ -39,10 +40,11 @@ public class CameraAuto extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
-        slideRotator = hardwareMap.get(DcMotorEx.class, "slideRotator");
+        slideRotatorLeft = hardwareMap.get(DcMotorEx.class, "slideRotatorLeft");
+        slideRotatorRight = hardwareMap.get(DcMotorEx.class, "slideRotatorRight");
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotator, slideMotor);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");

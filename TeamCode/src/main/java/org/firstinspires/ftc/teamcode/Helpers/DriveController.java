@@ -7,6 +7,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class DriveController {
 
     DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
+    int slideRotatorDownPosRight = 0;
+    int slideRotatorDownPosLeft = 0;
+    int slideMotorDownPos = 0;
+    int slideRotatorStoppedPosRight = 0;
+    int slideRotatorStoppedPosLeft = 0;
+    int slideMotorStoppedPos = 0;
+
+    Toggler slideRotatorToggler = new Toggler();
+    Toggler slideMotorToggler = new Toggler();
 
 //    int tilesToPos = 1050; to be configured
 
@@ -38,8 +47,15 @@ public class DriveController {
         slideRotatorRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
+        slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
+        slideMotorStoppedPos = slideMotor.getCurrentPosition();
+        slideRotatorDownPosLeft = slideRotatorLeft.getCurrentPosition();
+        slideRotatorDownPosRight = slideRotatorRight.getCurrentPosition();
+        slideMotorDownPos = slideMotor.getCurrentPosition();
+
 
     }
 
@@ -80,10 +96,10 @@ public class DriveController {
         final double v3;
         final double v4;
         if(speedFactor + Math.abs(rightX) > 1) {
-            v1 = (r * Math.cos(robotAngle) + rightX) / (speedFactor + rightX);
-            v2 = (r * Math.sin(robotAngle) - rightX) / (speedFactor + rightX);
-            v3 = (r * Math.sin(robotAngle) + rightX) / (speedFactor + rightX);
-            v4 = (r * Math.cos(robotAngle) - rightX) / (speedFactor + rightX);
+            v1 = (r * Math.cos(robotAngle) + rightX) / speedFactor + Math.abs(rightX);
+            v2 = (r * Math.sin(robotAngle) - rightX) / speedFactor + Math.abs(rightX);
+            v3 = (r * Math.sin(robotAngle) + rightX) / speedFactor + Math.abs(rightX);
+            v4 = (r * Math.cos(robotAngle) - rightX) / speedFactor + Math.abs(rightX);
         } else {
             v1 = r * Math.cos(robotAngle) + rightX;
             v2 = r * Math.sin(robotAngle) - rightX;
@@ -117,20 +133,53 @@ public class DriveController {
     }
 
     public void rotateArm(float power) {
-        slideRotatorRight.setTargetPosition(slideRotatorRight.getCurrentPosition() + 10);
-        slideRotatorLeft.setTargetPosition(slideRotatorLeft.getCurrentPosition() + 10);
 
         if(power == 0) {
-            slideRotatorLeft.setTargetPosition(slideRotatorLeft.getCurrentPosition());
-            slideRotatorRight.setTargetPosition(slideRotatorRight.getCurrentPosition());
+            if(slideRotatorToggler.toggle(true)) {
+                slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
+                slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
+            }
+            slideRotatorRight.setTargetPosition(slideRotatorStoppedPosRight);
+            slideRotatorLeft.setTargetPosition(slideRotatorStoppedPosLeft);
+        } else {
+            slideRotatorToggler.toggle(false);
+            slideRotatorRight.setTargetPosition((int) (slideRotatorRight.getCurrentPosition() + (100 * power)));
+            slideRotatorLeft.setTargetPosition((int) (slideRotatorLeft.getCurrentPosition() + (100 * power)));
         }
 
-        slideRotatorRight.setPower(power);
-        slideRotatorLeft.setPower(power);
+
+        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if(power != 0) {
+            slideRotatorRight.setPower(Math.abs(power));
+            slideRotatorLeft.setPower(Math.abs(power));
+        } else {
+            slideRotatorRight.setPower(0.5);
+            slideRotatorLeft.setPower(0.5);
+        }
     }
 
     public void moveSlide(float power) {
-        slideMotor.setPower(power);
+
+        if(power == 0) {
+            if(slideMotorToggler.toggle(true)) {
+                slideMotorStoppedPos = slideMotor.getCurrentPosition();
+            }
+
+            slideMotor.setTargetPosition(slideMotorStoppedPos);
+        } else {
+            slideMotorToggler.toggle(false);
+            slideMotor.setTargetPosition((int) (slideMotor.getCurrentPosition() + (100 * power)));
+        }
+
+        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if(power != 0) {
+            slideMotor.setPower(Math.abs(power));
+        } else {
+            slideMotor.setPower(0.5);
+        }
     }
 
 }
