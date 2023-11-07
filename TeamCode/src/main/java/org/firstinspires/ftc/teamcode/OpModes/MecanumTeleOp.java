@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
+import org.firstinspires.ftc.teamcode.Helpers.Toggler;
 
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
@@ -38,21 +39,6 @@ public class MecanumTeleOp extends LinearOpMode {
         clawController = new ClawController(leftClaw, rightClaw, clawServo);
     }
 
-    public void park (boolean isRedAlliance, boolean isLeft) {
-        //move .1 feet forward
-        if (isRedAlliance) { //robot on red alliance
-            if (isLeft) { //robot on red alliance - left
-                //move left 4 feet
-                ;
-            } else { //robot on red alliance - right
-
-            }
-        } else { //robot on blue alliance
-            if (isLeft) {
-                //move right 7 feet
-            }
-        }
-    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -65,6 +51,17 @@ public class MecanumTeleOp extends LinearOpMode {
             //angle of the direction of the joystick
             driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
 
+            Toggler xButton = new Toggler();
+            Toggler bButton = new Toggler();
+
+            if (xButton.toggle(gamepad1.x)) {
+                //rotate 90 ccw
+            }
+            if (bButton.toggle(gamepad1.b)) {
+                //rotate 90 cw
+            }
+
+
             clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
             clawController.toggleClawPosition(gamepad2.y);
 
@@ -76,6 +73,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
+
+
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());
