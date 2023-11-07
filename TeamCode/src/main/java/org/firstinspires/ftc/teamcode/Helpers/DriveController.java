@@ -250,4 +250,16 @@ public class DriveController {
 
     }
 
+    public void turn(double leftPower, double rightPower) {
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeft.setPower(leftPower);
+        frontRight.setPower(rightPower);
+        backLeft.setPower(leftPower);
+        backRight.setPower(rightPower);
+    }
+
 }

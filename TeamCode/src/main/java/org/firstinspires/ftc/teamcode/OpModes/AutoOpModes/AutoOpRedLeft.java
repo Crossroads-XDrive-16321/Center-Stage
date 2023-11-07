@@ -46,7 +46,7 @@ public class AutoOpRedLeft extends LinearOpMode {
         waitForStart();
 
         driveController.forwards(0.1, 0.3);
-        driveController.right(4.5, 0.7);
+        driveController.right(4.3, 0.4);
 
 
     }

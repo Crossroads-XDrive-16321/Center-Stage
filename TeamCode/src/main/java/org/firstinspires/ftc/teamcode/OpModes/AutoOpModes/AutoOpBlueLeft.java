@@ -47,7 +47,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
 
 
         driveController.forwards(0.1, 0.3);
-        driveController.left(2.3, 0.7);
+        driveController.left(2.1, 0.4);
 
     }
 
