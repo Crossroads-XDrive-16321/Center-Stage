@@ -12,16 +12,22 @@ import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 import org.firstinspires.ftc.teamcode.Helpers.IMUController;
 import org.firstinspires.ftc.teamcode.Helpers.Toggler;
 
+
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
 
+
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
-    BNO055IMU imu;
-    IMUController imuController;
+//    BNO055IMU imu;
+//    IMUController imuController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher;
     ClawController clawController;
+
+    Toggler xButtonToggler = new Toggler();
+    Toggler bButtonToggler = new Toggler();
+    Toggler aButtonToggler = new Toggler();
 
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
@@ -56,31 +62,16 @@ public class MecanumTeleOp extends LinearOpMode {
 
         waitForStart();
 
-        while(!isStopRequested()) {
+        while (!isStopRequested()) {
             //angle of the direction of the joystick
             driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
-
-            Toggler xButton = new Toggler();
-            Toggler bButton = new Toggler();
-            int number = 0;
-
-            if (xButton.toggle(gamepad1.x)) {
-                number++;
-                driveController.turnLeft(90,0.5);
-                telemetry.addLine("turning left");
-            }
-            if (bButton.toggle(gamepad1.b)) {
-                driveController.turnRight(90,0.5);
-                telemetry.addLine("turning right");
-            }
-
 
             clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
             clawController.toggleClawPosition(gamepad2.y);
 
-            if(gamepad2.dpad_up) {
+            if (gamepad2.dpad_up) {
                 planeLauncher.setPosition(0);
-            } else if(gamepad2.dpad_down) {
+            } else if (gamepad2.dpad_down) {
                 planeLauncher.setPosition(1);
             }
 
@@ -88,6 +79,21 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.moveSlide(-gamepad2.left_stick_y);
 
 
+            //Assisted Tele Op Code
+
+            if (aButtonToggler.toggle(gamepad2.a)) { //pressing a automatically moves the arm from picking up pos to scoring pos
+                clawController.toggleClawPosition(true);
+                driveController.rotateArm(0.5f);
+            }
+
+            if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing...
+                driveController.turnLeft(90, 0.5);
+                telemetry.addLine("turning left");
+            }
+            if (bButtonToggler.toggle(gamepad1.right_bumper)) { //if statement never firing...
+                driveController.turnRight(90, 0.5);
+                telemetry.addLine("turning right");
+            }
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());
@@ -96,11 +102,9 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Slide Rotator Right", slideRotatorRight.getCurrentPosition());
             telemetry.addData("Slide Motor:", slideMotor.getCurrentPosition());
             telemetry.addData("Plane Servo:", planeLauncher.getPosition());
-            telemetry.addData("stupid debug number", number);
             telemetry.update();
 
         }
 
     }
-
 }

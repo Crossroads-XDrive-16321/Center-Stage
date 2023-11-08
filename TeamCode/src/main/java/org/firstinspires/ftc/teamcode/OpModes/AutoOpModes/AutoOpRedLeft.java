@@ -45,6 +45,8 @@ public class AutoOpRedLeft extends LinearOpMode {
 
         waitForStart();
 
+        //call camera-detecting function here
+
         driveController.forwards(0.1, 0.3);
         driveController.right(4.3, 0.4);
 
