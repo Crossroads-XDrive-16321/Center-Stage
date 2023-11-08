@@ -16,6 +16,8 @@ public class DriveController {
 
     int tilesToPos = 1050;
 
+    double degreesToPos = 10.9;
+
     Toggler slideRotatorToggler = new Toggler();
     Toggler slideMotorToggler = new Toggler();
 
@@ -260,6 +262,32 @@ public class DriveController {
         frontRight.setPower(rightPower);
         backLeft.setPower(leftPower);
         backRight.setPower(rightPower);
+    }
+
+    public void turnRight(double degrees, double power) {
+        frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
+        frontRight.setTargetPosition(frontRight.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
+        backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
+        backRight.setTargetPosition(backRight.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
+        frontLeft.setPower(power);
+        frontRight.setPower(-power);
+        backLeft.setPower(power);
+        backRight.setPower(-power);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        waitForMotors();
+    }
+
+    public void turnLeft(double degrees, double power) {
+        frontLeft.setTargetPosition(frontLeft.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
+        frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
+        backLeft.setTargetPosition(backLeft.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
+        backRight.setTargetPosition(backRight.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
+        frontLeft.setPower(-power);
+        frontRight.setPower(power);
+        backLeft.setPower(-power);
+        backRight.setPower(power);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        waitForMotors();
     }
 
 }
