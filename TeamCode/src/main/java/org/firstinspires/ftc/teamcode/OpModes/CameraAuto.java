@@ -76,10 +76,10 @@ public class CameraAuto extends LinearOpMode {
                 }
             }
 
-            if (x < 640 / 3 && x >= 0) {
+            if (x < 640 / 3f && x >= 0) {
                 telemetry.addLine("OBJECT DETECTED, LEFT");
                 loc = 0;
-            } else if (x < 2 * 640 / 3 && x >= 640 / 3) {
+            } else if (x < 2 * 640 / 3f && x >= 640 / 3f) {
                 telemetry.addLine("OBJECT DETECTED, MIDDLE");
                 loc = 1;
             } else {
