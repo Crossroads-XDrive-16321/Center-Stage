@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Helpers;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;

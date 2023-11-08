@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -7,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
+import org.firstinspires.ftc.teamcode.Helpers.IMUController;
 import org.firstinspires.ftc.teamcode.Helpers.Toggler;
 
 @TeleOp
@@ -14,6 +17,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
+    BNO055IMU imu;
+    IMUController imuController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher;
     ClawController clawController;
@@ -29,6 +34,10 @@ public class MecanumTeleOp extends LinearOpMode {
 
         driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imuController = new IMUController(imu, telemetry);
+        imuController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
 
@@ -55,10 +64,13 @@ public class MecanumTeleOp extends LinearOpMode {
             Toggler bButton = new Toggler();
 
             if (xButton.toggle(gamepad1.x)) {
-                //rotate 90 ccw
+                imuController.rotate(-45,0.5, driveController);
+                sleep(100);
+                telemetry.addLine("turning left");
             }
             if (bButton.toggle(gamepad1.b)) {
-                //rotate 90 cw
+                imuController.rotate(45,0.5, driveController);
+                telemetry.addLine("turning right");
             }
 
 
