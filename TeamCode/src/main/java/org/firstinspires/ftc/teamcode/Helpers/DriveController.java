@@ -269,11 +269,11 @@ public class DriveController {
         frontRight.setTargetPosition(frontRight.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
         backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
         backRight.setTargetPosition(backRight.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         backLeft.setPower(power);
         backRight.setPower(-power);
-        setMode(DcMotor.RunMode.RUN_TO_POSITION);
         waitForMotors();
     }
 
@@ -282,11 +282,11 @@ public class DriveController {
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
         backLeft.setTargetPosition(backLeft.getCurrentPosition() - (int) Math.round(degrees * degreesToPos));
         backRight.setTargetPosition(backRight.getCurrentPosition() + (int) Math.round(degrees * degreesToPos));
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeft.setPower(-power);
         frontRight.setPower(power);
         backLeft.setPower(-power);
         backRight.setPower(power);
-        setMode(DcMotor.RunMode.RUN_TO_POSITION);
         waitForMotors();
     }
 

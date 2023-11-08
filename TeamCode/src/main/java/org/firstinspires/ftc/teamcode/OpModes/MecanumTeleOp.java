@@ -35,9 +35,9 @@ public class MecanumTeleOp extends LinearOpMode {
         driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imuController = new IMUController(imu, telemetry);
-        imuController.init();
+//        imu = hardwareMap.get(BNO055IMU.class, "imu");
+//        imuController = new IMUController(imu, telemetry);
+//        imuController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
 
@@ -62,14 +62,15 @@ public class MecanumTeleOp extends LinearOpMode {
 
             Toggler xButton = new Toggler();
             Toggler bButton = new Toggler();
+            int number = 0;
 
             if (xButton.toggle(gamepad1.x)) {
-                imuController.rotate(-45,0.5, driveController);
-                sleep(100);
+                number++;
+                driveController.turnLeft(90,0.5);
                 telemetry.addLine("turning left");
             }
             if (bButton.toggle(gamepad1.b)) {
-                imuController.rotate(45,0.5, driveController);
+                driveController.turnRight(90,0.5);
                 telemetry.addLine("turning right");
             }
 
@@ -95,6 +96,7 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Slide Rotator Right", slideRotatorRight.getCurrentPosition());
             telemetry.addData("Slide Motor:", slideMotor.getCurrentPosition());
             telemetry.addData("Plane Servo:", planeLauncher.getPosition());
+            telemetry.addData("stupid debug number", number);
             telemetry.update();
 
         }
