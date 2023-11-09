@@ -176,25 +176,34 @@ public class AutoOpBlueLeft extends LinearOpMode {
 //
 //        }
 
-        //loc is where the model found the team prop
+        //CAMERA DETECTION PROCESSING
 
+        //loc is where the model found the team prop
+        driveController.left(.125f,.25f);
+        driveController.forwards(.625f,.25f); //center of the robot on border between tiles
         switch (loc) {
             case 0: //left
-                //move to left tape
+                driveController.left(.5f,.25f);
                 //place purple pixel on left tape
-                //move to spawn
+                driveController.right(.5f,.25f);
+                driveController.backwards(.5f,.25f);
             case 1: //mid
-                //move to mid tape
+                driveController.forwards(.25f,.25f);
                 //place purple pixel on mid tape
-                //move to spawn
+                driveController.backwards(.75f,.25f);
             case 2: //right
-                //move to right tape
+                driveController.right(.5f,.25f);
                 //place purple pixel on right tape
-                //move to spawn
+                driveController.left(.5f,.25f);
+                driveController.backwards(.5f,.25f);
         }
 
-        //move from spawn to board
+        driveController.turnLeft(90f,.5f); //this might not work yet but maybe it does idk
+        driveController.forwards(2f,.5f);
+        driveController.right(1f,.5f); //robot ideally directly infront of the middle of the backboard
 
+
+        //board
         switch (loc) {
             case 0: //left
                 //move to the left
@@ -205,7 +214,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
         }
         //drop yellow pixel
 
-        //park
+        //park by sliding to the corner
 
 
         //temporary parking code that only works if were ONLY parking
