@@ -14,9 +14,9 @@ public class DriveController {
     int slideRotatorStoppedPosLeft = 0;
     int slideMotorStoppedPos = 0;
 
-    int tilesToPos = 1050;
+    double tilesToPos = 1087.5625;
 
-    double degreesToPos = 10.9;
+    double degreesToPos = 9.44229167;
 
     Toggler slideRotatorToggler = new Toggler();
     Toggler slideMotorToggler = new Toggler();
@@ -99,17 +99,17 @@ public class DriveController {
         final double v2;
         final double v3;
         final double v4;
-        if(speedFactor + Math.abs(rightX) > 1) {
-            v1 = (r * Math.cos(robotAngle) + rightX) / speedFactor + Math.abs(rightX);
-            v2 = (r * Math.sin(robotAngle) - rightX) / speedFactor + Math.abs(rightX);
-            v3 = (r * Math.sin(robotAngle) + rightX) / speedFactor + Math.abs(rightX);
-            v4 = (r * Math.cos(robotAngle) - rightX) / speedFactor + Math.abs(rightX);
-        } else {
+//        if(speedFactor + Math.abs(rightX) > 1) {
+//            v1 = (r * Math.cos(robotAngle) + rightX) / speedFactor + Math.abs(rightX);
+//            v2 = (r * Math.sin(robotAngle) - rightX) / speedFactor + Math.abs(rightX);
+//            v3 = (r * Math.sin(robotAngle) + rightX) / speedFactor + Math.abs(rightX);
+//            v4 = (r * Math.cos(robotAngle) - rightX) / speedFactor + Math.abs(rightX);
+//        } else {
             v1 = r * Math.cos(robotAngle) + rightX;
             v2 = r * Math.sin(robotAngle) - rightX;
             v3 = r * Math.sin(robotAngle) + rightX;
             v4 = r * Math.cos(robotAngle) - rightX;
-        }
+//        }
 
         frontLeft.setPower(v1 * speedFactor);
         frontRight.setPower(v2 * speedFactor);

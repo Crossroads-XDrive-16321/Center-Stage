@@ -54,7 +54,7 @@ public class ExampleTeleOp extends LinearOpMode {
         while(!isStopRequested()) {
             //angle of the direction of the joystick
             driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.5 + (gamepad1.right_trigger / 2));
-
+            //telemetry.addData("position ",);
         }
 
     }

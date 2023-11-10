@@ -102,6 +102,10 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Slide Rotator Right", slideRotatorRight.getCurrentPosition());
             telemetry.addData("Slide Motor:", slideMotor.getCurrentPosition());
             telemetry.addData("Plane Servo:", planeLauncher.getPosition());
+            telemetry.addData("Back Left:", backLeft.getCurrentPosition());
+            telemetry.addData("Back Right:", backRight.getCurrentPosition());
+            telemetry.addData("Front Left:", frontLeft.getCurrentPosition());
+            telemetry.addData("Front Right:", frontRight.getCurrentPosition());
             telemetry.update();
 
         }

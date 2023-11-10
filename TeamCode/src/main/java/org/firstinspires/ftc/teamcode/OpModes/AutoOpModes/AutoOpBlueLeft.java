@@ -108,11 +108,8 @@ public class AutoOpBlueLeft extends LinearOpMode {
         initialize();
         initTfod();
 
-        waitForStart();
-
         // CAMERA DETECTING
-        int loc;
-        List<Integer> lastLocs = new ArrayList<>();
+        int loc = -1;
 
         while(!isStarted()) {
             // sense location
@@ -138,73 +135,46 @@ public class AutoOpBlueLeft extends LinearOpMode {
                 loc = 2;
             }
 
-            lastLocs.add(loc);
-            if(lastLocs.size() > 25) {
-                lastLocs.remove(0);
-            }
+
             telemetry.update();
             sleep(20);
         }
 
-        int count0 = 0;
-        int count1 = 0;
-        int count2 = 0;
 
-        for(int i : lastLocs) {
-            switch (i) {
-                case 0:
-                    count0++;
-                case 1:
-                    count1++;
-                case 2:
-                    count2++;
-            }
-        }
-
-        if(count0 > count1 && count0 > count2) {
-            loc = 0;
-        } else if(count1 > count0 && count1 > count2) {
-            loc = 1;
-        } else {
-            loc = 2;
-        }
-
-//        while(!isStopRequested()) {
-//
-//            telemetry.addData("Location: ", loc);
-//            telemetry.update();
-//
-//        }
+        telemetry.addData("Location:", loc);
+        telemetry.update();
 
         //CAMERA DETECTION PROCESSING
 
         //loc is where the model found the team prop
-        driveController.left(.125f,.25f);
-        driveController.forwards(.625f,.25f); //center of the robot on border between tiles
-        switch (loc) {
-            case 0: //left
-                driveController.left(.5f,.25f);
-                //place purple pixel on left tape
-                driveController.right(.5f,.25f);
-                driveController.backwards(.5f,.25f);
-            case 1: //mid
-                driveController.forwards(.25f,.25f);
-                //place purple pixel on mid tape
-                driveController.backwards(.75f,.25f);
-            case 2: //right
-                driveController.right(.5f,.25f);
-                //place purple pixel on right tape
-                driveController.left(.5f,.25f);
-                driveController.backwards(.5f,.25f);
-        }
+        driveController.forwards(3/32f,.5f); //robot center on tile center - TO BE ADJUSTED
+        driveController.right(5/32f,.5f);
+//        driveController.turnRight(180,.5f); //(mech arm forward)
+        driveController.forwards(1/2f,.5f); //robot center on tile border center
+        //adjust how close the bot needs to be depending on arm length
 
-        driveController.turnLeft(90f,.5f); //this might not work yet but maybe it does idk
-        driveController.forwards(2f,.5f);
-        driveController.right(1f,.5f); //robot ideally directly infront of the middle of the backboard
+//        switch (0) {
+//            case 0: //left
+//                driveController.left(1/2f,.5f);
+//                sleep(1000);//place purple pixel on left tape
+//                driveController.right(1/2f,.5f);
+//            case 1: //mid
+//                driveController.forwards(1/4f,.5f);
+//                sleep(1000);//place purple pixel on mid tape
+//                driveController.backwards(1/4f,.5f);
+//            case 2: //right
+//                driveController.right(1/2f,.5f);
+//                sleep(1000);//place purple pixel on right tape
+//                driveController.left(1/2f,.5f);
+//        }
+//        driveController.backwards(1/2f,.5f); //robot center on tile center - TO BE ADJUSTED
 
 
-        //board
-        switch (loc) {
+        //drive towards the backboard
+
+
+        //adjust in front of what part of the backboard the arm is
+        switch (0) {
             case 0: //left
                 //move to the left
             case 1: //mid
@@ -212,14 +182,15 @@ public class AutoOpBlueLeft extends LinearOpMode {
             case 2: //right
                 //move to the right
         }
-        //drop yellow pixel
+//        drop yellow pixel
 
-        //park by sliding to the corner
+//        park (maybe slide to the corner to leave space for allied bot
+//
+//
+//        temporary parking code that only works if were ONLY parking
+//        driveController.forwards(0.1, 0.3);
+//        driveController.left(2.1, 0.4);
 
-
-        //temporary parking code that only works if were ONLY parking
-        driveController.forwards(0.1, 0.3);
-        driveController.left(2.1, 0.4);
 
     }
 
