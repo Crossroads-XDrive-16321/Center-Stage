@@ -21,7 +21,6 @@ public class DriveController {
     Toggler slideRotatorToggler = new Toggler();
     Toggler slideMotorToggler = new Toggler();
 
-//    int tilesToPos = 1050; to be configured
 
     public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight, DcMotorEx slideRotatorLeft, DcMotorEx slideRotatorRight, DcMotorEx slideMotor) {
         this.frontLeft = frontLeft;
@@ -288,6 +287,38 @@ public class DriveController {
         backLeft.setPower(-power);
         backRight.setPower(power);
         waitForMotors();
+    }
+
+    public void autoCalibrateScore() {
+        // TODO: use camera to line up with board using april tags
+    }
+    public void setArmScoringPos(float power) {
+        slideRotatorRight.setTargetPosition(slideRotatorDownPosRight - 400);
+        slideRotatorLeft.setTargetPosition(slideRotatorDownPosLeft - 400);
+        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorRight.setPower(power);
+        slideRotatorLeft.setPower(power);
+    }
+
+    public void setArmGrabbingPos(float power) {
+        slideRotatorRight.setTargetPosition(slideRotatorDownPosRight);
+        slideRotatorLeft.setTargetPosition(slideRotatorDownPosLeft);
+        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorRight.setPower(power);
+        slideRotatorLeft.setPower(power);
+    }
+
+    /**
+     *
+     * @param height between 0.0 and 1.0, bottom and top respectively
+     * @param power
+     */
+    public void setSlidePos(float height, float power) {
+        slideMotor.setTargetPosition((int) (slideMotorDownPos + (height * 2800)));
+        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideMotor.setPower(power);
     }
 
 }

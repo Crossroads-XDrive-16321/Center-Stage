@@ -86,7 +86,7 @@ public class MecanumTeleOp extends LinearOpMode {
                 driveController.rotateArm(0.5f);
             }
 
-            if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing...
+            if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing... TODO: Seb it's bc it's calling drive every frame at the top which is overriding it
                 driveController.turnLeft(90, 0.5);
                 telemetry.addLine("turning left");
             }
