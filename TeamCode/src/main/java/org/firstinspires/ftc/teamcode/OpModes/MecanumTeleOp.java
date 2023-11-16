@@ -63,8 +63,25 @@ public class MecanumTeleOp extends LinearOpMode {
         waitForStart();
 
         while (!isStopRequested()) {
-            //angle of the direction of the joystick
-            driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+
+            //Assisted Tele Op Code TODO: thanks ben, this might work? needs to be debugged tho (also TODO is so cool lmao)
+            if (aButtonToggler.toggle(gamepad2.a)) { //pressing a automatically moves the arm from picking up pos to scoring pos
+                clawController.toggleClawPosition(true);
+                driveController.rotateArm(0.5f);
+                driveController.waitForMotors();
+            } else if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing...
+                driveController.turnLeft(90, 0.5);
+                telemetry.addLine("turning left");
+                driveController.waitForMotors();
+            } else if (bButtonToggler.toggle(gamepad1.right_bumper)) { //if statement never firing...
+                driveController.turnRight(90, 0.5);
+                telemetry.addLine("turning right");
+                driveController.waitForMotors();
+            } else {
+                driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+            }
+
+
 
             clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
             clawController.toggleClawPosition(gamepad2.y);
@@ -78,22 +95,6 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
 
-
-            //Assisted Tele Op Code
-
-            if (aButtonToggler.toggle(gamepad2.a)) { //pressing a automatically moves the arm from picking up pos to scoring pos
-                clawController.toggleClawPosition(true);
-                driveController.rotateArm(0.5f);
-            }
-
-            if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing... TODO: Seb it's bc it's calling drive every frame at the top which is overriding it
-                driveController.turnLeft(90, 0.5);
-                telemetry.addLine("turning left");
-            }
-            if (bButtonToggler.toggle(gamepad1.right_bumper)) { //if statement never firing...
-                driveController.turnRight(90, 0.5);
-                telemetry.addLine("turning right");
-            }
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());
