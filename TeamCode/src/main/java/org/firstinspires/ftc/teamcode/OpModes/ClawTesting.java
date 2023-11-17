@@ -38,6 +38,10 @@ public class ClawTesting extends LinearOpMode {
 
         waitForStart();
 
+        rightClaw.setPosition(0.5);
+        leftClaw.setPosition(0.5);
+        clawServo.setPosition(0.5);
+
         while(!isStopRequested()) {
 
             rightClaw.setPosition(rightClaw.getPosition() + (0.001 * gamepad1.right_stick_x));

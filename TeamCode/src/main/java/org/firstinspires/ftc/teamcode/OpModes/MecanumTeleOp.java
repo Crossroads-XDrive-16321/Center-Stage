@@ -68,18 +68,20 @@ public class MecanumTeleOp extends LinearOpMode {
             if (aButtonToggler.toggle(gamepad2.a)) { //pressing a automatically moves the arm from picking up pos to scoring pos
                 clawController.toggleClawPosition(true);
                 driveController.rotateArm(0.5f);
-                driveController.waitForMotors();
-            } else if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing...
+            }
+            if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing...
                 driveController.turnLeft(90, 0.5);
                 telemetry.addLine("turning left");
-                driveController.waitForMotors();
-            } else if (bButtonToggler.toggle(gamepad1.right_bumper)) { //if statement never firing...
+//                driveController.waitForMotors();
+            }
+            if (bButtonToggler.toggle(gamepad1.right_bumper)) { //if statement never firing...
                 driveController.turnRight(90, 0.5);
                 telemetry.addLine("turning right");
-                driveController.waitForMotors();
-            } else {
-                driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+//                driveController.waitForMotors();
             }
+
+            driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+
 
 
 

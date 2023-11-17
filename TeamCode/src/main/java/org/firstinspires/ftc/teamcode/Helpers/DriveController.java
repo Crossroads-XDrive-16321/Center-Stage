@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import java.util.ArrayList;
+
 public class DriveController {
 
     DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
@@ -16,6 +18,15 @@ public class DriveController {
 
     double tilesToPos = 1087.5625;
 
+    double tilesToPosFR = 901.5714;
+    double tilesToPosFL = 1022.0;
+    double tilesToPosBR = 1033.8571;
+    double tilesToPosBL = 1035.7143;
+
+    double degreesToPosFR = 7.888;
+    double degreesToPosFL = 10.088;
+    double degreesToPosBR = 9.287;
+    double degreesToPosBL = 9.107;
     double degreesToPos = 9.44229167;
 
     Toggler slideRotatorToggler = new Toggler();
@@ -109,6 +120,8 @@ public class DriveController {
             v3 = r * Math.sin(robotAngle) + rightX;
             v4 = r * Math.cos(robotAngle) - rightX;
 //        }
+
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontLeft.setPower(v1 * speedFactor);
         frontRight.setPower(v2 * speedFactor);

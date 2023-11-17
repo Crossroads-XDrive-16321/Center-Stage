@@ -147,44 +147,56 @@ public class AutoOpBlueLeft extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         //loc is where the model found the team prop
-        driveController.forwards(3/32f,.5f); //robot center on tile center - TO BE ADJUSTED
-        driveController.right(5/32f,.5f);
-//        driveController.turnRight(180,.5f); //(mech arm forward)
-        driveController.forwards(1/2f,.5f); //robot center on tile border center
+        driveController.forwards(1/8f,.25f); //robot center on tile center - TO BE ADJUSTED
+        driveController.right(3/32f,.25f);
+        driveController.turnRight(180,.25f); //(mech arm forward)
+        driveController.backwards(1f,.25f); //robot center on tile border center
         //adjust how close the bot needs to be depending on arm length
+        int test = 0;
 
-//        switch (0) {
-//            case 0: //left
-//                driveController.left(1/2f,.5f);
-//                sleep(1000);//place purple pixel on left tape
-//                driveController.right(1/2f,.5f);
-//            case 1: //mid
-//                driveController.forwards(1/4f,.5f);
-//                sleep(1000);//place purple pixel on mid tape
-//                driveController.backwards(1/4f,.5f);
-//            case 2: //right
-//                driveController.right(1/2f,.5f);
-//                sleep(1000);//place purple pixel on right tape
-//                driveController.left(1/2f,.5f);
-//        }
-//        driveController.backwards(1/2f,.5f); //robot center on tile center - TO BE ADJUSTED
+        if (test == 0) {
+            driveController.backwards(1/8f,.25f);
+            driveController.turnLeft(90f,.25f);
+            sleep(1000);//place purple pixel on left tape
+            driveController.turnRight(90f,.25f);
+            driveController.forwards(1/8f,.25f);
+        }
+        if (test == 1) {
+            driveController.forwards(1/4f,.25f);
+            sleep(1000);//place purple pixel on mid tape
+            driveController.backwards(1/4f,.25f);
+        }
+        if (test == 2) {
+            driveController.backwards(1/8f,.25f);
+            driveController.turnRight(90f,.25f);
+            sleep(1000);//place purple pixel on left tape
+            driveController.turnLeft(90f,.25f);
+            driveController.forwards(1/8f,.25f);
+        }
+        driveController.forwards(1f,.25f);
 
 
-        //drive towards the backboard
-
+        driveController.turnRight(90,.25f);
+        driveController.forwards(7/4f,.25f);
+        driveController.right(3/4f,.25f);
 
         //adjust in front of what part of the backboard the arm is
-        switch (0) {
-            case 0: //left
-                //move to the left
-            case 1: //mid
-                //nothing
-            case 2: //right
-                //move to the right
+        if (test == 0) { //left
+            driveController.left(3/16f,.25f);
+            sleep(1000); //extend arm, drop yellow pixel
         }
-//        drop yellow pixel
+        if (test == 1) { //mid
+            sleep(1000);
+            driveController.left(3/16f,.25f);
+        }
+        if (test == 2) { //right
+            driveController.right(3/16f,.25f);
+            sleep(1000); //extend arm, drop yellow pixel
+            driveController.left(3/8f,.25f);
+        }
 
-//        park (maybe slide to the corner to leave space for allied bot
+
+        driveController.left(1f,.25f); //park
 //
 //
 //        temporary parking code that only works if were ONLY parking
