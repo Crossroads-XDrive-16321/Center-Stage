@@ -157,19 +157,19 @@ public class AutoOpBlueLeft extends LinearOpMode {
         if (test == 0) {
             driveController.backwards(1/8f,.25f);
             driveController.turnLeft(90f,.25f);
-            sleep(1000);//place purple pixel on left tape
+            sleep(1000);//TODO: place purple pixel on left tape
             driveController.turnRight(90f,.25f);
             driveController.forwards(1/8f,.25f);
         }
         if (test == 1) {
             driveController.forwards(1/4f,.25f);
-            sleep(1000);//place purple pixel on mid tape
+            sleep(1000);//TODO: place purple pixel on mid tape
             driveController.backwards(1/4f,.25f);
         }
         if (test == 2) {
             driveController.backwards(1/8f,.25f);
             driveController.turnRight(90f,.25f);
-            sleep(1000);//place purple pixel on left tape
+            sleep(1000);//TODO: place purple pixel on left tape
             driveController.turnLeft(90f,.25f);
             driveController.forwards(1/8f,.25f);
         }
@@ -178,25 +178,25 @@ public class AutoOpBlueLeft extends LinearOpMode {
 
         driveController.turnRight(90,.25f);
         driveController.forwards(7/4f,.25f);
-        driveController.right(3/4f,.25f);
+        driveController.right(3/4f,.25f); //TODO: double check
 
         //adjust in front of what part of the backboard the arm is
         if (test == 0) { //left
-            driveController.left(3/16f,.25f);
-            sleep(1000); //extend arm, drop yellow pixel
+            driveController.left(3/16f,.25f); //TODO: double check
+            sleep(1000); //TODO: extend arm, drop yellow pixel
         }
         if (test == 1) { //mid
-            sleep(1000);
-            driveController.left(3/16f,.25f);
+            sleep(1000); //TODO: extend arm, drop yellow pixel
+            driveController.left(3/16f,.25f); //TODO: double check
         }
         if (test == 2) { //right
-            driveController.right(3/16f,.25f);
-            sleep(1000); //extend arm, drop yellow pixel
-            driveController.left(3/8f,.25f);
+            driveController.right(3/16f,.25f); //TODO: double check
+            sleep(1000); //TODO: extend arm, drop yellow pixel
+            driveController.left(3/8f,.25f); //TODO: double check
         }
 
 
-        driveController.left(1f,.25f); //park
+        driveController.left(1f,.25f); //TODO: double check - park
 //
 //
 //        temporary parking code that only works if were ONLY parking
