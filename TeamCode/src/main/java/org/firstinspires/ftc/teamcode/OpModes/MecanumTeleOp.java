@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -9,7 +7,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
-import org.firstinspires.ftc.teamcode.Helpers.IMUController;
 import org.firstinspires.ftc.teamcode.Helpers.Toggler;
 
 
@@ -25,8 +22,8 @@ public class MecanumTeleOp extends LinearOpMode {
     Servo leftClaw, rightClaw, clawServo, planeLauncher;
     ClawController clawController;
 
-    Toggler xButtonToggler = new Toggler();
-    Toggler bButtonToggler = new Toggler();
+    Toggler lbButtonToggler = new Toggler();
+    Toggler rbButtonToggler = new Toggler();
     Toggler aButtonToggler = new Toggler();
 
     void initialize() {
@@ -65,15 +62,16 @@ public class MecanumTeleOp extends LinearOpMode {
         while (!isStopRequested()) {
 
             //Assisted Tele Op Code
-            if (aButtonToggler.toggle(gamepad2.a)) { //pressing a automatically moves the arm from picking up pos to scoring pos
+            if (aButtonToggler.toggle(gamepad2.a)) { //TODO: maybe would be nice if a always brought it to scoring pos and b down to level pos
                 clawController.toggleClawPosition(true);
                 driveController.rotateArm(0.5f);
+                telemetry.addLine("toggling arm");
             }
-            if (xButtonToggler.toggle(gamepad1.left_bumper)) { //if statement never firing...
+            if (lbButtonToggler.toggle(gamepad1.left_bumper)) {
                 driveController.turnLeft(90, 0.5);
                 telemetry.addLine("turning left");
             }
-            if (bButtonToggler.toggle(gamepad1.right_bumper)) { //if statement never firing...
+            if (rbButtonToggler.toggle(gamepad1.right_bumper)) {
                 driveController.turnRight(90, 0.5);
                 telemetry.addLine("turning right");
             }

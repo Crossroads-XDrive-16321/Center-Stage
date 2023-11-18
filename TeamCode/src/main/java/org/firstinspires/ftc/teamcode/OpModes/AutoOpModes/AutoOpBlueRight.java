@@ -28,6 +28,9 @@ public class AutoOpBlueRight extends LinearOpMode {
     TfodProcessor tfod;
     VisionPortal visionPortal;
 
+    double driveSpeed = .25;
+    double rotateSpeed = .5;
+
     double minConfidence = 0.8f;
 
     void initialize() {
@@ -107,54 +110,54 @@ public class AutoOpBlueRight extends LinearOpMode {
         // CAMERA DETECTING
         //paste camera code from blue left
 
-        driveController.forwards(1/8f,.25f);
-        driveController.right(3/32f,.25f);
-        driveController.turnRight(180,.25f);
-        driveController.backwards(1f,.25f);
+        driveController.forwards(1/8f,driveSpeed);
+        driveController.right(3/32f,driveSpeed);
+        driveController.turnRight(180,rotateSpeed);
+        driveController.backwards(1f,driveSpeed);
 
         int test = 0;
 
         if (test == 0) {
-            driveController.backwards(1/8f,.25f);
-            driveController.turnLeft(90f,.25f);
+            driveController.backwards(1/8f,driveSpeed);
+            driveController.turnLeft(90f,rotateSpeed);
             sleep(1000);//TODO: place purple pixel on left tape
-            driveController.turnRight(90f,.25f);
-            driveController.forwards(1/8f,.25f);
+            driveController.turnRight(90f,rotateSpeed);
+            driveController.forwards(1/8f,driveSpeed);
         }
         if (test == 1) {
-            driveController.forwards(1/4f,.25f);
+            driveController.forwards(1/4f,driveSpeed);
             sleep(1000);//TODO: place purple pixel on mid tape
-            driveController.backwards(1/4f,.25f);
+            driveController.backwards(1/4f,driveSpeed);
         }
         if (test == 2) {
-            driveController.backwards(1/8f,.25f);
-            driveController.turnRight(90f,.25f);
+            driveController.backwards(1/8f,driveSpeed);
+            driveController.turnRight(90f,rotateSpeed);
             sleep(1000);//TODO: place purple pixel on left tape
-            driveController.turnLeft(90f,.25f);
-            driveController.forwards(1/8f,.25f);
+            driveController.turnLeft(90f,rotateSpeed);
+            driveController.forwards(1/8f,driveSpeed);
         }
-        driveController.forwards(15/16f,.25f); //TODO:less than 1 so it can go through trusses - double check
+        driveController.forwards(15/16f,driveSpeed); //TODO:less than 1 so it can go through trusses - double check
 
 
-        driveController.turnRight(90,.25f);
-        driveController.forwards(15/4f,.25f); //TODO: double check
-        driveController.right(3/4f,.25f);
+        driveController.turnRight(90,rotateSpeed);
+        driveController.forwards(15/4f,driveSpeed); //TODO: double check
+        driveController.right(3/4f,driveSpeed);
 
         if (test == 0) { //left
-            driveController.left(3/16f,.25f); //TODO: double check
+            driveController.left(3/16f,driveSpeed); //TODO: double check
             sleep(1000); //TODO: extend arm, drop yellow pixel
         }
         if (test == 1) { //mid
             sleep(1000); //TODO: extend arm, drop yellow pixel
-            driveController.left(3/16f,.25f); //TODO: double check
+            driveController.left(3/16f,driveSpeed); //TODO: double check
         }
         if (test == 2) { //right
-            driveController.right(3/16f,.25f); //TODO: double check
+            driveController.right(3/16f,driveSpeed); //TODO: double check
             sleep(1000); //TODO: extend arm, drop yellow pixel
-            driveController.left(3/8f,.25f); //TODO: double check
+            driveController.left(3/8f,driveSpeed); //TODO: double check
         }
 
-        driveController.left(1f,.25f); //TODO: double check - park
+        driveController.left(1f,driveSpeed); //TODO: double check - park
 
 
 //        driveController.forwards(0.1, 0.3);
