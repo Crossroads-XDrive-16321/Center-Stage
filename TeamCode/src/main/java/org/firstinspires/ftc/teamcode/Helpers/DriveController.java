@@ -164,6 +164,8 @@ public class DriveController {
         }
     }
 
+    //TODO: make an arm rotation enum and toggler just like claw position toggler
+
     public void moveSlide(float power) {
 
         if(power == 0) {

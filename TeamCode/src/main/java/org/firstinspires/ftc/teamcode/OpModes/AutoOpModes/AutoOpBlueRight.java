@@ -110,58 +110,67 @@ public class AutoOpBlueRight extends LinearOpMode {
         // CAMERA DETECTING
         //paste camera code from blue left
 
-        driveController.forwards(1/8f,driveSpeed);
+        driveController.forwards(1/8f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
         driveController.right(3/32f,driveSpeed);
-        driveController.turnRight(180,rotateSpeed);
-        driveController.backwards(1f,driveSpeed);
-
+        driveController.turnRight(180,rotateSpeed); //(mech arm forward)
+        driveController.backwards(1f,driveSpeed); //robot center on tile border center
+        //adjust how close the bot needs to be depending on arm length
         int test = 0;
 
+        //clawController.toggleClawPosition(true); //TODO: toggle claw
+
         if (test == 0) {
-            driveController.backwards(1/8f,driveSpeed);
             driveController.turnLeft(90f,rotateSpeed);
-            sleep(1000);//TODO: place purple pixel on left tape
-            driveController.turnRight(90f,rotateSpeed);
+            driveController.backwards(1/8f,driveSpeed);
+            sleep(1000);//TODO: place purple pixel on left tape - right claw
             driveController.forwards(1/8f,driveSpeed);
+            driveController.turnRight(90f,rotateSpeed);
         }
         if (test == 1) {
-            driveController.forwards(1/4f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on mid tape
-            driveController.backwards(1/4f,driveSpeed);
-        }
-        if (test == 2) {
             driveController.backwards(1/8f,driveSpeed);
-            driveController.turnRight(90f,rotateSpeed);
-            sleep(1000);//TODO: place purple pixel on left tape
-            driveController.turnLeft(90f,rotateSpeed);
+            sleep(1000);//TODO: place purple pixel on mid tape - right claw
             driveController.forwards(1/8f,driveSpeed);
         }
-        driveController.forwards(15/16f,driveSpeed); //TODO:less than 1 so it can go through trusses - double check
+        if (test == 2) {
+            driveController.turnRight(90f,rotateSpeed);
+            driveController.backwards(1/8f,driveSpeed);
+            sleep(1000);//TODO: place purple pixel on left tape - right claw
+            driveController.forwards(1/8f,driveSpeed);
+            driveController.turnLeft(90f,rotateSpeed);
+        }
+        driveController.forwards(1f,driveSpeed);
+        //ends in the center of the tile -ideally
+
+
 
 
         driveController.turnRight(90,rotateSpeed);
-        driveController.forwards(15/4f,driveSpeed); //TODO: double check
-        driveController.right(3/4f,driveSpeed);
 
+        //TODO: !!! LITERALLY CHECK EVERYTHING PAST THIS POINT LMAO (all done at home, 0 testing, all numbers completely made up) !!!
+        driveController.forwards(1f,driveSpeed); //moves to center of tile 3
+        driveController.right(2f,driveSpeed); //center of left door tile
+        driveController.forwards(5/2f,driveSpeed); //border between two tiles left of backstage
+        driveController.left(1f,driveSpeed); //aligned with center of backstage
+
+        //rotate arm and toggle claw pos
+
+        //this is kinda not made up anymore, but def tweak the numbers yknow...
         if (test == 0) { //left
             driveController.left(3/16f,driveSpeed); //TODO: double check
-            sleep(1000); //TODO: extend arm, drop yellow pixel
+            sleep(1000); //TODO: drop yellow pixel - left claw
+            driveController.right(3/8f,driveSpeed);
         }
         if (test == 1) { //mid
-            sleep(1000); //TODO: extend arm, drop yellow pixel
-            driveController.left(3/16f,driveSpeed); //TODO: double check
+            sleep(1000); //TODO: drop yellow pixel - left claw
+            driveController.right(3/16f,driveSpeed); //TODO: double check
         }
         if (test == 2) { //right
             driveController.right(3/16f,driveSpeed); //TODO: double check
-            sleep(1000); //TODO: extend arm, drop yellow pixel
-            driveController.left(3/8f,driveSpeed); //TODO: double check
+            sleep(1000); //TODO: drop yellow pixel - left claw
         }
+        //TODO: rotate arm and toggle claw
 
-        driveController.left(1f,driveSpeed); //TODO: double check - park
-
-
-//        driveController.forwards(0.1, 0.3);
-//        driveController.left(4.3, 0.4);
+        driveController.right(1/4f,driveSpeed); //TODO: double check - park
 
     }
 

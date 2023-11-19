@@ -17,7 +17,7 @@ public class ClawController {
         SCORING
     }
 
-    public ClawPosition currentPos = ClawPosition.LEVEL;
+    public ClawPosition currentClawPos = ClawPosition.LEVEL;
     private final float clawLevelPos = 0.65f;
     private final float clawScoringPos = 0f;
 
@@ -37,14 +37,14 @@ public class ClawController {
 
     public void toggleClawPosition(boolean button_pressed) {
         if(clawArmToggler.toggle(button_pressed)) {
-            switch (currentPos) {
+            switch (currentClawPos) {
                 case LEVEL:
                     clawServo.setPosition(clawScoringPos);
-                    currentPos = ClawPosition.SCORING;
+                    currentClawPos = ClawPosition.SCORING;
                     break;
                 case SCORING:
                     clawServo.setPosition(clawLevelPos);
-                    currentPos = ClawPosition.LEVEL;
+                    currentClawPos = ClawPosition.LEVEL;
                     break;
             }
         }
