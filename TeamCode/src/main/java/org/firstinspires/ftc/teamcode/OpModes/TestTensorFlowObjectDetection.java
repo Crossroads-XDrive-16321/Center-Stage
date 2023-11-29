@@ -165,24 +165,29 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
 
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+        double x = 320;
+        float maxConfidence = 0;
 
-            if (x < 640/3 && x >= 0) {
-                telemetry.addLine("OBJECT DETECTED, LEFT");
-            } else if (x < 2*640/3 && x >= 640/3) {
-                telemetry.addLine("OBJECT DETECTED, MIDDLE");
-            } else {
-                telemetry.addLine("OBJECT DETECTED, RIGHT");
+        // Step through the list of recognitions and get most confident one
+        for (Recognition recognition : currentRecognitions) {
+            if (recognition.getConfidence() > maxConfidence) {
+                x = (recognition.getLeft() + recognition.getRight()) / 2;
+                maxConfidence = recognition.getConfidence();
             }
+        }
+
+        if (x < 640/3 && x >= 0) {
+            telemetry.addLine("OBJECT DETECTED, LEFT");
+        } else if (x < 2*640/3 && x >= 640/3) {
+            telemetry.addLine("OBJECT DETECTED, MIDDLE");
+        } else {
+            telemetry.addLine("OBJECT DETECTED, RIGHT");
+        }
 
             //telemetry.addData(""," ");
             //telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
             //telemetry.addData("- Position", "%.0f / %.0f", x, y);
             //telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-        }   // end for() loop
 
     }   // end method telemetryTfod()
 

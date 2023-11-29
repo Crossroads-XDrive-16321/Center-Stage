@@ -64,12 +64,12 @@ public class AutoOpBlueLeft extends LinearOpMode {
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelAssetName("model_20231128_151159.tflite")
 
-                .setModelLabels(TFOD_LABELS)
+                .setModelLabels(new String[]{"red_prop", "blue_prop"})
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(false)
-                .setModelInputSize(640)
+                .setModelInputSize(300)
                 .setModelAspectRatio(16/9f)
 
                 .build();
@@ -150,63 +150,82 @@ public class AutoOpBlueLeft extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         //loc is where the model found the team prop
-        driveController.forwards(3/32f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
+        driveController.forwards(1/8f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
         driveController.right(3/32f,driveSpeed);
         driveController.turnRight(180,rotateSpeed); //(mech arm forward)
-        driveController.backwards(1f,driveSpeed); //robot center on tile border center
+        driveController.backwards(5/4f,driveSpeed); //robot center on tile border center
         //adjust how close the bot needs to be depending on arm length
-        int test = 0;
 
-        //clawController.toggleClawPosition(true); //TODO: toggle claw
+        clawController.setClawLevelPos();
+        sleep(250);
 
-        if (test == 0) {
+        if (loc == 0) {
             driveController.turnLeft(90f,rotateSpeed);
-            driveController.backwards(1/8f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on left tape - left claw
-            driveController.forwards(1/8f,driveSpeed);
+            driveController.backwards(1/4f,driveSpeed);
+            sleep(250);//place purple pixel on left tape - left claw
+            clawController.toggleLeftClaw();
+            sleep(250);
+            driveController.forwards(1/4f,driveSpeed);
+            clawController.setClawScoringPos();
             driveController.turnRight(90f,rotateSpeed);
         }
-        if (test == 1) {
-            driveController.backwards(1/8f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on mid tape - left claw
-            driveController.forwards(1/8f,driveSpeed);
+        if (loc == 1) {
+            driveController.backwards(1/4f,driveSpeed);
+            sleep(250);//place purple pixel on mid tape - left claw
+            clawController.toggleLeftClaw();
+            sleep(250);
+            driveController.forwards(1/4f,driveSpeed);
+            clawController.setClawScoringPos();
         }
-        if (test == 2) {
+        if (loc == 2) {
             driveController.turnRight(90f,rotateSpeed);
-            driveController.backwards(1/8f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on left tape - left claw
-            driveController.forwards(1/8f,driveSpeed);
+            driveController.backwards(1/4f,driveSpeed);
+            sleep(250);//place purple pixel on right tape - left claw
+            clawController.toggleLeftClaw();
+            sleep(250);
+            driveController.forwards(1/4f,driveSpeed);
+            clawController.setClawScoringPos();
             driveController.turnLeft(90f,rotateSpeed);
         }
-        driveController.forwards(1/2f,driveSpeed);
+        driveController.forwards(3/4f,driveSpeed);
         //ends on the border of the two tiles -ideally
 
 
 
 
         driveController.turnRight(90,rotateSpeed);
-        driveController.forwards(7/4f,driveSpeed);
-        driveController.right(3/4f,driveSpeed); //TODO: double check
-        //TODO: rotate arm and toggle claw
+        driveController.forwards(28/16f,driveSpeed);
+        driveController.right(3/4f,driveSpeed);
+        //rotate arm and toggle claw
+
+        driveController.setArmScoringPos(0.2f);
+        sleep(1000);
 
         //adjust in front of what part of the backboard the arm is
-        if (test == 0) { //left
-            driveController.left(3/16f,driveSpeed); //TODO: double check
-            sleep(1000); //TODO: drop yellow pixel - right claw
+        if (loc == 0) { //left
+            driveController.left(3/16f,driveSpeed);
+            sleep(500); // drop yellow pixel - right claw
+            clawController.toggleRightClaw();
         }
-        if (test == 1) { //mid
-            sleep(1000); //TODO: drop yellow pixel - right claw
-            driveController.left(3/16f,driveSpeed); //TODO: double check
+        if (loc == 1) { //mid
+            sleep(500); // drop yellow pixel - right claw
+            clawController.toggleRightClaw();
+            driveController.left(3/16f,driveSpeed);
         }
-        if (test == 2) { //right
-            driveController.right(3/16f,driveSpeed); //TODO: double check
-            sleep(1000); //TODO: drop yellow pixel - right claw
+        if (loc == 2) { //right
+            driveController.right(3/16f,driveSpeed);
+            sleep(500); // drop yellow pixel - right claw
+            clawController.toggleRightClaw();
             driveController.left(3/8f,driveSpeed); //TODO: double check
         }
-        //TODO: rotate arm and toggle claw
+        //rotate arm and toggle claw
+
+        clawController.setClawLevelPos();
+        driveController.setArmGrabbingPos(0.2f);
 
 
         driveController.left(1f,driveSpeed); //TODO: double check - park
+        driveController.forwards(1/8f,driveSpeed);
 
 
     }

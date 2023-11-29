@@ -17,13 +17,13 @@ public class ClawController {
         SCORING
     }
 
-    public ClawPosition currentClawPos = ClawPosition.LEVEL;
-    private final float clawLevelPos = 0.65f;
+    public ClawPosition currentClawPos = ClawPosition.SCORING;
+    private final float clawLevelPos = 0.6f;
     private final float clawScoringPos = 0f;
 
     Servo leftServo, rightServo, clawServo;
-    public boolean leftIsOpen = true;
-    public boolean rightIsOpen = true;
+    public boolean leftIsOpen = false;
+    public boolean rightIsOpen = false;
     Toggler clawArmToggler = new Toggler();
     Toggler rightClawPosToggler = new Toggler();
     Toggler leftClawPosToggler = new Toggler();
@@ -34,6 +34,14 @@ public class ClawController {
         this.clawServo = clawServo;
     }
 
+
+    public void setClawScoringPos() {
+        clawServo.setPosition(clawScoringPos);
+    }
+
+    public void setClawLevelPos() {
+        clawServo.setPosition(clawLevelPos);
+    }
 
     public void toggleClawPosition(boolean button_pressed) {
         if(clawArmToggler.toggle(button_pressed)) {
