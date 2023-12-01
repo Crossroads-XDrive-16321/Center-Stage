@@ -194,17 +194,17 @@ public class AutoOpRedLeft extends LinearOpMode {
             driveController.forwards(1/16f,driveSpeed);
             driveController.turnLeft(90f,rotateSpeed);
         }
-        driveController.forwards(3/4f,driveSpeed);
+        driveController.forwards(4/4f,driveSpeed);
         //ends on the border of the two tiles -ideally
 
 
         driveController.turnLeft(90,rotateSpeed);
 
 
-        driveController.forwards(9/8f,driveSpeed); //moves to center of tile 3
-        driveController.left(17/8f,driveSpeed); //center of left door tile
-        driveController.forwards(9/4f,driveSpeed); //border between two tiles left of backstage
-        driveController.right(1f,driveSpeed); //aligned with center of backstage
+        driveController.forwards(17/16f,driveSpeed); //moves to center of tile 3
+        driveController.left(15/8f,driveSpeed); //center of left door tile
+        driveController.forwards(5/2f,driveSpeed); //border between two tiles left of backstage
+        driveController.right(5/4f,driveSpeed); //aligned with center of backstage
 
         //rotate arm and toggle claw pos
         clawController.setClawLevelPos();
