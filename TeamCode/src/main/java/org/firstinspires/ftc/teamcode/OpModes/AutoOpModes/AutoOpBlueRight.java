@@ -31,7 +31,7 @@ public class AutoOpBlueRight extends LinearOpMode {
     TfodProcessor tfod;
     VisionPortal visionPortal;
 
-    double driveSpeed = .25;
+    double driveSpeed = .3;
     double rotateSpeed = .5;
 
     double minConfidence = 0.8f;
@@ -63,12 +63,12 @@ public class AutoOpBlueRight extends LinearOpMode {
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelAssetName("model_20231130_175355.tflite")
 
-                .setModelLabels(TFOD_LABELS)
+                .setModelLabels(new String[]{"blue_prop", "red_prop"})
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(false)
-                .setModelInputSize(640)
+                .setModelInputSize(300)
                 .setModelAspectRatio(16/9f)
 
                 .build();
@@ -152,11 +152,11 @@ public class AutoOpBlueRight extends LinearOpMode {
 
         //loc is where the model found the team prop
         driveController.forwards(1/8f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
-        driveController.right(3/32f,driveSpeed);
+        driveController.right(1/8f,driveSpeed);
         driveController.turnRight(180,rotateSpeed); //(mech arm forward)
         clawController.setClawLevelPos();
         sleep(250);
-        driveController.backwards(4/4f,driveSpeed); //robot center on tile border center
+        driveController.backwards(15/16f,driveSpeed); //robot center on tile border center
         //adjust how close the bot needs to be depending on arm length
 
         clawController.setClawLevelPos();
@@ -194,17 +194,17 @@ public class AutoOpBlueRight extends LinearOpMode {
             driveController.forwards(1/16f,driveSpeed);
             driveController.turnLeft(90f,rotateSpeed);
         }
-        driveController.forwards(3/4f,driveSpeed);
+        driveController.forwards(4/4f,driveSpeed);
         //ends on the border of the two tiles -ideally
 
 
         driveController.turnRight(90,rotateSpeed);
 
 
-        driveController.forwards(9/8f,driveSpeed); //moves to center of tile 3
-        driveController.right(17/8f,driveSpeed); //center of left door tile
-        driveController.forwards(9/4f,driveSpeed); //border between two tiles left of backstage
-        driveController.left(1f,driveSpeed); //aligned with center of backstage
+        driveController.forwards(17/16f,driveSpeed); //moves to center of tile 3
+        driveController.right(15/8f,driveSpeed); //center of left door tile
+        driveController.forwards(5/2f,driveSpeed); //border between two tiles left of backstage
+        driveController.left(5/4f,driveSpeed); //aligned with center of backstage
 
         //rotate arm and toggle claw pos
         clawController.setClawLevelPos();
@@ -234,7 +234,7 @@ public class AutoOpBlueRight extends LinearOpMode {
             driveController.right(3/16f,driveSpeed); //TODO: double check
             sleep(500);
             clawController.toggleLeftClaw();
-            sleep(500);
+            sleep(1000);
             driveController.backwards(1/4f,driveSpeed);
             driveController.left(1/2f,driveSpeed);
         }

@@ -62,7 +62,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
                 .setModelAssetName("model_20231130_175355.tflite")
 
-                .setModelLabels(new String[]{"red_prop", "blue_prop"})
+                .setModelLabels(new String[]{"blue_prop", "red_prop"})
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(false)
                 .setModelInputSize(300)

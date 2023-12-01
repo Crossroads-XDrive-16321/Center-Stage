@@ -63,12 +63,12 @@ public class AutoOpRedRight extends LinearOpMode {
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelAssetName("model_20231130_175355.tflite")
 
-                .setModelLabels(TFOD_LABELS)
+                .setModelLabels(new String[]{"blue_prop", "red_prop"})
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(false)
-                .setModelInputSize(640)
+                .setModelInputSize(300)
                 .setModelAspectRatio(16/9f)
 
                 .build();
