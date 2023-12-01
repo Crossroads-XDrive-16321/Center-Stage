@@ -240,7 +240,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
 
 
         driveController.left(7/8f,driveSpeed); //TODO: double check - park
-        driveController.forwards(7/8f,driveSpeed);
+        driveController.forwards(9/8f,driveSpeed);
 
 
     }

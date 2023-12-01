@@ -11,10 +11,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+
+import java.util.List;
 
 @Autonomous
 public class AutoOpRedRight extends LinearOpMode {
@@ -108,65 +111,139 @@ public class AutoOpRedRight extends LinearOpMode {
         initTfod();
 
         // CAMERA DETECTING
-        //paste code from AutoOpBlueLeft
+        int loc = -1;
 
-        driveController.forwards(3/32f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
+        while(!isStarted()) {
+            // sense location
+
+            List<Recognition> currentRecognitions = tfod.getRecognitions();
+            float maxConfidence = 0;
+            double x = 0;
+            for (Recognition recognition : currentRecognitions) {
+                if (recognition.getConfidence() > maxConfidence && recognition.getConfidence() >= minConfidence) {
+                    x = (recognition.getLeft() + recognition.getRight()) / 2;
+                    maxConfidence = recognition.getConfidence();
+                }
+            }
+
+            if (x < 640 / 3f && x >= 0) {
+                telemetry.addLine("OBJECT DETECTED, LEFT");
+                loc = 0;
+            } else if (x < 2 * 640 / 3f && x >= 640 / 3f) {
+                telemetry.addLine("OBJECT DETECTED, MIDDLE");
+                loc = 1;
+            } else {
+                telemetry.addLine("OBJECT DETECTED, RIGHT");
+                loc = 2;
+            }
+
+
+            telemetry.update();
+            sleep(20);
+        }
+
+
+        telemetry.addData("Location:", loc);
+        telemetry.update();
+
+        //CAMERA DETECTION PROCESSING
+
+        //loc is where the model found the team prop
+        driveController.forwards(1/8f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
         driveController.right(3/32f,driveSpeed);
         driveController.turnRight(180,rotateSpeed); //(mech arm forward)
-        driveController.backwards(1f,driveSpeed); //robot center on tile border center
+        clawController.setClawLevelPos();
+        sleep(250);
+        driveController.backwards(4/4f,driveSpeed); //robot center on tile border center
         //adjust how close the bot needs to be depending on arm length
-        int test = 0;
 
-        //clawController.toggleClawPosition(true); //TODO: toggle claw
+        clawController.setClawLevelPos();
+        sleep(250);
 
-        if (test == 0) {
+        if (loc == 0) {
             driveController.turnLeft(90f,rotateSpeed);
-            driveController.backwards(1/8f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on left tape - left claw
-            driveController.forwards(1/8f,driveSpeed);
+            driveController.left(1/4f, driveSpeed);
+            driveController.backwards(1/16f,driveSpeed);
+            sleep(250);//place purple pixel on left tape - left claw
+            clawController.toggleLeftClaw();
+            sleep(250);
+            clawController.setClawScoringPos();
+            driveController.right(1/4f, driveSpeed);
+            driveController.forwards(1/16f,driveSpeed);
             driveController.turnRight(90f,rotateSpeed);
         }
-        if (test == 1) {
+        if (loc == 1) {
             driveController.backwards(1/8f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on mid tape - left claw
+            sleep(250);//place purple pixel on mid tape - left claw
+            clawController.toggleLeftClaw();
+            sleep(250);
+            clawController.setClawScoringPos();
             driveController.forwards(1/8f,driveSpeed);
         }
-        if (test == 2) {
+        if (loc == 2) {
             driveController.turnRight(90f,rotateSpeed);
-            driveController.backwards(1/8f,driveSpeed);
-            sleep(1000);//TODO: place purple pixel on left tape - left claw
-            driveController.forwards(1/8f,driveSpeed);
+            driveController.right(1/4f, driveSpeed);
+            driveController.backwards(1/16f,driveSpeed);
+            sleep(250);//place purple pixel on right tape - left claw
+            clawController.toggleLeftClaw();
+            sleep(250);
+            clawController.setClawScoringPos();
+            driveController.left(1/4, driveSpeed);
+            driveController.forwards(1/16f,driveSpeed);
             driveController.turnLeft(90f,rotateSpeed);
         }
-        driveController.forwards(1/2f,driveSpeed);
+        driveController.forwards(3/4f,driveSpeed);
         //ends on the border of the two tiles -ideally
 
 
 
 
-        driveController.turnLeft(90,rotateSpeed);
-        driveController.forwards(7/4f,driveSpeed);
-        driveController.left(3/4f,driveSpeed); //TODO: double check
-        //TODO: rotate arm and toggle claw
+        driveController.turnRight(90,rotateSpeed);
+        driveController.backwards(24/16f,driveSpeed);
+        driveController.left(19/32f,driveSpeed);
+        //rotate arm and toggle claw
+
+        clawController.setClawLevelPos();
+        sleep(500);
+        driveController.setArmScoringPos(0.5f);
+        driveController.setSlidePos(0.3f, 1f);
+        sleep(1000);
+        clawController.setClawScoringPos();
+        sleep(500);
 
         //adjust in front of what part of the backboard the arm is
-        if (test == 0) { //left
-            driveController.left(3/16f,driveSpeed); //TODO: double check
-            sleep(1000); //TODO: drop yellow pixel - right claw
-            driveController.right(3/8f,driveSpeed); //TODO: double check
+        if (loc == 2) { //right
+            driveController.right(1/4f,driveSpeed);
+            sleep(500); // drop yellow pixel - right claw
+            clawController.toggleRightClaw();
+            sleep(500);
+            driveController.backwards(1/4f, driveSpeed);
         }
-        if (test == 1) { //mid
-            sleep(1000); //TODO: drop yellow pixel - right claw
-            driveController.right(3/16f,driveSpeed); //TODO: double check
+        if (loc == 1) { //mid
+            sleep(500); // drop yellow pixel - right claw
+            clawController.toggleRightClaw();
+            sleep(500);
+            driveController.backwards(1/4f, driveSpeed);
+            driveController.right(1/4f,driveSpeed);
         }
-        if (test == 2) { //right
-            driveController.right(3/16f,driveSpeed); //TODO: double check
-            sleep(1000); //TODO: drop yellow pixel - right claw
+        if (loc == 0) { //left
+            //driveController.right(1/4f,driveSpeed);
+            sleep(500); // drop yellow pixel - right claw
+            clawController.toggleRightClaw();
+            sleep(500);
+            driveController.backwards(1/4f, driveSpeed);
+            driveController.right(1/2f,driveSpeed); //TODO: double check
         }
-        //TODO: rotate arm and toggle claw
+        //rotate arm and toggle claw
+
+        driveController.setSlidePos(0, 0.4f);
+        clawController.setClawLevelPos();
+        driveController.setArmGrabbingPos(0.4f);
+        sleep(500);
 
 
-        driveController.right(1f,driveSpeed); //TODO: double check - park
+        driveController.right(7/8f,driveSpeed); //TODO: double check - park
+        driveController.forwards(9/8f,driveSpeed);
     }
 
 
