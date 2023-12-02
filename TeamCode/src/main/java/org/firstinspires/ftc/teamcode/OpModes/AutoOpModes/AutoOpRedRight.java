@@ -150,11 +150,11 @@ public class AutoOpRedRight extends LinearOpMode {
 
         //loc is where the model found the team prop
         driveController.forwards(1/8f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
-        driveController.right(3/32f,driveSpeed);
+        driveController.right(1/8f,driveSpeed);
         driveController.turnRight(180,rotateSpeed); //(mech arm forward)
         clawController.setClawLevelPos();
         sleep(250);
-        driveController.backwards(4/4f,driveSpeed); //robot center on tile border center
+        driveController.backwards(7/8f,driveSpeed); //robot center on tile border center
         //adjust how close the bot needs to be depending on arm length
 
         clawController.setClawLevelPos();
@@ -200,7 +200,7 @@ public class AutoOpRedRight extends LinearOpMode {
 
         driveController.turnLeft(90,rotateSpeed);
         driveController.forwards(24/16f,driveSpeed);
-        driveController.left(19/32f,driveSpeed);
+        driveController.left(29/32f,driveSpeed);
         //rotate arm and toggle claw
 
         clawController.setClawLevelPos();
