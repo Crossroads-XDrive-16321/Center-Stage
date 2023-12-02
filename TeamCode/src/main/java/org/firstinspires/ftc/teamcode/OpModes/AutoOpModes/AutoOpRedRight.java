@@ -164,7 +164,7 @@ public class AutoOpRedRight extends LinearOpMode {
             driveController.turnLeft(90f,rotateSpeed);
             driveController.left(1/4f, driveSpeed);
             driveController.backwards(1/16f,driveSpeed);
-            sleep(250);//place purple pixel on left tape - left claw
+            sleep(250);//place purple pixel on left tape - right claw
             clawController.toggleRightClaw();
             sleep(250);
             clawController.setClawScoringPos();
@@ -174,7 +174,7 @@ public class AutoOpRedRight extends LinearOpMode {
         }
         if (loc == 1) {
             driveController.backwards(1/8f,driveSpeed);
-            sleep(250);//place purple pixel on mid tape - left claw
+            sleep(250);//place purple pixel on mid tape - right claw
             clawController.toggleRightClaw();
             sleep(250);
             clawController.setClawScoringPos();
@@ -184,7 +184,7 @@ public class AutoOpRedRight extends LinearOpMode {
             driveController.turnRight(90f,rotateSpeed);
             driveController.right(1/4f, driveSpeed);
             driveController.backwards(1/16f,driveSpeed);
-            sleep(250);//place purple pixel on right tape - left claw
+            sleep(250);//place purple pixel on right tape - right claw
             clawController.toggleRightClaw();
             sleep(250);
             clawController.setClawScoringPos();
@@ -214,13 +214,13 @@ public class AutoOpRedRight extends LinearOpMode {
         //adjust in front of what part of the backboard the arm is
         if (loc == 2) { //right
             driveController.right(1/4f,driveSpeed);
-            sleep(500); // drop yellow pixel - right claw
+            sleep(500); // drop yellow pixel - left claw
             clawController.toggleLeftClaw();
             sleep(500);
             driveController.backwards(1/4f, driveSpeed);
         }
         if (loc == 1) { //mid
-            sleep(500); // drop yellow pixel - right claw
+            sleep(500); // drop yellow pixel - left claw
             clawController.toggleLeftClaw();
             sleep(500);
             driveController.backwards(1/4f, driveSpeed);
@@ -228,7 +228,7 @@ public class AutoOpRedRight extends LinearOpMode {
         }
         if (loc == 0) { //left
             //driveController.right(1/4f,driveSpeed);
-            sleep(500); // drop yellow pixel - right claw
+            sleep(500); // drop yellow pixel - left claw
             clawController.toggleLeftClaw();
             sleep(500);
             driveController.backwards(1/4f, driveSpeed);
