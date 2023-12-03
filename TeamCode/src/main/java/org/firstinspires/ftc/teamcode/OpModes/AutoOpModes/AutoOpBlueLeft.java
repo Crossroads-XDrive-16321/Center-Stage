@@ -31,8 +31,6 @@ public class AutoOpBlueLeft extends LinearOpMode {
     double driveSpeed = .25;
     double rotateSpeed = .5;
 
-    double minConfidence = 0.8f;
-
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -94,7 +92,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.8f);
+        tfod.setMinResultConfidence(0.2f);
 
         // Disable or re-enable the TFOD processor at any time.
         visionPortal.setProcessorEnabled(tfod, true);
@@ -117,7 +115,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
             float maxConfidence = 0;
             double x = 0;
             for (Recognition recognition : currentRecognitions) {
-                if (recognition.getConfidence() > maxConfidence && recognition.getConfidence() >= minConfidence) {
+                if (recognition.getConfidence() > maxConfidence) {
                     x = (recognition.getLeft() + recognition.getRight()) / 2;
                     maxConfidence = recognition.getConfidence();
                 }
@@ -151,7 +149,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
         driveController.turnRight(180,rotateSpeed); //(mech arm forward)
         clawController.setClawLevelPos();
         sleep(250);
-        driveController.backwards(4/4f,driveSpeed); //robot center on tile border center
+        driveController.backwards(7/8f,driveSpeed); //robot center on tile border center
         //adjust how close the bot needs to be depending on arm length
 
         clawController.setClawLevelPos();

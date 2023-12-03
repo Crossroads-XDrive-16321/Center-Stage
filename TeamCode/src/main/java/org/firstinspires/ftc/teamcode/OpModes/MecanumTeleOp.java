@@ -87,7 +87,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.dpad_up) {
                 planeLauncher.setPosition(0);
             } else if (gamepad2.dpad_down) {
-                planeLauncher.setPosition(1);
+                planeLauncher.setPosition(0.3);
             }
 
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
