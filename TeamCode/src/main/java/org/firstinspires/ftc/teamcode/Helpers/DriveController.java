@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.openftc.apriltag.AprilTagDetection;
+
 import java.util.ArrayList;
 
 public class DriveController {
@@ -330,8 +332,8 @@ public class DriveController {
         waitForMotors();
     }
 
-    public void autoCalibrateScore() {
-        // TODO: use camera to line up with board using april tags
+    public void autoCalibrateScore(CameraController cameraController, int tagID) {
+        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
     }
     public void setArmScoringPos(float power) {
         slideRotatorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
