@@ -135,4 +135,20 @@ public class CameraController {
         return(null);
     }
 
+    public AprilTagDetection detectAprilTag() {
+        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+
+        AprilTagDetection returnTag;
+        double best = 10;
+
+        for(AprilTagDetection tag : currentDetections) {
+            if(Math.abs(tag.pose.x + 0.85) < best) {
+                best = tag.pose.x;
+                returnTag = tag;
+            }
+        }
+
+        return(null);
+    }
+
 }

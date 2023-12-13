@@ -104,8 +104,12 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
 
-            AprilTagDetection tag = cameraController.detectAprilTag(5);
+            if (gamepad1.x) {
+                telemetry.addData("Tag Found for Calibration:", driveController.autoCalibrateScore(cameraController));
+            }
 
+
+            AprilTagDetection tag = cameraController.detectAprilTag(5);
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());

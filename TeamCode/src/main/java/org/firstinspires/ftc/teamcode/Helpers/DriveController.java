@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ public class DriveController {
     double degreesToPosFL = 10.088;
     double degreesToPosBR = 9.287;
     double degreesToPosBL = 9.107;
+
+    double FEET_PER_METER = 3.28084;
 
     Toggler slideRotatorToggler = new Toggler();
     Toggler slideMotorToggler = new Toggler();
@@ -332,8 +338,48 @@ public class DriveController {
         waitForMotors();
     }
 
-    public void autoCalibrateScore(CameraController cameraController, int tagID) {
-        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
+    public boolean autoCalibrateScore(CameraController cameraController, int tagID) {
+        for(int i = 0; i < 5; i++) {
+            AprilTagDetection tag = cameraController.detectAprilTag(tagID);
+
+            if(tag == null) {
+                return(false);
+            }
+
+            Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
+
+            right(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
+            turnRight(rot.firstAngle, 0.1f);
+            forwards(tag.pose.z - 2.12, 0.1f);
+
+        }
+
+        return(true);
+
+    }
+
+    public boolean autoCalibrateScore(CameraController cameraController) {
+        AprilTagDetection tag = cameraController.detectAprilTag();
+
+        if(tag == null) {
+            return(false);
+        }
+
+        int tagID = tag.id;
+
+        for(int i = 0; i < 5; i++) {
+            tag = cameraController.detectAprilTag(tagID);
+            Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
+            right(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
+            turnRight(rot.firstAngle, 0.1f);
+            forwards(tag.pose.z - 2.12, 0.1f);
+
+        }
+
+        return(true);
+
     }
     public void setArmScoringPos(float power) {
         slideRotatorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
