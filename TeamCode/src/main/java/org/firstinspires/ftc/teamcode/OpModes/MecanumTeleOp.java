@@ -34,6 +34,9 @@ public class MecanumTeleOp extends LinearOpMode {
     Toggler rbButtonToggler = new Toggler();
     Toggler aButtonToggler = new Toggler();
 
+    Toggler inverseControllerToggler = new Toggler();
+    int inverseController = 1;
+
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -72,6 +75,12 @@ public class MecanumTeleOp extends LinearOpMode {
 
         while (!isStopRequested()) {
 
+            if (inverseControllerToggler.toggle(gamepad1.a)) {
+                inverseController *= -1;
+            }
+
+            driveController.drive(gamepad1.left_stick_x*inverseController, gamepad1.left_stick_y*inverseController, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+
             //Assisted Tele Op Code
 //            if (aButtonToggler.toggle(gamepad2.a)) { //TODO: maybe would be nice if a always brought it to scoring pos and b down to level pos
 //                clawController.toggleClawPosition(true);
@@ -86,8 +95,6 @@ public class MecanumTeleOp extends LinearOpMode {
 //                driveController.turnRight(90, 0.5);
 //                telemetry.addLine("turning right");
 //            }
-
-            driveController.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
 
 
 
