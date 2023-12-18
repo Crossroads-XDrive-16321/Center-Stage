@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -18,6 +19,10 @@ import org.openftc.apriltag.AprilTagDetection;
 
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
+
+    private DigitalChannel redLED0, redLED1, redLED2, redLED3;
+    private DigitalChannel greenLED0, greenLED1, greenLED2, greenLED3;
+
 
 
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
@@ -62,6 +67,24 @@ public class MecanumTeleOp extends LinearOpMode {
         clawController = new ClawController(leftClaw, rightClaw, clawServo);
 
         cameraController = new CameraController();
+
+//        redLED0 = hardwareMap.get(DigitalChannel.class, "red0"); //expansion0-1
+//        greenLED0 = hardwareMap.get(DigitalChannel.class, "green0"); //expansion0-1
+//        redLED1 = hardwareMap.get(DigitalChannel.class, "red1"); //expansion2-3
+//        greenLED1 = hardwareMap.get(DigitalChannel.class, "green1"); //expansion2-3
+//        redLED2 = hardwareMap.get(DigitalChannel.class, "red2"); //control 0-1
+//        greenLED2 = hardwareMap.get(DigitalChannel.class, "green2"); //control 0-1
+//        redLED3 = hardwareMap.get(DigitalChannel.class, "red3"); //control 2-3
+//        greenLED3 = hardwareMap.get(DigitalChannel.class, "green3"); //control 2-3
+//
+//        redLED0.setMode(DigitalChannel.Mode.OUTPUT);
+//        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
+//        redLED1.setMode(DigitalChannel.Mode.OUTPUT);
+//        greenLED1.setMode(DigitalChannel.Mode.OUTPUT);
+//        redLED2.setMode(DigitalChannel.Mode.OUTPUT);
+//        greenLED2.setMode(DigitalChannel.Mode.OUTPUT);
+//        redLED3.setMode(DigitalChannel.Mode.OUTPUT);
+//        greenLED3.setMode(DigitalChannel.Mode.OUTPUT);
     }
 
 
@@ -71,9 +94,20 @@ public class MecanumTeleOp extends LinearOpMode {
         initialize();
         cameraController.initAprilTags(hardwareMap);
 
+
         waitForStart();
 
         while (!isStopRequested()) {
+            //LIGHTS
+//            redLED0.setState(true);
+//            redLED1.setState(true);
+//            redLED2.setState(true);
+//            redLED3.setState(true);
+//            greenLED0.setState(false);
+//            greenLED1.setState(false);
+//            greenLED2.setState(false);
+//            greenLED3.setState(false);
+
 
             if (inverseControllerToggler.toggle(gamepad1.a)) {
                 inverseController *= -1;
@@ -125,9 +159,9 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Slide Rotator Right", slideRotatorRight.getCurrentPosition());
             telemetry.addData("Slide Motor:", slideMotor.getCurrentPosition());
             telemetry.addData("Plane Servo:", planeLauncher.getPosition());
-            telemetry.addData("Back Left:", backLeft.getCurrentPosition());
-            telemetry.addData("Back Right:", backRight.getCurrentPosition());
-            telemetry.addData("Front Left:", frontLeft.getCurrentPosition());
+            telemetry.addData("Back Left (left odom):", backLeft.getCurrentPosition());
+            telemetry.addData("Back Right (right odom):", backRight.getCurrentPosition());
+            telemetry.addData("Front Left (back odom):", frontLeft.getCurrentPosition());
             telemetry.addData("Front Right:", frontRight.getCurrentPosition());
             if(tag != null) {
                 telemetry.addData("Tag Center:", tag.center);
