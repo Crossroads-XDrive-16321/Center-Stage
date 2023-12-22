@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.Helpers.CameraController;
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -28,8 +29,7 @@ public class AutoOpRedRight extends LinearOpMode {
     Servo leftClaw, rightClaw, clawServo, planeLauncher;
     ClawController clawController;
 
-    TfodProcessor tfod;
-    VisionPortal visionPortal;
+    CameraController cameraController;
 
     double driveSpeed = .25;
     double rotateSpeed = .5;
@@ -55,58 +55,11 @@ public class AutoOpRedRight extends LinearOpMode {
         clawController = new ClawController(leftClaw, rightClaw, clawServo);
     }
 
-    private void initTfod() {
-
-        tfod = new TfodProcessor.Builder()
-
-                // Use setModelAssetName() if the TF Model is built in as an asset.
-                // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName("model_20231130_175355.tflite")
-
-                .setModelLabels(new String[]{"blue_prop", "red_prop"})
-                .setIsModelTensorFlow2(true)
-                .setIsModelQuantized(false)
-                .setModelInputSize(300)
-                .setModelAspectRatio(16/9f)
-
-                .build();
-
-        VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
-
-        // Choose a camera resolution. Not all cameras support all resolutions.
-        builder.setCameraResolution(new Size(640, 360));
-
-        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        builder.enableLiveView(true); // TODO: probably disable this after testing's done
-
-        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
-
-        // Choose whether or not LiveView stops if no processors are enabled.
-        // If set "true", monitor shows solid orange screen if no processors enabled.
-        // If set "false", monitor shows camera view without annotations.
-        builder.setAutoStopLiveView(false);
-
-        // Set and enable the processor.
-        builder.addProcessor(tfod);
-
-        // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
-
-        // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.2f);
-
-        // Disable or re-enable the TFOD processor at any time.
-        visionPortal.setProcessorEnabled(tfod, true);
-
-    }
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         initialize();
-        initTfod();
 
         // CAMERA DETECTING
         int loc = -1;
@@ -114,30 +67,10 @@ public class AutoOpRedRight extends LinearOpMode {
         while(!isStarted()) {
             // sense location
 
-            List<Recognition> currentRecognitions = tfod.getRecognitions();
-            float maxConfidence = 0;
-            double x = 0;
-            for (Recognition recognition : currentRecognitions) {
-                if (recognition.getConfidence() > maxConfidence) {
-                    x = (recognition.getLeft() + recognition.getRight()) / 2;
-                    maxConfidence = recognition.getConfidence();
-                }
-            }
+            loc = cameraController.detectProp();
 
-            if (x < 640 / 3f && x >= 0) {
-                telemetry.addLine("OBJECT DETECTED, LEFT");
-                loc = 0;
-            } else if (x < 2 * 640 / 3f && x >= 640 / 3f) {
-                telemetry.addLine("OBJECT DETECTED, MIDDLE");
-                loc = 1;
-            } else {
-                telemetry.addLine("OBJECT DETECTED, RIGHT");
-                loc = 2;
-            }
-
-
+            telemetry.addLine(String.valueOf(loc));
             telemetry.update();
-            sleep(20);
         }
 
 

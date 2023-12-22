@@ -30,7 +30,7 @@ public class MecanumTeleOp extends LinearOpMode {
 //    BNO055IMU imu;
 //    IMUController imuController;
 
-    Servo leftClaw, rightClaw, clawServo, planeLauncher;
+    Servo leftClaw, rightClaw, clawServo, planeLauncher, planeRotator;
     ClawController clawController;
 
     CameraController cameraController;
@@ -59,6 +59,7 @@ public class MecanumTeleOp extends LinearOpMode {
 //        imuController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
+        planeRotator = hardwareMap.get(Servo.class, "planeRotator"); //TODO: STILL NEED TO PLUG IN AND CONFIGURE
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");
         rightClaw = hardwareMap.get(Servo.class, "rightClaw");
