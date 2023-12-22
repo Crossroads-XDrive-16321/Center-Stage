@@ -31,6 +31,7 @@ public class MecanumTeleOp extends LinearOpMode {
 //    IMUController imuController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher, planeRotator;
+//         port2      port1      port4       port0          port3
     ClawController clawController;
 
     CameraController cameraController;
@@ -59,7 +60,7 @@ public class MecanumTeleOp extends LinearOpMode {
 //        imuController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
-        planeRotator = hardwareMap.get(Servo.class, "planeRotator"); //TODO: STILL NEED TO PLUG IN AND CONFIGURE
+        planeRotator = hardwareMap.get(Servo.class, "planeRotator");
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");
         rightClaw = hardwareMap.get(Servo.class, "rightClaw");
@@ -142,6 +143,14 @@ public class MecanumTeleOp extends LinearOpMode {
             } else if (gamepad2.dpad_down) {
                 planeLauncher.setPosition(0.3);
             }
+
+            if (gamepad2.a) {
+                ;//planeRotator.setPosition(god knows what);
+            } else if (gamepad2.b) {
+                ;//planeRotator.setPosition(god knows what else);
+            }
+
+            telemetry.addData("plane rotator pos",planeRotator.getPosition());
 
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
