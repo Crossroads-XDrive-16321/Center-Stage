@@ -73,8 +73,6 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private DcMotorEx frontLeft, backLeft, backRight, frontRight;
     private List<DcMotorEx> motors;
-
-    private IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
     private List<Integer> lastEncPositions = new ArrayList<>();
@@ -95,10 +93,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
 
-        frontLeft = hardwareMap.get(DcMotorEx.class, "leftFront");
-        backLeft = hardwareMap.get(DcMotorEx.class, "leftRear");
-        backRight = hardwareMap.get(DcMotorEx.class, "rightRear");
-        frontRight = hardwareMap.get(DcMotorEx.class, "rightFront");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
 
         motors = Arrays.asList(frontLeft, backLeft, backRight, frontRight);
 
