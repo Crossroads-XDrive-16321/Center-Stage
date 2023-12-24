@@ -115,7 +115,7 @@ public class MecanumTeleOp extends LinearOpMode {
                 inverseController *= -1;
             }
 
-            driveController.drive(gamepad1.left_stick_x*inverseController, gamepad1.left_stick_y*inverseController, gamepad1.right_stick_x, 0.8 + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+            driveController.drive(gamepad1.left_stick_x*inverseController, gamepad1.left_stick_y*inverseController, gamepad1.right_stick_x, 0.8f + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
 
             //Assisted Tele Op Code
 //            if (aButtonToggler.toggle(gamepad2.a)) { //TODO: maybe would be nice if a always brought it to scoring pos and b down to level pos
