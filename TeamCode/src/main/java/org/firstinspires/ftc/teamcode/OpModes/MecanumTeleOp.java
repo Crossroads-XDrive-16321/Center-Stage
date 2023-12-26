@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -14,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Helpers.CameraController;
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 import org.firstinspires.ftc.teamcode.Helpers.Toggler;
+import org.firstinspires.ftc.teamcode.RoadRunnerFiles.drive.SampleMecanumDrive;
 import org.openftc.apriltag.AprilTagDetection;
 
 
@@ -27,6 +30,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
+    SampleMecanumDrive drive;
 //    BNO055IMU imu;
 //    IMUController imuController;
 
@@ -54,6 +58,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
         driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
+        //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
 //        imu = hardwareMap.get(BNO055IMU.class, "imu");
 //        imuController = new IMUController(imu, telemetry);
@@ -94,6 +99,9 @@ public class MecanumTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         initialize();
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive.setPoseEstimate(new Pose2d(10, 10, 0));
+
         cameraController.initAprilTags(hardwareMap);
 
 
@@ -110,12 +118,36 @@ public class MecanumTeleOp extends LinearOpMode {
 //            greenLED2.setState(false);
 //            greenLED3.setState(false);
 
+            drive.update();
+            Pose2d myPose = drive.getPoseEstimate();
 
-            if (inverseControllerToggler.toggle(gamepad1.a)) {
-                inverseController *= -1;
+            telemetry.addData("x", myPose.getX());
+            telemetry.addData("y", myPose.getY());
+            telemetry.addData("heading", Math.toDegrees(myPose.getHeading()));
+
+
+            Pose2d poseEstimate = drive.getPoseEstimate();
+            if (gamepad1.a) {
+                poseEstimate = new Pose2d(poseEstimate.getX(), poseEstimate.getY(),0);
+                drive.setPoseEstimate(poseEstimate);
             }
 
-            driveController.drive(gamepad1.left_stick_x*inverseController, gamepad1.left_stick_y*inverseController, gamepad1.right_stick_x, 0.8f + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
+            Vector2d input = new Vector2d(
+                    -gamepad1.left_stick_y,
+                    -gamepad1.left_stick_x
+            ).rotated(-poseEstimate.getHeading());
+
+            drive.setWeightedDrivePower(
+                    new Pose2d(
+                            input.getX()*inverseController,
+                            input.getY()*inverseController,
+                            -gamepad1.right_stick_x
+                    )
+            );
+
+//
+//
+//            driveController.drive(gamepad1.left_stick_x*inverseController, gamepad1.left_stick_y*inverseController, gamepad1.right_stick_x, 0.8f + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
 
             //Assisted Tele Op Code
 //            if (aButtonToggler.toggle(gamepad2.a)) { //TODO: maybe would be nice if a always brought it to scoring pos and b down to level pos
