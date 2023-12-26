@@ -100,7 +100,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
         initialize();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(new Pose2d(10, 10, 0));
+        drive.setPoseEstimate(new Pose2d(10, 10, Math.toRadians(180)));
 
         cameraController.initAprilTags(hardwareMap);
 
