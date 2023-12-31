@@ -44,9 +44,6 @@ public class MecanumTeleOp extends LinearOpMode {
     Toggler rbButtonToggler = new Toggler();
     Toggler aButtonToggler = new Toggler();
 
-    Toggler inverseControllerToggler = new Toggler();
-    int inverseController = 1;
-
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -139,8 +136,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            input.getX()*inverseController,
-                            input.getY()*inverseController,
+                            input.getX() * (gamepad1.right_bumper ? 2 : 1) * (gamepad1.left_bumper ? 0.5f : 1), //hooly crap question marks in java?? crazy -best
+                            input.getY() * (gamepad1.right_bumper ? 2 : 1) * (gamepad1.left_bumper ? 0.5f : 1),
                             -gamepad1.right_stick_x
                     )
             );
