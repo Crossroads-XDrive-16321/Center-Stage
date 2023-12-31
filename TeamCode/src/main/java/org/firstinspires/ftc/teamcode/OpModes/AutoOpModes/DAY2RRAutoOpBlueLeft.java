@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.RoadRunnerFiles.trajectorysequence.TrajectorySequence;
@@ -32,6 +33,13 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
     double driveSpeed = .25;
     double rotateSpeed = .5;
 
+    private DigitalChannel redLED0, greenLED0;
+
+    SampleMecanumDrive drive;
+    Pose2d startPose;
+
+    TrajectorySequence autoL, autoM, autoR;
+
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -54,12 +62,102 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
 
         cameraController = new CameraController();
 
+        redLED0 = hardwareMap.get(DigitalChannel.class, "red0"); //expansion0-1
+        greenLED0 = hardwareMap.get(DigitalChannel.class, "green0"); //expansion0-1
+        redLED0.setMode(DigitalChannel.Mode.OUTPUT);
+        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
+
+        drive = new SampleMecanumDrive(hardwareMap);
+        startPose = new Pose2d(14,62, Math.toRadians(270));
+        drive.setPoseEstimate(startPose);
+
+        autoL = drive.trajectorySequenceBuilder(startPose)
+                .splineToLinearHeading(new Pose2d(34,32, Math.toRadians(0)),Math.toRadians(180))
+                .addDisplacementMarker(() -> {
+                    redLED0.setState(false);
+                    greenLED0.setState(true);
+                })
+                .forward(1.00001f)
+                .waitSeconds(2)//drop purple
+                .lineToConstantHeading(new Vector2d(46,42))
+                .addDisplacementMarker(() -> {
+//                    redLED0.setState(false);
+//                    greenLED0.setState(false);
+                    driveController.setArmScoringPos(0.5f);
+                })
+                .forward(1.00001f)
+                .waitSeconds(2)//drop yellow
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .waitSeconds(2)//pickup two white
+                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
+                .waitSeconds(2)//drop two white
+                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .waitSeconds(2)//pickup two white
+                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
+                .waitSeconds(2)//drop two white
+                .setReversed(false)
+                .lineToConstantHeading(new Vector2d(46,60))
+                .forward(14)
+                .build();
+        autoM = drive.trajectorySequenceBuilder(startPose)
+                .splineToLinearHeading(new Pose2d(12,35,Math.toRadians(90)), Math.toRadians(270))
+                .waitSeconds(2)//drop purple
+                .splineToLinearHeading(new Pose2d(46,36, Math.toRadians(0)),Math.toRadians(0))
+                .waitSeconds(2)//drop yellow
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .waitSeconds(2)//pickup two white
+                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
+                .waitSeconds(2)//drop two white
+                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .waitSeconds(2)//pickup two white
+                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
+                .waitSeconds(2)//drop two white
+                .setReversed(false)
+                .lineToConstantHeading(new Vector2d(46,60))
+                .forward(14)
+                .build();
+        autoR = drive.trajectorySequenceBuilder(startPose)
+                .splineToLinearHeading(new Pose2d(12,32,Math.toRadians(0)),Math.toRadians(180))
+                .waitSeconds(2)//drop purple
+                .lineToConstantHeading(new Vector2d(46, 29))
+                .waitSeconds(2)//drop yellow
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .waitSeconds(2)//pickup two white
+                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
+                .waitSeconds(2)//drop two white
+                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .waitSeconds(2)//pickup two white
+                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
+                .waitSeconds(2)//drop two white
+                .setReversed(false)
+                .lineToConstantHeading(new Vector2d(46,60))
+                .forward(14)
+                .build();
+
     }
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         initialize();
+        redLED0.setState(false);
+        greenLED0.setState(false);
+
         cameraController.initTfod(hardwareMap, 0.2f);
 
         // CAMERA DETECTING
@@ -74,7 +172,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 0;
+        loc = 0; //TODO: remove when testing's done lmao
 
 
         telemetry.addData("Location:", loc);
@@ -82,76 +180,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
 
         //CAMERA DETECTION PROCESSING
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPos = new Pose2d(14,61, Math.toRadians(270));
-        drive.setPoseEstimate(startPos);
-
-        TrajectorySequence autoL = drive.trajectorySequenceBuilder(startPos)
-                .splineToLinearHeading(new Pose2d(34,32, Math.toRadians(0)),Math.toRadians(180))
-                .waitSeconds(2)//drop purple
-                .lineToConstantHeading(new Vector2d(46,42))
-                .waitSeconds(2)//drop yellow
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,60))
-                .forward(14)
-                .build();
-        TrajectorySequence autoM = drive.trajectorySequenceBuilder(startPos)
-                .splineToLinearHeading(new Pose2d(12,35,Math.toRadians(90)), Math.toRadians(270))
-                .waitSeconds(2)//drop purple
-                .splineToLinearHeading(new Pose2d(46,36, Math.toRadians(0)),Math.toRadians(0))
-                .waitSeconds(2)//drop yellow
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,60))
-                .forward(14)
-                .build();
-        TrajectorySequence autoR = drive.trajectorySequenceBuilder(startPos)
-                .splineToLinearHeading(new Pose2d(12,32,Math.toRadians(0)),Math.toRadians(180))
-                .waitSeconds(2)//drop purple
-                .lineToConstantHeading(new Vector2d(46, 29))
-                .waitSeconds(2)//drop yellow
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,60))
-                .forward(14)
-                .build();
+        drive.setPoseEstimate(startPose);
 
         if (loc == 0) {
             drive.followTrajectorySequence(autoL);
