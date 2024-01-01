@@ -97,7 +97,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
         initialize();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(new Pose2d(10, 10, Math.toRadians(180)));
+        drive.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(180)));
 
         cameraController.initAprilTags(hardwareMap);
 
@@ -125,7 +125,15 @@ public class MecanumTeleOp extends LinearOpMode {
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             if (gamepad1.a) {
-                poseEstimate = new Pose2d(poseEstimate.getX(), poseEstimate.getY(),0);
+                poseEstimate = new Pose2d(poseEstimate.getX(), poseEstimate.getY(),Math.toRadians(0));
+                drive.setPoseEstimate(poseEstimate);
+            }
+            if (gamepad1.x) {
+                poseEstimate = new Pose2d(poseEstimate.getX(), poseEstimate.getY(),Math.toRadians(90));
+                drive.setPoseEstimate(poseEstimate);
+            }
+            if (gamepad1.b) {
+                poseEstimate = new Pose2d(poseEstimate.getX(), poseEstimate.getY(),Math.toRadians(270));
                 drive.setPoseEstimate(poseEstimate);
             }
 
@@ -136,9 +144,9 @@ public class MecanumTeleOp extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            input.getX() * (gamepad1.right_bumper ? 2 : 1) * (gamepad1.left_bumper ? 0.5f : 1), //hooly crap question marks in java?? crazy -best
-                            input.getY() * (gamepad1.right_bumper ? 2 : 1) * (gamepad1.left_bumper ? 0.5f : 1),
-                            -gamepad1.right_stick_x
+                            input.getX() * 0.8f * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1), //hooly crap question marks in java?? crazy -best
+                            input.getY() * 0.8f * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1),
+                            -gamepad1.right_stick_x * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1)
                     )
             );
 
@@ -176,7 +184,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.a) {
                 ;//planeRotator.setPosition(god knows what);
             } else if (gamepad2.b) {
-                ;//planeRotator.setPosition(god knows what else);
+                ;//planeRotator.setPosition(god knows what else); //TODO: oh god forgot about this
             }
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
@@ -184,9 +192,9 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
 
-            if (gamepad1.x) {
-                telemetry.addData("Tag Found for Calibration:", driveController.autoCalibrateScore(cameraController));
-            }
+//            if (gamepad1.x) {
+//                telemetry.addData("Tag Found for Calibration:", driveController.autoCalibrateScore(cameraController));
+//            }
 
 
             AprilTagDetection tag = cameraController.detectAprilTag(5);

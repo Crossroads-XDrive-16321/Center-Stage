@@ -24,8 +24,12 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
 
     CameraController cameraController;
 
-    double driveSpeed = .25;
-    double rotateSpeed = .5;
+    private SampleMecanumDrive drive;
+    private Pose2d startPose;
+
+    private TrajectorySequence purpL, purpM, purpR;
+    private TrajectorySequence yellowL, yellowM, yellowR;
+    private TrajectorySequence park;
 
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
@@ -46,6 +50,51 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
         clawServo = hardwareMap.get(Servo.class, "clawServo");
 
         clawController = new ClawController(leftClaw, rightClaw, clawServo);
+
+        cameraController = new CameraController();
+
+        drive = new SampleMecanumDrive(hardwareMap);
+        startPose = new Pose2d(10,-60, Math.toRadians(90));
+
+        purpL = drive.trajectorySequenceBuilder(startPose)
+                .addDisplacementMarker(8, () -> {
+                    //clawController.setClawLevelPos(); //TODO: yep
+                })
+                .splineToLinearHeading(new Pose2d(12,-32,Math.toRadians(0)),Math.toRadians(180))
+                .build();
+        purpM = drive.trajectorySequenceBuilder(startPose)
+                .addDisplacementMarker(8, () -> {
+                    //clawController.setClawLevelPos(); //TODO: yep
+                })
+                .splineToLinearHeading(new Pose2d(16,-35,Math.toRadians(270)), Math.toRadians(90))
+                .build();
+        purpR = drive.trajectorySequenceBuilder(startPose)
+                .addDisplacementMarker(8, () -> {
+                    //clawController.setClawLevelPos(); //TODO: yep
+                })
+                .splineToLinearHeading(new Pose2d(36,-32, Math.toRadians(0)),Math.toRadians(180))
+                .build();
+
+        yellowL = drive.trajectorySequenceBuilder(purpL.end())
+                .addDisplacementMarker(8, () -> {
+                    //clawController.setClawLevelPos(); //TODO: yep
+                })
+                .lineToConstantHeading(new Vector2d(46, -30))
+                .build();
+        yellowM = drive.trajectorySequenceBuilder(purpM.end())
+                .addDisplacementMarker(8, () -> {
+                    //clawController.setClawLevelPos(); //TODO: yep
+                })
+                .splineToLinearHeading(new Pose2d(46,-36, Math.toRadians(0)),Math.toRadians(0))
+                .build();
+        yellowR = drive.trajectorySequenceBuilder(purpR.end())
+                .addDisplacementMarker(8, () -> {
+                    //clawController.setClawLevelPos(); //TODO: yep
+                })
+                .lineToConstantHeading(new Vector2d(46,-42))
+                .build();
+
+
     }
 
 
@@ -53,6 +102,7 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         initialize();
+        cameraController.initTfod(hardwareMap, 0.2f);
 
         // CAMERA DETECTING
         int loc = -1;
@@ -66,91 +116,43 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
             telemetry.update();
         }
 
+        loc = 2; //TODO: remove when testing's done lmao
 
         telemetry.addData("Location:", loc);
         telemetry.update();
 
         //CAMERA DETECTION PROCESSING
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPos = new Pose2d(10,-61, Math.toRadians(90));
+        drive.setPoseEstimate(startPose);
 
-        TrajectorySequence autoL = drive.trajectorySequenceBuilder(startPos)
-                .splineToLinearHeading(new Pose2d(12,-32,Math.toRadians(0)),Math.toRadians(180))
-                .waitSeconds(2)//drop purple
-                .lineToConstantHeading(new Vector2d(46, -29))
-                .waitSeconds(2)//drop yellow
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,-60))
-                .forward(14)
-                .build();
-        TrajectorySequence autoM = drive.trajectorySequenceBuilder(startPos)
-                .splineToLinearHeading(new Pose2d(12,-35,Math.toRadians(270)), Math.toRadians(90))
-                .waitSeconds(2)//drop purple
-                .splineToLinearHeading(new Pose2d(46,-36, Math.toRadians(0)),Math.toRadians(0))
-                .waitSeconds(2)//drop yellow
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,-60))
-                .forward(14)
-                .build();
-        TrajectorySequence autoR = drive.trajectorySequenceBuilder(startPos)
-                .splineToLinearHeading(new Pose2d(34,-32, Math.toRadians(0)),Math.toRadians(180))
-                .waitSeconds(2)//drop purple
-                .lineToConstantHeading(new Vector2d(46,-42))
-                .waitSeconds(2)//drop yellow
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
-                .waitSeconds(2)//pickup two white
-                .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToConstantHeading(new Vector2d(46,-36), Math.toRadians(0))
-                .waitSeconds(2)//drop two white
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,-60))
-                .forward(14)
-                .build();
-
-
-        switch (loc) {
-            case 0:
-                drive.followTrajectorySequence(autoL);
-            case 1:
-                drive.followTrajectorySequence(autoM);
-            case 2:
-                drive.followTrajectorySequence(autoR);
+        if (loc == 0) {
+            drive.followTrajectorySequence(purpL);
+            sleep(3000);//drop purple pixel
+            //clawController.toggleRightClaw(); //TODO: yep
+            drive.followTrajectorySequence(yellowL);
+        } else if (loc == 1) {
+            drive.followTrajectorySequence(purpM);
+            sleep(3000);//drop purple pixel
+            //clawController.toggleRightClaw(); //TODO: yep
+            drive.followTrajectorySequence(yellowM);
+        } else {
+            drive.followTrajectorySequence(purpR);
+            sleep(3000);//drop purple pixel
+            //clawController.toggleRightClaw(); //TODO: yep
+            drive.followTrajectorySequence(yellowR);
         }
+
+        driveController.setArmScoringPos(.5f);
+        sleep(3000); //clawController.toggleLeftClaw(); //TODO: yep
+        driveController.setArmGrabbingPos(.5f);
+
+        park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .setReversed(false)
+                .lineToConstantHeading(new Vector2d(46,-60))
+                .forward(14)
+                .build();
+
+        drive.followTrajectorySequence(park);
 
 //        //loc is where the model found the team prop
 //        driveController.forwards(1/8f,driveSpeed); //robot center on tile center - TO BE ADJUSTED
