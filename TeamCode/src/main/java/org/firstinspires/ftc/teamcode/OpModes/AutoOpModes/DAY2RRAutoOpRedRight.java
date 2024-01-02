@@ -143,7 +143,9 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
+        //driveController.setSlidePos(0.3f,0.1f);
         sleep(3000); //clawController.toggleLeftClaw(); //TODO: yep
+        //driveController.setSlidePos(0,0.1f);
         driveController.setArmGrabbingPos(.5f);
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())

@@ -81,7 +81,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
                     //clawController.setClawLevelPos(); //TODO: yep
                     redLED0.setState(false); //since i basically dont have a claw im using an led lmfao
                 })
-                .splineToLinearHeading(new Pose2d(16,35,Math.toRadians(90)), Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(16,36,Math.toRadians(90)), Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
@@ -136,7 +136,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 0; //TODO: remove when testing's done lmao
+        loc = 2; //TODO: remove when testing's done lmao
 
 
         telemetry.addData("Location:", loc);
@@ -170,7 +170,9 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
+        //driveController.setSlidePos(0.3f,0.1f);
         sleep(3000); //clawController.toggleRightClaw(); //TODO: yep
+        //driveController.setSlidePos(0,0.1f);
         driveController.setArmGrabbingPos(.5f);
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())

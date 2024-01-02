@@ -38,6 +38,7 @@ public class CameraController {
         cam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(0.166, 578.272, 578.272, 402.145, 221.506);
 
+        cam.setPipeline(aprilTagDetectionPipeline); //lmao - finding out that this code was missing broke and breaking the whole controller took me 2 hours :D
         cam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override

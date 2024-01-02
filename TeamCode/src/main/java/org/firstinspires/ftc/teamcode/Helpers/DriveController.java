@@ -338,49 +338,7 @@ public class DriveController {
         waitForMotors();
     }
 
-    public boolean autoCalibrateScore(CameraController cameraController, int tagID) {
-        for(int i = 0; i < 5; i++) {
-            AprilTagDetection tag = cameraController.detectAprilTag(tagID);
 
-            if(tag == null) {
-                return(false);
-            }
-
-            Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-
-
-            right(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
-            turnRight(rot.firstAngle, 0.1f);
-            forwards(tag.pose.z - 2.12, 0.1f);
-
-        }
-
-        return(true);
-
-    }
-
-    public boolean autoCalibrateScore(CameraController cameraController) {
-        AprilTagDetection tag = cameraController.detectAprilTag();
-
-        if(tag == null) {
-            return(false);
-        }
-
-        int tagID = tag.id;
-
-        for(int i = 0; i < 5; i++) {
-            tag = cameraController.detectAprilTag(tagID);
-            Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-
-            right(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
-            turnRight(rot.firstAngle, 0.1f);
-            forwards(tag.pose.z - 2.12, 0.1f);
-
-        }
-
-        return(true);
-
-    }
     public void setArmScoringPos(float power) {
         slideRotatorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slideRotatorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

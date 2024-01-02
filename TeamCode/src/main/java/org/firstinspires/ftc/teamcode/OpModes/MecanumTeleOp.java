@@ -17,12 +17,14 @@ import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 import org.firstinspires.ftc.teamcode.Helpers.Toggler;
 import org.firstinspires.ftc.teamcode.RoadRunnerFiles.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunnerFiles.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 
 
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
 
+    private static final double FEET_PER_METER = 3.28084f;
     private DigitalChannel redLED0, redLED1, redLED2, redLED3;
     private DigitalChannel greenLED0, greenLED1, greenLED2, greenLED3;
 
@@ -43,6 +45,65 @@ public class MecanumTeleOp extends LinearOpMode {
     Toggler lbButtonToggler = new Toggler();
     Toggler rbButtonToggler = new Toggler();
     Toggler aButtonToggler = new Toggler();
+
+    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose, int tagID) {
+        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
+
+        if(tag == null) {
+            return(false);
+        }
+
+        //TODO: this approach doesn't seem to work and is very broken
+
+        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
+
+        TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
+                .turn(Math.toRadians(-rot.firstAngle))
+                .strafeRight(tag.pose.x*FEET_PER_METER)
+                .forward(tag.pose.y*FEET_PER_METER-2)
+                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
+                .build();
+
+        uhhh.followTrajectorySequence(move);
+
+//            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
+//            turnRight(rot.firstAngle, 0.1f);
+//            forwards(tag.pose.z - 2.12, 0.1f);
+
+
+        return(true);
+
+    }
+
+    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose) {
+        AprilTagDetection tag = cameraController.detectAprilTag();
+
+        if(tag == null) {
+            return(false);
+        }
+
+        int tagID = tag.id;
+
+        for(int i = 0; i < 5; i++) {
+            tag = cameraController.detectAprilTag(tagID);
+            Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
+            TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
+                    .lineToLinearHeading(new Pose2d(tag.pose.x*FEET_PER_METER+pose.getX()+0.85f,tag.pose.z-2.12,pose.getHeading()+Math.toRadians(rot.firstAngle)))
+                    .build();
+
+            uhhh.followTrajectorySequence(move);
+
+//            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
+//            turnRight(rot.firstAngle, 0.1f);
+//            forwards(tag.pose.z - 2.12, 0.1f);
+
+        }
+
+        return(true);
+
+    }
 
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
@@ -193,11 +254,11 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.moveSlide(-gamepad2.left_stick_y);
 
             if (gamepad1.y) {
-                telemetry.addData("Tag Found for Calibration:", driveController.autoCalibrateScore(cameraController));
+                telemetry.addData("Tag Found for Calibration:", autoCalibrateScore(drive, cameraController, drive.getPoseEstimate(),8));
             }
 
 
-            AprilTagDetection tag = cameraController.detectAprilTag(5);
+            AprilTagDetection tag = cameraController.detectAprilTag(8);
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());
