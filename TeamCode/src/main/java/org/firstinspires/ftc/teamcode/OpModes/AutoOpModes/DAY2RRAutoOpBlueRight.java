@@ -36,7 +36,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
     private SampleMecanumDrive drive;
     private Pose2d startPose;
 
-    private DigitalChannel redLED0, greenLED0;
+//    private DigitalChannel redLED0, greenLED0;
 
     private TrajectorySequence purpL, purpM, purpR;
     private TrajectorySequence yellowL, yellowM, yellowR;
@@ -64,10 +64,10 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
         cameraController = new CameraController();
 
-        redLED0 = hardwareMap.get(DigitalChannel.class, "red0"); //expansion0-1
-        greenLED0 = hardwareMap.get(DigitalChannel.class, "green0"); //expansion0-1
-        redLED0.setMode(DigitalChannel.Mode.OUTPUT);
-        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
+//        redLED0 = hardwareMap.get(DigitalChannel.class, "red0"); //expansion0-1
+//        greenLED0 = hardwareMap.get(DigitalChannel.class, "green0"); //expansion0-1
+//        redLED0.setMode(DigitalChannel.Mode.OUTPUT);
+//        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
 
         drive = new SampleMecanumDrive(hardwareMap);
         startPose = new Pose2d(-34,60, Math.toRadians(270));
@@ -99,15 +99,15 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .waitSeconds(2)
                 .addTemporalMarker(2.25f, () -> {
                     //clawController.setClawLevelPos();
-                    redLED0.setState(true);
+//                    redLED0.setState(true);
                 })
                 .addTemporalMarker(3f, () -> {
                     //clawController.toggleRightClaw();
-                    redLED0.setState(false);
+//                    redLED0.setState(false);
                 })
                 .addTemporalMarker(4f, () -> {
                     //clawController.setClawScoringPos();
-                    redLED0.setState(true);
+//                    redLED0.setState(true);
                 })
                 .lineToLinearHeading(new Pose2d(-36,11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
@@ -122,15 +122,15 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .waitSeconds(2)
                 .addTemporalMarker(2.75f, () -> {
                     //clawController.setClawLevelPos();
-                    redLED0.setState(true);
+//                    redLED0.setState(true);
                 })
                 .addTemporalMarker(3.5f, () -> {
                     //clawController.toggleRightClaw();
-                    redLED0.setState(false);
+//                    redLED0.setState(false);
                 })
                 .addTemporalMarker(4.5f, () -> {
                     //clawController.setClawScoringPos();
-                    redLED0.setState(true);
+//                    redLED0.setState(true);
                 })
                 .lineToConstantHeading(new Vector2d(32,11))
                 .splineToConstantHeading(new Vector2d(45,36+3), Math.toRadians(0))
@@ -174,8 +174,8 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        redLED0.setState(false);
-        greenLED0.setState(true);
+//        redLED0.setState(false);
+//        greenLED0.setState(true);
 
         if (loc == 0) {
             drive.followTrajectorySequence(purpL);
