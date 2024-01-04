@@ -91,6 +91,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 })
                 .splineToConstantHeading(new Vector2d(-48,-46),Math.toRadians(270))
                 .lineToLinearHeading(new Pose2d(-56,-11,Math.toRadians(0)))
+
                 .lineToConstantHeading(new Vector2d(32,-11))
                 .splineToConstantHeading(new Vector2d(46,-36+6), Math.toRadians(0))
                 .build();
@@ -152,9 +153,9 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
-        //driveController.setSlidePos(0.3f,0.1f);
+        driveController.setSlidePos(0.2f,0.3f);
         sleep(3000); //clawController.toggleRightClaw(); //TODO: yep
-        //driveController.setSlidePos(0,0.1f);
+        driveController.setSlidePos(0,0.3f);
         driveController.setArmGrabbingPos(.5f);
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())

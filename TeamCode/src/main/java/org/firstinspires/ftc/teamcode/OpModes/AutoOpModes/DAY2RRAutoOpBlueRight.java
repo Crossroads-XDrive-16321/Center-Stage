@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -35,6 +36,8 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
     private SampleMecanumDrive drive;
     private Pose2d startPose;
 
+    private DigitalChannel redLED0, greenLED0;
+
     private TrajectorySequence purpL, purpM, purpR;
     private TrajectorySequence yellowL, yellowM, yellowR;
     private TrajectorySequence park;
@@ -60,6 +63,11 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         clawController = new ClawController(leftClaw, rightClaw, clawServo);
 
         cameraController = new CameraController();
+
+        redLED0 = hardwareMap.get(DigitalChannel.class, "red0"); //expansion0-1
+        greenLED0 = hardwareMap.get(DigitalChannel.class, "green0"); //expansion0-1
+        redLED0.setMode(DigitalChannel.Mode.OUTPUT);
+        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
 
         drive = new SampleMecanumDrive(hardwareMap);
         startPose = new Pose2d(-34,60, Math.toRadians(270));
@@ -97,7 +105,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                     //clawController.setClawScoringPos(); //TODO: yep
                 })
                 .splineToConstantHeading(new Vector2d(-48,46),Math.toRadians(90))
-                .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-58,9,Math.toRadians(0)))
                 .lineToConstantHeading(new Vector2d(32,11))
                 .splineToConstantHeading(new Vector2d(46,36+3), Math.toRadians(0))
                 .build();
@@ -131,7 +139,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 2; //TODO: remove when testing's done lmao
+        loc = 1; //TODO: remove when testing's done lmao
 
         telemetry.addData("Location:", loc);
         telemetry.update();
@@ -139,6 +147,9 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         drive.setPoseEstimate(startPose);
+
+        redLED0.setState(false);
+        greenLED0.setState(true);
 
         if (loc == 0) {
             drive.followTrajectorySequence(purpL);
@@ -158,9 +169,9 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
-        //driveController.setSlidePos(0.3f,0.1f);
+        driveController.setSlidePos(0.2f,0.3f);
         sleep(3000); //clawController.toggleLeftClaw(); //TODO: yep
-        //driveController.setSlidePos(0,0.1f);
+        driveController.setSlidePos(0,0.3f);
         driveController.setArmGrabbingPos(.5f);
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
