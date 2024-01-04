@@ -96,21 +96,21 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
                     //clawController.setClawScoringPos(); //TODO: yep
                     redLED0.setState(true); //since i basically dont have a claw im using an led lmfao
                 })
-                .lineToConstantHeading(new Vector2d(46,42))
+                .lineToConstantHeading(new Vector2d(45,42))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawScoringPos(); //TODO: yep
                     redLED0.setState(true); //since i basically dont have a claw im using an led lmfao
                 })
-                .splineToLinearHeading(new Pose2d(46,36, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(45,36, Math.toRadians(0)),Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawScoringPos(); //TODO: yep
                     redLED0.setState(true); //since i basically dont have a claw im using an led lmfao
                 })
-                .lineToConstantHeading(new Vector2d(46, 30))
+                .lineToConstantHeading(new Vector2d(45, 30))
                 .build();
 
     }

@@ -79,19 +79,19 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(48, -30))
+                .lineToConstantHeading(new Vector2d(47, -30))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(48,-34, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(47,-34, Math.toRadians(0)),Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(48,-42))
+                .lineToConstantHeading(new Vector2d(47,-42))
                 .build();
 
 
