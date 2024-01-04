@@ -72,26 +72,26 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(36,-32, Math.toRadians(0)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(35,-32, Math.toRadians(0)),Math.toRadians(180))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
+                    //clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(46, -30))
+                .lineToConstantHeading(new Vector2d(48, -30))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
+                    //clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(46,-36, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,-34, Math.toRadians(0)),Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
+                    //clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(46,-42))
+                .lineToConstantHeading(new Vector2d(48,-42))
                 .build();
 
 
@@ -116,7 +116,7 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 2; //TODO: remove when testing's done lmao
+        loc = 0; //TODO: remove when testing's done lmao
 
         telemetry.addData("Location:", loc);
         telemetry.update();

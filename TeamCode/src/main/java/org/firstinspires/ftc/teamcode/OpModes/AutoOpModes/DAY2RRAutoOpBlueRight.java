@@ -66,19 +66,19 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
+                    //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,32,Math.toRadians(180)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-34,32,Math.toRadians(180)),Math.toRadians(0))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
+                    //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,36,Math.toRadians(90)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(-36,34,Math.toRadians(90)),Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
+                    //clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-36,34,Math.toRadians(0)),Math.toRadians(270))
                 .build();
@@ -90,7 +90,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(-48,11,Math.toRadians(0)),Math.toRadians(180))
                 .lineToLinearHeading(new Pose2d(-36,11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
-                .splineToLinearHeading(new Pose2d(42,42+6, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(46,42+6, Math.toRadians(0)), Math.toRadians(0))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
@@ -99,7 +99,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(-48,46),Math.toRadians(90))
                 .lineToLinearHeading(new Pose2d(-56,11,Math.toRadians(0)))
                 .lineToConstantHeading(new Vector2d(32,11))
-                .splineToConstantHeading(new Vector2d(42,36+3), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(46,36+3), Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
@@ -108,7 +108,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .strafeTo(new Vector2d(-12,36))
                 .strafeTo(new Vector2d(-12,16))
                 .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(42,30+2, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,30+2, Math.toRadians(0)), Math.toRadians(0))
                 .build();
     }
 
@@ -131,7 +131,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 1; //TODO: remove when testing's done lmao
+        loc = 2; //TODO: remove when testing's done lmao
 
         telemetry.addData("Location:", loc);
         telemetry.update();
@@ -165,7 +165,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .setReversed(false)
-                .lineToConstantHeading(new Vector2d(42,12+3))
+                .lineToConstantHeading(new Vector2d(46,12+3))
                 .forward(14)
                 .build();
 

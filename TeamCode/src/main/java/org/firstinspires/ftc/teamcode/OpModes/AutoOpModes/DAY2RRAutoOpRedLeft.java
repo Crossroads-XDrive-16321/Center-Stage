@@ -59,19 +59,19 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
+                    //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-34,-34,Math.toRadians(0)),Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-35,-34,Math.toRadians(0)),Math.toRadians(90))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
+                    //clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-36,-36,Math.toRadians(270)),Math.toRadians(90))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
+                    //clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-36,-32,Math.toRadians(180)),Math.toRadians(0))
                 .build();
@@ -83,7 +83,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .strafeTo(new Vector2d(-12,-36))
                 .strafeTo(new Vector2d(-12,-16))
                 .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(46,-30-2, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(46,-30, Math.toRadians(0)), Math.toRadians(0))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
@@ -125,7 +125,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 1; //TODO: remove when testing's done lmao
+        loc = 2; //TODO: remove when testing's done lmao
 
         telemetry.addData("Location:", loc);
         telemetry.update();
