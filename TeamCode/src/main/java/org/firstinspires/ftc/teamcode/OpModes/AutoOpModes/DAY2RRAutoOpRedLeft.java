@@ -134,7 +134,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
         cameraController.initTfod(hardwareMap, 0.2f);
 
         // CAMERA DETECTING
-        int loc = -1;
+        int loc;
 
         while(!isStarted()) {
             // sense location

@@ -46,41 +46,41 @@ public class MecanumTeleOp extends LinearOpMode {
     Toggler rbButtonToggler = new Toggler();
     Toggler aButtonToggler = new Toggler();
 
-    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose, int tagID) {
-        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
+//    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose, int tagID) {
+//        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
+//
+//        if(tag == null) {
+//            return(false);
+//        }
+//
+//        //TODO: this approach doesn't seem to work and is very broken
+//
+//        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+//
+//
+//        TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
+//                .turn(Math.toRadians(-rot.firstAngle))
+//                .strafeRight(tag.pose.x*FEET_PER_METER)
+//                .forward(tag.pose.y*FEET_PER_METER-2)
+//                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
+//                .build();
+//
+//        uhhh.followTrajectorySequence(move);
+//
+////            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
+////            turnRight(rot.firstAngle, 0.1f);
+////            forwards(tag.pose.z - 2.12, 0.1f);
+//
+//
+//        return(true);
+//
+//    }
 
-        if(tag == null) {
-            return(false);
-        }
-
-        //TODO: this approach doesn't seem to work and is very broken
-
-        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-
-
-        TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
-                .turn(Math.toRadians(-rot.firstAngle))
-                .strafeRight(tag.pose.x*FEET_PER_METER)
-                .forward(tag.pose.y*FEET_PER_METER-2)
-                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
-                .build();
-
-        uhhh.followTrajectorySequence(move);
-
-//            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
-//            turnRight(rot.firstAngle, 0.1f);
-//            forwards(tag.pose.z - 2.12, 0.1f);
-
-
-        return(true);
-
-    }
-
-    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose) {
+    public int autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose) {
         AprilTagDetection tag = cameraController.detectAprilTag();
 
         if(tag == null) {
-            return(false);
+            return(-1);
         }
 
         int tagID = tag.id;
@@ -101,7 +101,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
         }
 
-        return(true);
+        return(tag.id);
 
     }
 
@@ -253,12 +253,11 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
 
+            int tagID = autoCalibrateScore(drive, cameraController, drive.getPoseEstimate());
+
             if (gamepad1.y) {
-                telemetry.addData("Tag Found for Calibration:", autoCalibrateScore(drive, cameraController, drive.getPoseEstimate(),8));
+                telemetry.addData("Tag Found for Calibration:", tagID);
             }
-
-
-            AprilTagDetection tag = cameraController.detectAprilTag(8);
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());
@@ -270,22 +269,21 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Back Left (left odom):", backLeft.getCurrentPosition());
             telemetry.addData("Back Right (right odom):", backRight.getCurrentPosition());
             telemetry.addData("Front Left (back odom):", frontLeft.getCurrentPosition());
-            telemetry.addData("Front Right:", frontRight.getCurrentPosition());
-            if(tag != null) {
-                telemetry.addData("Tag Center:", tag.center);
-                telemetry.addData("Tag Corners:", tag.corners);
-                telemetry.addData("Tag Rot X:", tag.pose.x);
-                telemetry.addData("Tag Rot Y:", tag.pose.y);
-                telemetry.addData("Tag Rot Z:", tag.pose.z);
-                Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-                telemetry.addLine(String.format("\nDetected tag ID=%d", tag.id));
-                telemetry.addLine(String.format("Translation X: %.2f feet", tag.pose.x*3.28084)); //meter to feet
-                telemetry.addLine(String.format("Translation Y: %.2f feet", tag.pose.y*3.28084));
-                telemetry.addLine(String.format("Translation Z: %.2f feet", tag.pose.z*3.28084));
-                telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
-                telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
-                telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
-            }
+//            if(tag != null) {
+//                telemetry.addData("Tag Center:", tag.center);
+//                telemetry.addData("Tag Corners:", tag.corners);
+//                telemetry.addData("Tag Rot X:", tag.pose.x);
+//                telemetry.addData("Tag Rot Y:", tag.pose.y);
+//                telemetry.addData("Tag Rot Z:", tag.pose.z);
+//                Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+//                telemetry.addLine(String.format("\nDetected tag ID=%d", tag.id));
+//                telemetry.addLine(String.format("Translation X: %.2f feet", tag.pose.x*3.28084)); //meter to feet
+//                telemetry.addLine(String.format("Translation Y: %.2f feet", tag.pose.y*3.28084));
+//                telemetry.addLine(String.format("Translation Z: %.2f feet", tag.pose.z*3.28084));
+//                telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
+//                telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
+//                telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
+//            }
             telemetry.update();
 
         }
