@@ -56,7 +56,6 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
 
         drive = new SampleMecanumDrive(hardwareMap);
         startPose = new Pose2d(10,-60, Math.toRadians(90));
-        planeRotator.setPosition(.24f);
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
@@ -68,13 +67,13 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(16,-35,Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(16,-36,Math.toRadians(270)), Math.toRadians(90))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(35,-32, Math.toRadians(0)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(36,-32, Math.toRadians(0)),Math.toRadians(180))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
@@ -87,7 +86,7 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(47,-34, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(47,-36, Math.toRadians(0)),Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
@@ -124,6 +123,7 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         drive.setPoseEstimate(startPose);
+        planeRotator.setPosition(0.24f);
 
         if (loc == 0) {
             drive.followTrajectorySequence(purpL);

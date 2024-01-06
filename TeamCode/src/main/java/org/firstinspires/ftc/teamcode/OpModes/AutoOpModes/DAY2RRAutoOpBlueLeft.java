@@ -25,7 +25,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
 
-    Servo leftClaw, rightClaw, clawServo, planeLauncher;
+    Servo leftClaw, rightClaw, clawServo, planeLauncher, planeRotator;
     ClawController clawController;
 
     CameraController cameraController;
@@ -52,6 +52,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         driveController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
+        planeRotator = hardwareMap.get(Servo.class, "planeRotator");
 
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");
         rightClaw = hardwareMap.get(Servo.class, "rightClaw");
@@ -71,46 +72,40 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
-//                    redLED0.setState(false); //since i basically dont have a claw im using an led lmfao
+                    clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(36,32, Math.toRadians(0)),Math.toRadians(180))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
-//                    redLED0.setState(false); //since i basically dont have a claw im using an led lmfao
+                    clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(16,36,Math.toRadians(90)), Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
-//                    redLED0.setState(false); //since i basically dont have a claw im using an led lmfao
+                    clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(12,32,Math.toRadians(0)),Math.toRadians(180))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
-//                    redLED0.setState(true); //since i basically dont have a claw im using an led lmfao
+                    clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(45,42))
+                .lineToConstantHeading(new Vector2d(47,42))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
-//                    redLED0.setState(true); //since i basically dont have a claw im using an led lmfao
+                    clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(45,36, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(47,36, Math.toRadians(0)),Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawScoringPos(); //TODO: yep
-//                    redLED0.setState(true); //since i basically dont have a claw im using an led lmfao
+                    clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(45, 30))
+                .lineToConstantHeading(new Vector2d(47, 30))
                 .build();
 
     }
@@ -119,9 +114,6 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         initialize();
-//        redLED0.setState(false);
-//        greenLED0.setState(false);
-
         cameraController.initTfod(hardwareMap, 0.2f);
 
         // CAMERA DETECTING
@@ -142,8 +134,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         drive.setPoseEstimate(startPose);
-//        redLED0.setState(true);
-//        greenLED0.setState(true);
+        planeRotator.setPosition(0.24f);
 
 
         if (loc == 0) {
@@ -173,10 +164,14 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
-        driveController.setSlidePos(0.2f,0.3f);
-        sleep(3000); //clawController.toggleRightClaw(); //TODO: yep
+        driveController.setSlidePos(0.5f,0.5f);
+        sleep(800);
+        clawController.toggleRightClaw();
+        clawController.toggleLeftClaw();
+        sleep(500);
         driveController.setSlidePos(0,0.3f);
         driveController.setArmGrabbingPos(.5f);
+        sleep(500);
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .setReversed(false)

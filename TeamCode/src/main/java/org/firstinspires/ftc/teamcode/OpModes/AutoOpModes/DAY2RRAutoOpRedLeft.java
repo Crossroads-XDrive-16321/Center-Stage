@@ -57,7 +57,6 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
 
         drive = new SampleMecanumDrive(hardwareMap);
         startPose = new Pose2d(-38,-64, Math.toRadians(90));
-        planeRotator.setPosition(0.24f);
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
@@ -75,7 +74,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,-32,Math.toRadians(180)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-36,-34,Math.toRadians(180)),Math.toRadians(0))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
@@ -85,9 +84,13 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .strafeTo(new Vector2d(-12,-36))
                 .strafeTo(new Vector2d(-12,-16))
                 .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(47,-30+6, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(47,-30, Math.toRadians(0)), Math.toRadians(0))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
+                .addDisplacementMarker(8, () -> {
+                    clawController.setClawScoringPos(); //TODO: yep
+                })
+                .splineToConstantHeading(new Vector2d(-48,-46),Math.toRadians(90))
                 .lineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)))
                 .lineToConstantHeading(new Vector2d(32,-11))
                 .splineToConstantHeading(new Vector2d(47,-36), Math.toRadians(0))
@@ -99,7 +102,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)),Math.toRadians(180))
                 .lineToLinearHeading(new Pose2d(-36,-11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToLinearHeading(new Pose2d(47,-42+6, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(47,-42, Math.toRadians(0)), Math.toRadians(0))
                 .build();
     }
 
@@ -129,6 +132,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         drive.setPoseEstimate(startPose);
+        planeRotator.setPosition(0.24f);
 
         if (loc == 0) {
             drive.followTrajectorySequence(purpL);
