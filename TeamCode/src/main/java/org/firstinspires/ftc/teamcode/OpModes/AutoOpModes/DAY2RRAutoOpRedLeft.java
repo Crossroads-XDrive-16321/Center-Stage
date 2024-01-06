@@ -112,7 +112,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
         cameraController.initTfod(hardwareMap, 0.2f);
 
         // CAMERA DETECTING
-        int loc;
+        int loc = -1;
 
         while(!isStarted()) {
             // sense location
@@ -122,8 +122,6 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
             telemetry.addLine(String.valueOf(loc));
             telemetry.update();
         }
-
-        loc = 1; //TODO: remove when testing's done lmao
 
         telemetry.addData("Location:", loc);
         telemetry.update();

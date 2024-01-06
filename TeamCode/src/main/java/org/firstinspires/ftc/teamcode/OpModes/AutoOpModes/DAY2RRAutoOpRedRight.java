@@ -118,8 +118,6 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 0; //TODO: remove when testing's done lmao
-
         telemetry.addData("Location:", loc);
         telemetry.update();
 

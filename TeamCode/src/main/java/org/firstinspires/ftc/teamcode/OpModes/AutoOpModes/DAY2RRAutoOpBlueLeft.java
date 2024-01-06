@@ -136,9 +136,6 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
             telemetry.update();
         }
 
-        loc = 2; //TODO: remove when testing's done lmao
-
-
         telemetry.addData("Location:", loc);
         telemetry.update();
 
@@ -151,18 +148,27 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
 
         if (loc == 0) {
             drive.followTrajectorySequence(purpL);
-            sleep(3000);//drop purple pixel
-            //clawController.toggleLeftClaw(); //TODO: yep
+            sleep(500);//drop purple pixel
+            clawController.toggleLeftClaw(); //TODO: yep
+            sleep(100);
+            clawController.setClawScoringPos();
+            sleep(500);
             drive.followTrajectorySequence(yellowL);
         } else if (loc == 1) {
             drive.followTrajectorySequence(purpM);
-            sleep(3000);//drop purple pixel
-            //clawController.toggleLeftClaw(); //TODO: yep
+            sleep(500);//drop purple pixel
+            clawController.toggleLeftClaw(); //TODO: yep
+            sleep(100);
+            clawController.setClawScoringPos();
+            sleep(500);
             drive.followTrajectorySequence(yellowM);
         } else {
             drive.followTrajectorySequence(purpR);
-            sleep(3000);//drop purple pixel
-            //clawController.toggleLeftClaw(); //TODO: yep
+            sleep(500);//drop purple pixel
+            clawController.toggleLeftClaw(); //TODO: yep
+            sleep(100);
+            clawController.setClawScoringPos();
+            sleep(500);
             drive.followTrajectorySequence(yellowR);
         }
 
