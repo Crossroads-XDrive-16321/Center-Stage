@@ -136,7 +136,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         planeRotator.setPosition(0.24f);
 
-        loc = 2; //TODO: REMOVE WHEN TESTING IS DONE
+//        loc = 2; //TODO: REMOVE WHEN TESTING IS DONE
 
 
         if (loc == 0) {
