@@ -74,13 +74,13 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(36,32, Math.toRadians(0)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(37,32, Math.toRadians(0)),Math.toRadians(180))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(16,36,Math.toRadians(90)), Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(16,35,Math.toRadians(90)), Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
@@ -105,7 +105,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(47, 30))
+                .lineToConstantHeading(new Vector2d(47, 28))
                 .build();
 
     }
@@ -136,7 +136,7 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         planeRotator.setPosition(0.24f);
 
-        loc = 0; //TODO: REMOVE WHEN TESTING IS DONE
+        loc = 2; //TODO: REMOVE WHEN TESTING IS DONE
 
 
         if (loc == 0) {
