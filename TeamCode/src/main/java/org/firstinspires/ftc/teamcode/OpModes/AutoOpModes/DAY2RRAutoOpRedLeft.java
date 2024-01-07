@@ -134,6 +134,8 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         planeRotator.setPosition(0.24f);
 
+        loc = 0; //TODO: REMOVE WHEN TESTING IS DONE
+
         if (loc == 0) {
             drive.followTrajectorySequence(purpL);
             sleep(500);//drop purple pixel
