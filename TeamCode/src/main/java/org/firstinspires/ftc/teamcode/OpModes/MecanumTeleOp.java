@@ -245,7 +245,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.a) {
                 planeRotator.setPosition(0.24f);
             } else if (gamepad2.b) {
-                planeRotator.setPosition(0.075f);
+                planeRotator.setPosition(0.1f);
             }
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());

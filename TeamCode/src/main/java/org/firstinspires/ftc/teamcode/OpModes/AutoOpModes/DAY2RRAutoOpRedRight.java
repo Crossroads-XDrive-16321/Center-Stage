@@ -80,19 +80,19 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(47, -30))
+                .lineToConstantHeading(new Vector2d(48, -30))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(47,-36+2, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,-36+4, Math.toRadians(0)),Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .lineToConstantHeading(new Vector2d(47,-42))
+                .lineToConstantHeading(new Vector2d(48,-42))
                 .build();
 
 
@@ -133,6 +133,8 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
             clawController.toggleRightClaw(); //TODO: yep
             sleep(100);
             clawController.setClawScoringPos();
+            sleep(50);
+            clawController.toggleRightClaw();
             sleep(500);
             drive.followTrajectorySequence(yellowL);
         } else if (loc == 1) {
@@ -141,6 +143,8 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
             clawController.toggleRightClaw(); //TODO: yep
             sleep(100);
             clawController.setClawScoringPos();
+            sleep(50);
+            clawController.toggleRightClaw();
             sleep(500);
             drive.followTrajectorySequence(yellowM);
         } else {
@@ -149,12 +153,14 @@ public class DAY2RRAutoOpRedRight extends LinearOpMode {
             clawController.toggleRightClaw(); //TODO: yep
             sleep(100);
             clawController.setClawScoringPos();
+            sleep(50);
+            clawController.toggleRightClaw();
             sleep(500);
             drive.followTrajectorySequence(yellowR);
         }
 
         driveController.setArmScoringPos(.5f);
-        driveController.setSlidePos(0.5f,0.5f);
+        driveController.setSlidePos(0.6f,0.5f);
         sleep(800);
         clawController.toggleRightClaw();
         clawController.toggleLeftClaw();

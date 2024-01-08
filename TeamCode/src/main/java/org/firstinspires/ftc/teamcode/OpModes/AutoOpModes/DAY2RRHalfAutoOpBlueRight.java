@@ -1,29 +1,20 @@
 package org.firstinspires.ftc.teamcode.OpModes.AutoOpModes;
 
-import android.util.Size;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Helpers.CameraController;
 import org.firstinspires.ftc.teamcode.Helpers.ClawController;
 import org.firstinspires.ftc.teamcode.Helpers.DriveController;
 import org.firstinspires.ftc.teamcode.RoadRunnerFiles.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunnerFiles.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
-
-import java.util.List;
 
 @Autonomous
-public class DAY2RRAutoOpBlueRight extends LinearOpMode {
+public class DAY2RRHalfAutoOpBlueRight extends LinearOpMode {
 
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
     DriveController driveController;
@@ -161,8 +152,8 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             clawController.setClawScoringPos();
             sleep(50);
             clawController.toggleRightClaw();
-            sleep(500);
-            drive.followTrajectorySequence(yellowL);
+//            sleep(500);
+//            drive.followTrajectorySequence(yellowL);
         } else if (loc == 1) {
             drive.followTrajectorySequence(purpM);
             sleep(500);//drop purple pixel
@@ -171,8 +162,8 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             clawController.setClawScoringPos();
             sleep(50);
             clawController.toggleRightClaw();
-            sleep(500);
-            drive.followTrajectorySequence(yellowM);
+//            sleep(500);
+//            drive.followTrajectorySequence(yellowM);
         } else {
             drive.followTrajectorySequence(purpR);
             sleep(500);//drop purple pixel
@@ -181,27 +172,27 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             clawController.setClawScoringPos();
             sleep(50);
             clawController.toggleRightClaw();
-            sleep(500);
-            drive.followTrajectorySequence(yellowR);
+//            sleep(500);
+//            drive.followTrajectorySequence(yellowR);
         }
 
-        driveController.setArmScoringPos(.5f);
-        driveController.setSlidePos(0.6f,0.5f);
-        sleep(800);
-        clawController.toggleRightClaw();
-        clawController.toggleLeftClaw();
-        sleep(500);
-        driveController.setSlidePos(0,0.3f);
-        driveController.setArmGrabbingPos(.5f);
-        sleep(500);
-
-        park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,6))
-                .forward(14)
-                .build();
-
-        drive.followTrajectorySequence(park);
+//        driveController.setArmScoringPos(.5f);
+//        driveController.setSlidePos(0.6f,0.5f);
+//        sleep(800);
+//        clawController.toggleRightClaw();
+//        clawController.toggleLeftClaw();
+//        sleep(500);
+//        driveController.setSlidePos(0,0.3f);
+//        driveController.setArmGrabbingPos(.5f);
+//        sleep(500);
+//
+//        park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+//                .setReversed(false)
+//                .lineToConstantHeading(new Vector2d(46,6))
+//                .forward(14)
+//                .build();
+//
+//        drive.followTrajectorySequence(park);
 
 
 //        //loc is where the model found the team prop

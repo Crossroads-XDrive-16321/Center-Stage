@@ -84,7 +84,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .strafeTo(new Vector2d(-12,-36))
                 .strafeTo(new Vector2d(-12,-16))
                 .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(47,-30, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,-30, Math.toRadians(0)), Math.toRadians(0))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
@@ -93,7 +93,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(-48,-46),Math.toRadians(90))
                 .lineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)))
                 .lineToConstantHeading(new Vector2d(32,-11))
-                .splineToConstantHeading(new Vector2d(47,-36), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48,-36), Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
@@ -102,7 +102,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)),Math.toRadians(180))
                 .lineToLinearHeading(new Pose2d(-36,-11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToLinearHeading(new Pose2d(47,-42, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,-42, Math.toRadians(0)), Math.toRadians(0))
                 .build();
     }
 
@@ -142,6 +142,8 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
             clawController.toggleLeftClaw(); //TODO: yep
             sleep(100);
             clawController.setClawScoringPos();
+            sleep(50);
+            clawController.toggleLeftClaw();
             sleep(500);
             drive.followTrajectorySequence(yellowL);
         } else if (loc == 1) {
@@ -150,6 +152,8 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
             clawController.toggleLeftClaw(); //TODO: yep
             sleep(100);
             clawController.setClawScoringPos();
+            sleep(50);
+            clawController.toggleLeftClaw();
             sleep(500);
             drive.followTrajectorySequence(yellowM);
         } else {
@@ -158,12 +162,14 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
             clawController.toggleLeftClaw(); //TODO: yep
             sleep(100);
             clawController.setClawScoringPos();
+            sleep(50);
+            clawController.toggleLeftClaw();
             sleep(500);
             drive.followTrajectorySequence(yellowR);
         }
 
         driveController.setArmScoringPos(.5f);
-        driveController.setSlidePos(0.5f,0.5f);
+        driveController.setSlidePos(0.6f,0.5f);
         sleep(800);
         clawController.toggleRightClaw();
         clawController.toggleLeftClaw();
