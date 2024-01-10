@@ -25,56 +25,18 @@ import org.openftc.apriltag.AprilTagDetection;
 public class MecanumTeleOp extends LinearOpMode {
 
     private static final double FEET_PER_METER = 3.28084f;
-    private DigitalChannel redLED0, redLED1, redLED2, redLED3;
-    private DigitalChannel greenLED0, greenLED1, greenLED2, greenLED3;
 
 
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
     DriveController driveController;
     SampleMecanumDrive drive;
-//    BNO055IMU imu;
-//    IMUController imuController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher, planeRotator;
 //         port2      port1      port4       port0          port3
     ClawController clawController;
 
     CameraController cameraController;
-
-    Toggler lbButtonToggler = new Toggler();
-    Toggler rbButtonToggler = new Toggler();
-    Toggler aButtonToggler = new Toggler();
-
-//    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose, int tagID) {
-//        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
-//
-//        if(tag == null) {
-//            return(false);
-//        }
-//
-//        //TODO: this approach doesn't seem to work and is very broken
-//
-//        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-//
-//
-//        TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
-//                .turn(Math.toRadians(-rot.firstAngle))
-//                .strafeRight(tag.pose.x*FEET_PER_METER)
-//                .forward(tag.pose.y*FEET_PER_METER-2)
-//                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
-//                .build();
-//
-//        uhhh.followTrajectorySequence(move);
-//
-////            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
-////            turnRight(rot.firstAngle, 0.1f);
-////            forwards(tag.pose.z - 2.12, 0.1f);
-//
-//
-//        return(true);
-//
-//    }
 
     public int autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose) {
         AprilTagDetection tag = cameraController.detectAprilTag();
@@ -99,6 +61,8 @@ public class MecanumTeleOp extends LinearOpMode {
 //            turnRight(rot.firstAngle, 0.1f);
 //            forwards(tag.pose.z - 2.12, 0.1f);
 
+            sleep(500);
+
         }
 
         return(tag.id);
@@ -113,14 +77,11 @@ public class MecanumTeleOp extends LinearOpMode {
         slideRotatorLeft = hardwareMap.get(DcMotorEx.class, "slideRotatorLeft");
         slideRotatorRight = hardwareMap.get(DcMotorEx.class, "slideRotatorRight");
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
         driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
         //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-//        imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        imuController = new IMUController(imu, telemetry);
-//        imuController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
         planeRotator = hardwareMap.get(Servo.class, "planeRotator");
@@ -133,23 +94,6 @@ public class MecanumTeleOp extends LinearOpMode {
 
         cameraController = new CameraController();
 
-//        redLED0 = hardwareMap.get(DigitalChannel.class, "red0"); //expansion0-1
-//        greenLED0 = hardwareMap.get(DigitalChannel.class, "green0"); //expansion0-1
-//        redLED1 = hardwareMap.get(DigitalChannel.class, "red1"); //expansion2-3
-//        greenLED1 = hardwareMap.get(DigitalChannel.class, "green1"); //expansion2-3
-//        redLED2 = hardwareMap.get(DigitalChannel.class, "red2"); //control 0-1
-//        greenLED2 = hardwareMap.get(DigitalChannel.class, "green2"); //control 0-1
-//        redLED3 = hardwareMap.get(DigitalChannel.class, "red3"); //control 2-3
-//        greenLED3 = hardwareMap.get(DigitalChannel.class, "green3"); //control 2-3
-//
-//        redLED0.setMode(DigitalChannel.Mode.OUTPUT);
-//        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
-//        redLED1.setMode(DigitalChannel.Mode.OUTPUT);
-//        greenLED1.setMode(DigitalChannel.Mode.OUTPUT);
-//        redLED2.setMode(DigitalChannel.Mode.OUTPUT);
-//        greenLED2.setMode(DigitalChannel.Mode.OUTPUT);
-//        redLED3.setMode(DigitalChannel.Mode.OUTPUT);
-//        greenLED3.setMode(DigitalChannel.Mode.OUTPUT);
     }
 
 
@@ -165,16 +109,9 @@ public class MecanumTeleOp extends LinearOpMode {
 
         waitForStart();
 
+        planeRotator.setPosition(0.22f);
+
         while (!isStopRequested()) {
-            //LIGHTS
-//            redLED0.setState(true);
-//            redLED1.setState(true);
-//            redLED2.setState(true);
-//            redLED3.setState(true);
-//            greenLED0.setState(false);
-//            greenLED1.setState(false);
-//            greenLED2.setState(false);
-//            greenLED3.setState(false);
 
             drive.update();
             Pose2d myPose = drive.getPoseEstimate();
@@ -205,33 +142,11 @@ public class MecanumTeleOp extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            input.getX() * 0.8f * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1), //hooly crap question marks in java?? crazy -best
-                            input.getY() * 0.8f * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1),
-                            -gamepad1.right_stick_x * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1)
+                            input.getX() * 0.8f + (gamepad1.right_trigger * 0.2) - (gamepad1.left_trigger * 0.6), //hooly crap question marks in java?? crazy -best
+                            input.getY() * 0.8f + (gamepad1.right_trigger * 0.2) - (gamepad1.left_trigger * 0.6),    //wait I'm gonna change it bc the way I had it was the triggers and it was smooth -Ben
+                            -gamepad1.right_stick_x + (gamepad1.right_trigger * 0.2) - (gamepad1.left_trigger * 0.6)
                     )
             );
-
-//
-//
-//            driveController.drive(gamepad1.left_stick_x*inverseController, gamepad1.left_stick_y*inverseController, gamepad1.right_stick_x, 0.8f + (gamepad1.right_trigger / 5) - (gamepad1.left_trigger / 2));
-
-            //Assisted Tele Op Code
-//            if (aButtonToggler.toggle(gamepad2.a)) { //TODO: maybe would be nice if a always brought it to scoring pos and b down to level pos
-//                clawController.toggleClawPosition(true);
-//                driveController.rotateArm(0.5f);
-//                telemetry.addLine("toggling arm");
-//            }
-//            if (lbButtonToggler.toggle(gamepad1.left_bumper)) {
-//                driveController.turnLeft(90, 0.5);
-//                telemetry.addLine("turning left");
-//            }
-//            if (rbButtonToggler.toggle(gamepad1.right_bumper)) {
-//                driveController.turnRight(90, 0.5);
-//                telemetry.addLine("turning right");
-//            }
-
-
-
 
             clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
             clawController.toggleClawPosition(gamepad2.y);
@@ -243,9 +158,17 @@ public class MecanumTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.a) {
-                planeRotator.setPosition(0.24f);
+                planeRotator.setPosition(0.22f);
             } else if (gamepad2.b) {
                 planeRotator.setPosition(0.1f);
+            }
+
+            if (gamepad1.dpad_down) {
+                liftMotor.setPower(1);
+            } else if (gamepad1.dpad_up) {
+                liftMotor.setPower(-1);
+            } else {
+                liftMotor.setPower(0);
             }
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
@@ -253,9 +176,8 @@ public class MecanumTeleOp extends LinearOpMode {
             driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
             driveController.moveSlide(-gamepad2.left_stick_y);
 
-            int tagID = autoCalibrateScore(drive, cameraController, drive.getPoseEstimate());
-
             if (gamepad1.y) {
+                int tagID = autoCalibrateScore(drive, cameraController, drive.getPoseEstimate());
                 telemetry.addData("Tag Found for Calibration:", tagID);
             }
 
@@ -269,21 +191,6 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Back Left (left odom):", backLeft.getCurrentPosition());
             telemetry.addData("Back Right (right odom):", backRight.getCurrentPosition());
             telemetry.addData("Front Left (back odom):", frontLeft.getCurrentPosition());
-//            if(tag != null) {
-//                telemetry.addData("Tag Center:", tag.center);
-//                telemetry.addData("Tag Corners:", tag.corners);
-//                telemetry.addData("Tag Rot X:", tag.pose.x);
-//                telemetry.addData("Tag Rot Y:", tag.pose.y);
-//                telemetry.addData("Tag Rot Z:", tag.pose.z);
-//                Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-//                telemetry.addLine(String.format("\nDetected tag ID=%d", tag.id));
-//                telemetry.addLine(String.format("Translation X: %.2f feet", tag.pose.x*3.28084)); //meter to feet
-//                telemetry.addLine(String.format("Translation Y: %.2f feet", tag.pose.y*3.28084));
-//                telemetry.addLine(String.format("Translation Z: %.2f feet", tag.pose.z*3.28084));
-//                telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
-//                telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
-//                telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
-//            }
             telemetry.update();
 
         }

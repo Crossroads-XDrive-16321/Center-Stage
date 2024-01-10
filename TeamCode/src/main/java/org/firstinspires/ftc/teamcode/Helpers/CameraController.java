@@ -139,7 +139,7 @@ public class CameraController {
     public AprilTagDetection detectAprilTag() {
         ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-        AprilTagDetection returnTag;
+        AprilTagDetection returnTag = null;
         double best = 10;
 
         for(AprilTagDetection tag : currentDetections) {
@@ -149,7 +149,7 @@ public class CameraController {
             }
         }
 
-        return(null);
+        return(returnTag);
     }
 
 }
