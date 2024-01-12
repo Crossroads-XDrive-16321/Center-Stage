@@ -79,7 +79,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
         driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
         driveController.init();
-        //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
         planeRotator = hardwareMap.get(Servo.class, "planeRotator");
@@ -99,7 +99,6 @@ public class MecanumTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         initialize();
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(180)));
 
         cameraController.initAprilTags(hardwareMap);
