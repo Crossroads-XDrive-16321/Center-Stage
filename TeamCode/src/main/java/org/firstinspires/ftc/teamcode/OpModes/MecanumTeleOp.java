@@ -26,8 +26,6 @@ public class MecanumTeleOp extends LinearOpMode {
 
     private static final double FEET_PER_METER = 3.28084f;
 
-
-
     DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
     DriveController driveController;
     SampleMecanumDrive drive;
@@ -148,7 +146,10 @@ public class MecanumTeleOp extends LinearOpMode {
                     )
             );
 
-            clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
+//            clawController.checkAndToggle(gamepad2.left_bumper, gamepad2.right_bumper);
+            clawController.checkAndToggleHold(gamepad2.left_bumper, gamepad2.right_bumper);
+
+
             clawController.toggleClawPosition(gamepad2.y);
 
             if (gamepad2.dpad_up) {
@@ -173,7 +174,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
 
-            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
+            driveController.checkAndToggleRotator(gamepad2.right_stick_button);
             driveController.moveSlide(-gamepad2.left_stick_y);
 
             if (gamepad1.y) {

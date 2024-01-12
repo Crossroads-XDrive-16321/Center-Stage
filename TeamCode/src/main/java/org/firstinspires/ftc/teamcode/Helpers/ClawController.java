@@ -18,7 +18,7 @@ public class ClawController {
     }
 
     public ClawPosition currentClawPos = ClawPosition.SCORING;
-    private final float clawLevelPos = 0.6f;
+    private final float clawLevelPos = 0.65f;
     private final float clawScoringPos = 0f;
 
     Servo leftServo, rightServo, clawServo;
@@ -89,6 +89,22 @@ public class ClawController {
 
         if(leftClawPosToggler.toggle(leftButton)) {
             toggleLeftClaw();
+        }
+
+    }
+
+    public void checkAndToggleHold(boolean leftButton, boolean rightButton) {
+
+        if(leftButton) {
+            leftServo.setPosition(leftOpenPos);
+        } else {
+            leftServo.setPosition(leftClosedPos);
+        }
+
+        if(rightButton) {
+            rightServo.setPosition(rightOpenPos);
+        } else {
+            rightServo.setPosition(rightClosedPos);
         }
 
     }

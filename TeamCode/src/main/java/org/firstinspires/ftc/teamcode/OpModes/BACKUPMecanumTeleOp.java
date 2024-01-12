@@ -250,7 +250,7 @@ public class BACKUPMecanumTeleOp extends LinearOpMode {
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
 
-            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
+            driveController.checkAndToggleRotator(gamepad2.right_stick_button);
             driveController.moveSlide(-gamepad2.left_stick_y);
 
             int tagID = autoCalibrateScore(drive, cameraController, drive.getPoseEstimate());
