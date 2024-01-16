@@ -81,10 +81,23 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .strafeTo(new Vector2d(-12,-36))
-                .strafeTo(new Vector2d(-12,-16))
-                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(48,-30, Math.toRadians(0)), Math.toRadians(0))
+//                .strafeTo(new Vector2d(-12,-36))
+//                .strafeTo(new Vector2d(-12,-16))
+//                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(0))
+//                .splineToLinearHeading(new Pose2d(48,-30, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(0)),Math.toRadians(0))
+                .waitSeconds(2)
+                .addTemporalMarker(2.75f, () -> {
+                    //clawController.setClawLevelPos();
+                })
+                .addTemporalMarker(3.5f, () -> {
+                    //clawController.toggleRightClaw();
+                })
+                .addTemporalMarker(4.5f, () -> {
+                    //clawController.setClawScoringPos();
+                })
+                .lineToConstantHeading(new Vector2d(32,-11))
+                .splineToConstantHeading(new Vector2d(48,-36), Math.toRadians(0))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
@@ -92,6 +105,16 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 })
                 .splineToConstantHeading(new Vector2d(-48,-46),Math.toRadians(90))
                 .lineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)))
+                .waitSeconds(2)
+                .addTemporalMarker(2.75f, () -> {
+                    //clawController.setClawLevelPos();
+                })
+                .addTemporalMarker(3.5f, () -> {
+                    //clawController.toggleRightClaw();
+                })
+                .addTemporalMarker(4.5f, () -> {
+                    //clawController.setClawScoringPos();
+                })
                 .lineToConstantHeading(new Vector2d(32,-11))
                 .splineToConstantHeading(new Vector2d(48,-36), Math.toRadians(0))
                 .build();
@@ -100,6 +123,16 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)),Math.toRadians(180))
+                .waitSeconds(2)
+                .addTemporalMarker(2.25f, () -> {
+                    //clawController.setClawLevelPos();
+                })
+                .addTemporalMarker(3f, () -> {
+                    //clawController.toggleLeftClaw();
+                })
+                .addTemporalMarker(4f, () -> {
+                    clawController.setClawScoringPos(); //TODO: yep
+                })
                 .lineToLinearHeading(new Pose2d(-36,-11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
                 .splineToLinearHeading(new Pose2d(48,-42, Math.toRadians(0)), Math.toRadians(0))

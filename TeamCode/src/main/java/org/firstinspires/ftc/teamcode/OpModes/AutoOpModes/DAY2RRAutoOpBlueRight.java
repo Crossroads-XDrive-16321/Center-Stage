@@ -40,7 +40,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
     private TrajectorySequence purpL, purpM, purpR;
     private TrajectorySequence yellowL, yellowM, yellowR;
-    private TrajectorySequence park;
+    private TrajectorySequence park, driveWhite, placeWhite;
 
     void initialize() {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
@@ -75,21 +75,22 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
+                    clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-35,34,Math.toRadians(180)),Math.toRadians(0))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
+                    clawController.setClawLevelPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-36,36,Math.toRadians(90)),Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
-                    //clawController.setClawLevelPos(); //TODO: yep
+                    clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,34,Math.toRadians(0)),Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(-36,20),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(-48,18,Math.toRadians(270)),Math.toRadians(90))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
@@ -97,6 +98,17 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
                 .splineToLinearHeading(new Pose2d(-58,11,Math.toRadians(0)),Math.toRadians(180))
+                .waitSeconds(2)
+                .addTemporalMarker(2.25f, () -> {
+                    //clawController.setClawLevelPos();
+                })
+                .addTemporalMarker(3f, () -> {
+                    //clawController.toggleLeftClaw();
+                })
+                .addTemporalMarker(4f, () -> {
+                    clawController.setClawScoringPos(); //TODO: yep
+                })
+
                 .lineToLinearHeading(new Pose2d(-36,11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
                 .splineToLinearHeading(new Pose2d(48,42, Math.toRadians(0)), Math.toRadians(0))
@@ -106,7 +118,18 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
                 .splineToConstantHeading(new Vector2d(-48,46),Math.toRadians(90))
-                .lineToLinearHeading(new Pose2d(-58,11,Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-58,11,Math.toRadians(0))) //approaches the white pixels - fix
+                .waitSeconds(2)
+                .addTemporalMarker(2.75f, () -> {
+                    //clawController.setClawLevelPos();
+                })
+                .addTemporalMarker(3.5f, () -> {
+                    //clawController.toggleRightClaw();
+                })
+                .addTemporalMarker(4.5f, () -> {
+                    //clawController.setClawScoringPos();
+                })
+
                 .lineToConstantHeading(new Vector2d(32,11))
                 .splineToConstantHeading(new Vector2d(48,36), Math.toRadians(0))
                 .build();
@@ -114,10 +137,23 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .strafeTo(new Vector2d(-12,36))
-                .strafeTo(new Vector2d(-12,16))
-                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(48,30, Math.toRadians(0)), Math.toRadians(0))
+//                .strafeTo(new Vector2d(-12,36))
+//                .strafeTo(new Vector2d(-12,16))
+//                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(0))
+//                .splineToLinearHeading(new Pose2d(48,30, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-58, 11, Math.toRadians(0)),Math.toRadians(0))
+                .waitSeconds(2)
+                .addTemporalMarker(2.75f, () -> {
+                    //clawController.setClawLevelPos();
+                })
+                .addTemporalMarker(3.5f, () -> {
+                    //clawController.toggleRightClaw();
+                })
+                .addTemporalMarker(4.5f, () -> {
+                    //clawController.setClawScoringPos();
+                })
+                .lineToConstantHeading(new Vector2d(32,11))
+                .splineToConstantHeading(new Vector2d(48,36), Math.toRadians(0))
                 .build();
     }
 
