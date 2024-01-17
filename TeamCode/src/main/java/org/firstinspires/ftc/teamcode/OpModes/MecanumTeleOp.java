@@ -139,9 +139,9 @@ public class MecanumTeleOp extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            input.getX() * 0.8f + (gamepad1.right_trigger * 0.2) - (gamepad1.left_trigger * 0.6), //hooly crap question marks in java?? crazy -best
-                            input.getY() * 0.8f + (gamepad1.right_trigger * 0.2) - (gamepad1.left_trigger * 0.6),    //wait I'm gonna change it bc the way I had it was the triggers and it was smooth -Ben
-                            -gamepad1.right_stick_x + (gamepad1.right_trigger * 0.2) - (gamepad1.left_trigger * 0.6)
+                            input.getX() * 0.8f * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1), //hooly crap question marks in java?? crazy -best
+                            input.getY() * 0.8f * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1),
+                            -gamepad1.right_stick_x * (gamepad1.right_bumper ? 5/4f : 1) * (gamepad1.left_bumper ? 0.25f : 1)
                     )
             );
 
@@ -173,7 +173,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
 
-            driveController.checkAndToggleRotator(gamepad2.right_stick_button);
+            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
+//            driveController.checkAndToggleRotator(gamepad2.right_stick_button);
             driveController.moveSlide(-gamepad2.left_stick_y);
 
             if (gamepad1.y) {

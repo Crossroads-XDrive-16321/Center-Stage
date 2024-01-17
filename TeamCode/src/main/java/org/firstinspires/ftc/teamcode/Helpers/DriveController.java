@@ -72,6 +72,10 @@ public class DriveController {
 
         slideRotatorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
+        slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
+        slideMotorStoppedPos = slideMotor.getCurrentPosition();
+
         slideRotatorDownPosLeft = slideRotatorLeft.getCurrentPosition();
         slideRotatorDownPosRight = slideRotatorRight.getCurrentPosition();
         slideMotorDownPos = slideMotor.getCurrentPosition();
@@ -163,23 +167,55 @@ public class DriveController {
         }
     }
 
+    public void rotateArm(float power) {
+
+        if (power == 0) {
+            if (slideRotatorToggler.toggle(true)) {
+                slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
+                slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
+            }
+            slideRotatorRight.setTargetPosition(slideRotatorStoppedPosRight);
+            slideRotatorLeft.setTargetPosition(slideRotatorStoppedPosLeft);
+        } else {
+            slideRotatorToggler.toggle(false);
+            slideRotatorRight.setTargetPosition((int) (slideRotatorRight.getCurrentPosition() + (100 * power)));
+            slideRotatorLeft.setTargetPosition((int) (slideRotatorLeft.getCurrentPosition() + (100 * power)));
+        }
+
+        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if(power != 0) {
+            slideRotatorRight.setPower(Math.abs(power));
+            slideRotatorLeft.setPower(Math.abs(power));
+        } else {
+            slideRotatorRight.setPower(0.5);
+            slideRotatorLeft.setPower(0.5);
+        }
+    }
+
     //TODO: make an arm rotation enum and toggler just like claw position toggler
 
     public void moveSlide(float power) {
 
-        if(Math.abs(power) < 0.1) {
-            slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            slideMotor.setPower(0.04);
-        } else {
-            if(power > 0) { // go up
-                slideMotor.setTargetPosition((int) (slideMotorDownPos + 2000));
-            } else { // go down
-                slideMotor.setTargetPosition(slideMotorDownPos);
+        if(power == 0) {
+            if(slideMotorToggler.toggle(true)) {
+                slideMotorStoppedPos = slideMotor.getCurrentPosition();
             }
+
+            slideMotor.setTargetPosition(slideMotorStoppedPos);
+        } else {
+            slideMotorToggler.toggle(false);
+            slideMotor.setTargetPosition((int) (slideMotor.getCurrentPosition() + (100 * power)));
         }
 
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setPower(power);
+
+        if(power != 0) {
+            slideMotor.setPower(Math.abs(power));
+        } else {
+            slideMotor.setPower(0.5);
+        }
     }
 
     /**
