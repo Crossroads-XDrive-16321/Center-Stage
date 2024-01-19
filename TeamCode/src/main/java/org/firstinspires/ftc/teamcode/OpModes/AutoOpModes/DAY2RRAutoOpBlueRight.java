@@ -182,9 +182,9 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         //CAMERA DETECTION PROCESSING
 
         drive.setPoseEstimate(startPose);
-        planeRotator.setPosition(0.24f);
+        planeRotator.setPosition(0.2f);
 
-//        loc = 0; //TODO: REMOVE WHEN TESTING IS DONE
+        loc = 0; //TODO: REMOVE WHEN TESTING IS DONE
 
 //        redLED0.setState(false);
 //        greenLED0.setState(true);
@@ -222,12 +222,12 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
-        driveController.setSlidePos(0.6f,0.5f);
+        driveController.setSlidePos(0.3f,0.8f);
         sleep(800);
         clawController.toggleRightClaw();
         clawController.toggleLeftClaw();
         sleep(500);
-        driveController.setSlidePos(0,0.3f);
+        driveController.setSlidePos(0,0.4f);
         driveController.setArmGrabbingPos(.5f);
         sleep(500);
 

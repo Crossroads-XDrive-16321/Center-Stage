@@ -174,9 +174,6 @@ public class DriveController {
 
     public void rotateArm(float power) {
 
-        if (slideMotor.getCurrentPosition() > 1200) {
-            slideMotor.setTargetPosition(1200);
-        }
         if (Math.abs(power) >= 0.1) {
             slideRotatorToggler.toggle(false);
             if (power > 0) {
