@@ -173,7 +173,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
 
-            driveController.rotateArm((gamepad2.right_trigger - gamepad2.left_trigger));
+            driveController.rotateArm((-gamepad2.right_stick_y/3f));
 //            driveController.checkAndToggleRotator(gamepad2.right_stick_button);
             driveController.moveSlide(-gamepad2.left_stick_y);
 

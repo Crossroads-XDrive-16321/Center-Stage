@@ -18,9 +18,14 @@ public class DriveController {
     int slideRotatorDownPosRight = 0;
     int slideRotatorDownPosLeft = 0;
     int slideMotorDownPos = 0;
-    int slideRotatorStoppedPosRight = 0;
+    int slideRotatorStoppedPosRight = 0; // -360 from down to max
     int slideRotatorStoppedPosLeft = 0;
     int slideMotorStoppedPos = 0;
+
+    int slidePosToArmLengthMM = 1; // TODO: Calibrate
+    int armLengthConstant = 200; // TODO: Measure (in mm)
+
+    int ArmRotatorPosToArmAngle = 1; // TODO: Calibrate
 
     boolean slideRotatorDown = true;
     double tilesToPos = 1087.5625;
@@ -169,28 +174,37 @@ public class DriveController {
 
     public void rotateArm(float power) {
 
-        if (power == 0) {
-            if (slideRotatorToggler.toggle(true)) {
-                slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
-                slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
-            }
-            slideRotatorRight.setTargetPosition(slideRotatorStoppedPosRight);
-            slideRotatorLeft.setTargetPosition(slideRotatorStoppedPosLeft);
-        } else {
-            slideRotatorToggler.toggle(false);
-            slideRotatorRight.setTargetPosition((int) (slideRotatorRight.getCurrentPosition() + (100 * power)));
-            slideRotatorLeft.setTargetPosition((int) (slideRotatorLeft.getCurrentPosition() + (100 * power)));
+        if (slideMotor.getCurrentPosition() > 1200) {
+            slideMotor.setTargetPosition(1200);
         }
+        if (Math.abs(power) >= 0.1) {
+            slideRotatorToggler.toggle(false);
+            if (power > 0) {
+                slideRotatorRight.setTargetPosition(slideRotatorDownPosRight-360);
+                slideRotatorLeft.setTargetPosition(slideRotatorDownPosLeft-360);
+            } else {
+                slideRotatorRight.setTargetPosition(slideRotatorDownPosRight);
+                slideRotatorLeft.setTargetPosition(slideRotatorDownPosLeft);
+            }
 
-        slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        if(power != 0) {
             slideRotatorRight.setPower(Math.abs(power));
             slideRotatorLeft.setPower(Math.abs(power));
         } else {
-            slideRotatorRight.setPower(0.5);
-            slideRotatorLeft.setPower(0.5);
+           if (slideRotatorToggler.toggle(true)) {
+               slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
+               slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
+               slideRotatorRight.setTargetPosition(slideRotatorRight.getCurrentPosition());
+               slideRotatorLeft.setTargetPosition(slideRotatorLeft.getCurrentPosition());
+
+               slideRotatorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+               slideRotatorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+               slideRotatorRight.setPower(0.5f);
+               slideRotatorLeft.setPower(0.5f);
+           }
         }
     }
 
@@ -410,6 +424,11 @@ public class DriveController {
         slideMotor.setTargetPosition((int) (slideMotorDownPos + (height * 2800)));
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideMotor.setPower(power);
+    }
+
+    public void setLifterStringLength() {
+        float armLengthMM = (slideMotorDownPos - slideMotor.getCurrentPosition()) * slidePosToArmLengthMM + armLengthConstant;
+        float armAngle = (slideRotatorDownPosRight - slideRotatorRight.getCurrentPosition()) * ArmRotatorPosToArmAngle;
     }
 
 }
