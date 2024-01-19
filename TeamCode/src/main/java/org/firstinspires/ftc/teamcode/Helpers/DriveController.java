@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class DriveController {
 
-    DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
+    DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
     int slideRotatorDownPosRight = 0;
     int slideRotatorDownPosLeft = 0;
     int slideMotorDownPos = 0;
@@ -22,10 +22,16 @@ public class DriveController {
     int slideRotatorStoppedPosLeft = 0;
     int slideMotorStoppedPos = 0;
 
-    int slidePosToArmLengthMM = 1; // TODO: Calibrate
-    int armLengthConstant = 200; // TODO: Measure (in mm)
+    int liftMotorDownPos = 0;
 
-    int ArmRotatorPosToArmAngle = 1; // TODO: Calibrate
+    float slidePosToArmLengthMM = 1; // TODO: Calibrate
+    float armLengthConstant = 200; // TODO: Measure (in mm)
+
+    float ArmRotatorPosToArmAngle = 1; // TODO: Calibrate
+
+    float stringLengthToStringLifterPos = 1; // TODO: Calibrate
+
+    double currentStringLength = 100; // TODO: Measure (in mm)
 
     boolean slideRotatorDown = true;
     double tilesToPos = 1087.5625;
@@ -47,7 +53,7 @@ public class DriveController {
     Toggler slideMotorToggler = new Toggler();
 
 
-    public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight, DcMotorEx slideRotatorLeft, DcMotorEx slideRotatorRight, DcMotorEx slideMotor) {
+    public DriveController(DcMotorEx frontLeft, DcMotorEx backLeft, DcMotorEx frontRight, DcMotorEx backRight, DcMotorEx slideRotatorLeft, DcMotorEx slideRotatorRight, DcMotorEx slideMotor, DcMotorEx liftMotor) {
         this.frontLeft = frontLeft;
         this.backLeft = backLeft;
         this.frontRight = frontRight;
@@ -55,6 +61,7 @@ public class DriveController {
         this.slideRotatorLeft = slideRotatorLeft;
         this.slideRotatorRight = slideRotatorRight;
         this.slideMotor = slideMotor;
+        this.liftMotor = liftMotor;
     }
 
     public void init() {
@@ -80,6 +87,7 @@ public class DriveController {
         slideRotatorStoppedPosLeft = slideRotatorLeft.getCurrentPosition();
         slideRotatorStoppedPosRight = slideRotatorRight.getCurrentPosition();
         slideMotorStoppedPos = slideMotor.getCurrentPosition();
+        liftMotorDownPos = liftMotor.getCurrentPosition();
 
         slideRotatorDownPosLeft = slideRotatorLeft.getCurrentPosition();
         slideRotatorDownPosRight = slideRotatorRight.getCurrentPosition();
@@ -426,6 +434,16 @@ public class DriveController {
     public void setLifterStringLength() {
         float armLengthMM = (slideMotorDownPos - slideMotor.getCurrentPosition()) * slidePosToArmLengthMM + armLengthConstant;
         float armAngle = (slideRotatorDownPosRight - slideRotatorRight.getCurrentPosition()) * ArmRotatorPosToArmAngle;
+
+        double stringLenMM = Math.sqrt(Math.pow(100 + (-armLengthMM*Math.cos(armAngle)), 2) + Math.pow(48 + (armLengthMM * Math.sin(armAngle)), 2));
+
+        double stringLenChange = stringLenMM - currentStringLength;
+        int posToGo = (int) (stringLengthToStringLifterPos*stringLenChange);
+        currentStringLength = stringLenMM;
+
+        liftMotor.setTargetPosition(liftMotor.getCurrentPosition() + posToGo);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setPower(1);
     }
 
 }
