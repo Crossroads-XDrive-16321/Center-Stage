@@ -77,7 +77,7 @@ public class MecanumTeleOp extends LinearOpMode {
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor);
         driveController.init();
         drive = new SampleMecanumDrive(hardwareMap);
 
