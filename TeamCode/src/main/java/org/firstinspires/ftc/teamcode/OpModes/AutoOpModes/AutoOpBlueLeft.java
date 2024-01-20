@@ -20,7 +20,7 @@ import java.util.List;
 @Autonomous
 public class AutoOpBlueLeft extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
     DriveController driveController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher;
@@ -39,8 +39,9 @@ public class AutoOpBlueLeft extends LinearOpMode {
         slideRotatorLeft = hardwareMap.get(DcMotorEx.class, "slideRotatorLeft");
         slideRotatorRight = hardwareMap.get(DcMotorEx.class, "slideRotatorRight");
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor);
         driveController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");

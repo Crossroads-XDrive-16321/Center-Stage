@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.RoadRunnerFiles.trajectorysequence.Traject
 @Autonomous
 public class DAY2RRAutoOpRedLeft extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
     DriveController driveController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher, planeRotator;
@@ -40,8 +40,9 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
         slideRotatorLeft = hardwareMap.get(DcMotorEx.class, "slideRotatorLeft");
         slideRotatorRight = hardwareMap.get(DcMotorEx.class, "slideRotatorRight");
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor);
         driveController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
@@ -68,7 +69,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,-36,Math.toRadians(270)),Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-36,-35,Math.toRadians(270+1)),Math.toRadians(90))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
@@ -85,7 +86,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
 //                .strafeTo(new Vector2d(-12,-16))
 //                .splineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)),Math.toRadians(0))
 //                .splineToLinearHeading(new Pose2d(48,-30, Math.toRadians(0)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(0)),Math.toRadians(180))
                 .waitSeconds(2)
                 .addTemporalMarker(2.75f, () -> {
                     //clawController.setClawLevelPos();
@@ -103,7 +104,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToConstantHeading(new Vector2d(-48,-46),Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-58,-46),Math.toRadians(90))
                 .lineToLinearHeading(new Pose2d(-58,-11,Math.toRadians(0)))
                 .waitSeconds(2)
                 .addTemporalMarker(2.75f, () -> {
@@ -116,7 +117,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                     //clawController.setClawScoringPos();
                 })
                 .lineToConstantHeading(new Vector2d(32,-11))
-                .splineToConstantHeading(new Vector2d(48,-36), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48,-36-4), Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
@@ -135,7 +136,7 @@ public class DAY2RRAutoOpRedLeft extends LinearOpMode {
                 })
                 .lineToLinearHeading(new Pose2d(-36,-11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,-11,Math.toRadians(0)))
-                .splineToLinearHeading(new Pose2d(48,-42, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,-42+5, Math.toRadians(0)), Math.toRadians(0))
                 .build();
     }
 

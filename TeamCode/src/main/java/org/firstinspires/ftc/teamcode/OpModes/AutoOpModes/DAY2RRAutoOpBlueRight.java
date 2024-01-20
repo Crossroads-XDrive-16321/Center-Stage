@@ -25,7 +25,7 @@ import java.util.List;
 @Autonomous
 public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor;
+    DcMotorEx frontLeft, frontRight, backLeft, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
     DriveController driveController;
 
     Servo leftClaw, rightClaw, clawServo, planeLauncher, planeRotator;
@@ -50,8 +50,9 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         slideRotatorLeft = hardwareMap.get(DcMotorEx.class, "slideRotatorLeft");
         slideRotatorRight = hardwareMap.get(DcMotorEx.class, "slideRotatorRight");
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
-        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor);
+        driveController = new DriveController(frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor);
         driveController.init();
 
         planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
@@ -71,26 +72,25 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 //        greenLED0.setMode(DigitalChannel.Mode.OUTPUT);
 
         drive = new SampleMecanumDrive(hardwareMap);
-        startPose = new Pose2d(-34,60, Math.toRadians(270));
+        startPose = new Pose2d(-34,64, Math.toRadians(270));
 
         purpL = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-35,34,Math.toRadians(180)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-37,34,Math.toRadians(180)),Math.toRadians(0))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,36,Math.toRadians(90)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(-36,36,Math.toRadians(90-1)),Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToConstantHeading(new Vector2d(-36,20),Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(-48,18,Math.toRadians(270)),Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-35,32,Math.toRadians(0)),Math.toRadians(90))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
@@ -111,13 +111,13 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 
                 .lineToLinearHeading(new Pose2d(-36,11,Math.toRadians(0)))//.strafeTo(new Vector2d(-36,11))
                 .lineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)))
-                .splineToLinearHeading(new Pose2d(48,42, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(48,42+8, Math.toRadians(0)), Math.toRadians(0))
                 .build();
         yellowM = drive.trajectorySequenceBuilder(purpM.end())
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToConstantHeading(new Vector2d(-48,46),Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-58,46),Math.toRadians(90))
                 .lineToLinearHeading(new Pose2d(-58,11,Math.toRadians(0))) //approaches the white pixels - fix
                 .waitSeconds(2)
                 .addTemporalMarker(2.75f, () -> {
@@ -131,7 +131,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 })
 
                 .lineToConstantHeading(new Vector2d(32,11))
-                .splineToConstantHeading(new Vector2d(48,36), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48,36+5), Math.toRadians(0))
                 .build();
         yellowR = drive.trajectorySequenceBuilder(purpR.end())
                 .addDisplacementMarker(8, () -> {
@@ -153,7 +153,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                     //clawController.setClawScoringPos();
                 })
                 .lineToConstantHeading(new Vector2d(32,11))
-                .splineToConstantHeading(new Vector2d(48,36), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48,30+2), Math.toRadians(0))
                 .build();
     }
 
@@ -184,7 +184,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         planeRotator.setPosition(0.2f);
 
-        loc = 0; //TODO: REMOVE WHEN TESTING IS DONE
+        loc = 2; //TODO: REMOVE WHEN TESTING IS DONE
 
 //        redLED0.setState(false);
 //        greenLED0.setState(true);
@@ -193,7 +193,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             drive.followTrajectorySequence(purpL);
             sleep(500);//drop purple pixel
             clawController.toggleRightClaw(); //TODO: yep
-            sleep(100);
+            sleep(500);
             clawController.setClawScoringPos();
             sleep(50);
             clawController.toggleRightClaw();
@@ -203,7 +203,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             drive.followTrajectorySequence(purpM);
             sleep(500);//drop purple pixel
             clawController.toggleRightClaw(); //TODO: yep
-            sleep(100);
+            sleep(500);
             clawController.setClawScoringPos();
             sleep(50);
             clawController.toggleRightClaw();
@@ -213,7 +213,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             drive.followTrajectorySequence(purpR);
             sleep(500);//drop purple pixel
             clawController.toggleRightClaw(); //TODO: yep
-            sleep(100);
+            sleep(500);
             clawController.setClawScoringPos();
             sleep(50);
             clawController.toggleRightClaw();
@@ -222,6 +222,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
+        sleep(500);
         driveController.setSlidePos(0.3f,0.8f);
         sleep(800);
         clawController.toggleRightClaw();
@@ -229,11 +230,14 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         sleep(500);
         driveController.setSlidePos(0,0.4f);
         driveController.setArmGrabbingPos(.5f);
+        sleep(50);
+        clawController.toggleRightClaw();
+        clawController.toggleLeftClaw();
         sleep(500);
 
         park = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .setReversed(false)
-                .lineToConstantHeading(new Vector2d(46,6))
+                .lineToConstantHeading(new Vector2d(46,10))
                 .forward(14)
                 .build();
 

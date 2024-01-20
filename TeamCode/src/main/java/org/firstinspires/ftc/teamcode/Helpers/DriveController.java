@@ -14,24 +14,31 @@ import java.util.ArrayList;
 
 public class DriveController {
 
-    DcMotorEx frontLeft, backLeft, frontRight, backRight, slideRotatorLeft, slideRotatorRight, slideMotor, liftMotor;
-    int slideRotatorDownPosRight = 0;
+    DcMotorEx frontLeft;
+    DcMotorEx backLeft;
+    DcMotorEx frontRight;
+    DcMotorEx backRight;
+    DcMotorEx slideRotatorLeft;
+    static DcMotorEx slideRotatorRight;
+    static DcMotorEx slideMotor;
+    static DcMotorEx liftMotor;
+    static int slideRotatorDownPosRight = 0;
     int slideRotatorDownPosLeft = 0;
-    int slideMotorDownPos = 0;
+    static int slideMotorDownPos = 0;
     int slideRotatorStoppedPosRight = 0; // -360 from down to max
     int slideRotatorStoppedPosLeft = 0;
     int slideMotorStoppedPos = 0;
 
     int liftMotorDownPos = 0;
 
-    float slidePosToArmLengthMM = 1; // TODO: Calibrate
-    float armLengthConstant = 200; // TODO: Measure (in mm)
+    static float slidePosToArmLengthMM = ((((1+(46/17f))) * (1+(46/17f))) * (1+(46/17f)) * 28)*-100; // TODO: Calibrate (in mm)
+    static float armLengthConstant = 200; // TODO: Measure (in mm)
 
-    float ArmRotatorPosToArmAngle = 1; // TODO: Calibrate
+    static float ArmRotatorPosToArmAngle = 1; // TODO: Calibrate (in deg)
 
-    float stringLengthToStringLifterPos = 1; // TODO: Calibrate
+    static float stringLengthToStringLifterPos = 1; // TODO: Calibrate
 
-    double currentStringLength = 100; // TODO: Measure (in mm)
+    static double currentStringLength = 100; // TODO: Measure (in mm)
 
     boolean slideRotatorDown = true;
     double tilesToPos = 1087.5625;
@@ -431,7 +438,7 @@ public class DriveController {
         slideMotor.setPower(power);
     }
 
-    public void setLifterStringLength() {
+    public static void setLifterStringLength() {
         float armLengthMM = (slideMotorDownPos - slideMotor.getCurrentPosition()) * slidePosToArmLengthMM + armLengthConstant;
         float armAngle = (slideRotatorDownPosRight - slideRotatorRight.getCurrentPosition()) * ArmRotatorPosToArmAngle;
 

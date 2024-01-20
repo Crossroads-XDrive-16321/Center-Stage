@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -168,7 +169,7 @@ public class MecanumTeleOp extends LinearOpMode {
             } else if (gamepad1.dpad_up) {
                 liftMotor.setPower(-1);
             } else {
-                liftMotor.setPower(0);
+                DriveController.setLifterStringLength();
             }
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
@@ -192,6 +193,7 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Back Left (left odom):", backLeft.getCurrentPosition());
             telemetry.addData("Back Right (right odom):", backRight.getCurrentPosition());
             telemetry.addData("Front Left (back odom):", frontLeft.getCurrentPosition());
+            telemetry.addData("STRING LENGTH TICKS WOOOOOO: ", liftMotor.getCurrentPosition());
             telemetry.update();
 
         }
