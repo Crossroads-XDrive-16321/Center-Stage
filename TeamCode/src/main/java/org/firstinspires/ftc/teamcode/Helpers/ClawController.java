@@ -18,7 +18,7 @@ public class ClawController {
     }
 
     public ClawPosition currentClawPos = ClawPosition.SCORING;
-    private final float clawLevelPos = 0.65f;
+    private final float clawLevelPos = 0.63f;
     private final float clawScoringPos = 0f;
 
     Servo leftServo, rightServo, clawServo;

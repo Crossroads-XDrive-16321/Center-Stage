@@ -169,7 +169,7 @@ public class MecanumTeleOp extends LinearOpMode {
             } else if (gamepad1.dpad_up) {
                 liftMotor.setPower(-1);
             } else {
-                DriveController.setLifterStringLength();
+//                DriveController.setLifterStringLength();
             }
 
             telemetry.addData("plane rotator pos",planeRotator.getPosition());

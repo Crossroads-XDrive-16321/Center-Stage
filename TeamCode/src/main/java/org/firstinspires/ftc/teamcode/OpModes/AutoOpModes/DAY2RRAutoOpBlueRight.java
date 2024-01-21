@@ -97,7 +97,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-58,11,Math.toRadians(0)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-54,11,Math.toRadians(0)),Math.toRadians(180))
                 .waitSeconds(2)
                 .addTemporalMarker(2.25f, () -> {
                     //clawController.setClawLevelPos();
@@ -118,7 +118,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
                     clawController.setClawScoringPos(); //TODO: yep
                 })
                 .splineToConstantHeading(new Vector2d(-58,46),Math.toRadians(90))
-                .lineToLinearHeading(new Pose2d(-58,11,Math.toRadians(0))) //approaches the white pixels - fix
+                .lineToLinearHeading(new Pose2d(-54,11,Math.toRadians(0))) //approaches the white pixels - fix
                 .waitSeconds(2)
                 .addTemporalMarker(2.75f, () -> {
                     //clawController.setClawLevelPos();
@@ -141,7 +141,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
 //                .strafeTo(new Vector2d(-12,16))
 //                .splineToLinearHeading(new Pose2d(32,11,Math.toRadians(0)),Math.toRadians(0))
 //                .splineToLinearHeading(new Pose2d(48,30, Math.toRadians(0)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58, 11, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-54, 11, Math.toRadians(0)),Math.toRadians(0))
                 .waitSeconds(2)
                 .addTemporalMarker(2.75f, () -> {
                     //clawController.setClawLevelPos();
@@ -184,7 +184,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         planeRotator.setPosition(0.2f);
 
-        loc = 2; //TODO: REMOVE WHEN TESTING IS DONE
+//        loc = 2; //TODO: REMOVE WHEN TESTING IS DONE
 
 //        redLED0.setState(false);
 //        greenLED0.setState(true);
@@ -198,6 +198,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             sleep(50);
             clawController.toggleRightClaw();
             sleep(500);
+            sleep(8000); //TIMING WITH ALLIANCE
             drive.followTrajectorySequence(yellowL);
         } else if (loc == 1) {
             drive.followTrajectorySequence(purpM);
@@ -208,6 +209,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             sleep(50);
             clawController.toggleRightClaw();
             sleep(500);
+            sleep(8000); //TIMING WITH ALLIANCE
             drive.followTrajectorySequence(yellowM);
         } else {
             drive.followTrajectorySequence(purpR);
@@ -218,6 +220,7 @@ public class DAY2RRAutoOpBlueRight extends LinearOpMode {
             sleep(50);
             clawController.toggleRightClaw();
             sleep(500);
+            sleep(8000); //TIMING WITH ALLIANCE
             drive.followTrajectorySequence(yellowR);
         }
 

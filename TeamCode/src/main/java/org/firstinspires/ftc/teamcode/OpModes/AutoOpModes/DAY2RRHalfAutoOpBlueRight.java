@@ -69,19 +69,19 @@ public class DAY2RRHalfAutoOpBlueRight extends LinearOpMode {
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-35,34,Math.toRadians(180)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-37,34,Math.toRadians(180)),Math.toRadians(0))
                 .build();
         purpM = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,36,Math.toRadians(90)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(-36,36,Math.toRadians(90-1)),Math.toRadians(270))
                 .build();
         purpR = drive.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(8, () -> {
                     //clawController.setClawLevelPos(); //TODO: yep
                 })
-                .splineToLinearHeading(new Pose2d(-36,34,Math.toRadians(0)),Math.toRadians(270))
+                .splineToLinearHeading(new Pose2d(-35,32,Math.toRadians(0)),Math.toRadians(270))
                 .build();
 
         yellowL = drive.trajectorySequenceBuilder(purpL.end())
