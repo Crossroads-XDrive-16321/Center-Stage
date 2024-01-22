@@ -438,6 +438,10 @@ public class DriveController {
         slideMotor.setPower(power);
     }
 
+    public void alignAprilTag(int tagID) {
+        //if we dont have this by sunday its over
+    }
+
     public static void setLifterStringLength() {
         float armLengthMM = (slideMotorDownPos - slideMotor.getCurrentPosition()) * slidePosToArmLengthMM + armLengthConstant;
         float armAngle = (slideRotatorDownPosRight - slideRotatorRight.getCurrentPosition()) * ArmRotatorPosToArmAngle;
