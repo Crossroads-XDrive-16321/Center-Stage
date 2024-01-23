@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Helpers;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -8,6 +9,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.RoadRunnerFiles.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunnerFiles.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
@@ -438,8 +441,36 @@ public class DriveController {
         slideMotor.setPower(power);
     }
 
-    public void alignAprilTag(int tagID) {
-        //if we dont have this by sunday its over
+
+    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose, int tagID) {
+        //IF WE DONT GET THIS WORKING BY SUNDAY WERE SCREWED
+        AprilTagDetection tag = cameraController.detectAprilTag(tagID);
+
+        if(tag == null) {
+            return(false);
+        }
+
+        //TODO: this approach doesn't seem to work and is very broken
+
+        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
+
+        TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
+                .turn(Math.toRadians(-rot.firstAngle))
+                .strafeRight(tag.pose.x*FEET_PER_METER)
+                .forward(tag.pose.y*FEET_PER_METER-2)
+                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
+                .build();
+
+        uhhh.followTrajectorySequence(move);
+
+    //            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
+    //            turnRight(rot.firstAngle, 0.1f);
+    //            forwards(tag.pose.z - 2.12, 0.1f);
+
+
+        return(true);
+
     }
 
     public static void setLifterStringLength() {
