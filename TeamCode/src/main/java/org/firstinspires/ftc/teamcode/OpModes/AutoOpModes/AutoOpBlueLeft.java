@@ -177,7 +177,7 @@ public class AutoOpBlueLeft extends LinearOpMode {
         driveController.forwards(9/8f,driveSpeed);
 
 
-    } //look at this is is such an important comment and without it our team is screwed
+    }
 
 
 }
