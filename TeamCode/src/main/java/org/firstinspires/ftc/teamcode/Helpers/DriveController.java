@@ -442,34 +442,41 @@ public class DriveController {
     }
 
 
-    public boolean autoCalibrateScore(SampleMecanumDrive uhhh, CameraController cameraController, Pose2d pose, int tagID) {
+    public AprilTagDetection autoCalibrateScore(SampleMecanumDrive um, CameraController cameraController, int tagID) {
         //IF WE DONT GET THIS WORKING BY SUNDAY WERE SCREWED
         AprilTagDetection tag = cameraController.detectAprilTag(tagID);
 
         if(tag == null) {
-            return(false);
+            return(null);
         }
 
         //TODO: this approach doesn't seem to work and is very broken
-
         Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
 
+        um.followTrajectorySequence(um.trajectorySequenceBuilder(um.getPoseEstimate())
+                        .turn(-Math.toRadians(um.getPoseEstimate().getHeading()+rot.firstAngle))
+                        .strafeRight(4)
+                        .forward(4)
+                        .build());
 
-        TrajectorySequence move = uhhh.trajectorySequenceBuilder(pose)
-                .turn(Math.toRadians(-rot.firstAngle))
-                .strafeRight(tag.pose.x*FEET_PER_METER)
-                .forward(tag.pose.y*FEET_PER_METER-2)
-                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
-                .build();
 
-        uhhh.followTrajectorySequence(move);
+
+//
+//        TrajectorySequence move = um.trajectorySequenceBuilder(pose)
+//                .turn(Math.toRadians(-rot.firstAngle))
+//                .strafeRight(tag.pose.x*FEET_PER_METER)
+//                .forward(tag.pose.y*FEET_PER_METER-2)
+//                //.lineToLinearHeading(new Pose2d(pose.getX()-(tag.pose.x*FEET_PER_METER),pose.getY()-(tag.pose.y*FEET_PER_METER),pose.getHeading()))//+rot.firstAngle))
+//                .build();
+//
+//        um.followTrajectorySequence(move);
 
     //            drive.(tag.pose.x*FEET_PER_METER + 0.85, 0.1f);
     //            turnRight(rot.firstAngle, 0.1f);
     //            forwards(tag.pose.z - 2.12, 0.1f);
 
 
-        return(true);
+        return(tag);
 
     }
 

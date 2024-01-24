@@ -161,7 +161,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.a) {
                 planeRotator.setPosition(0.22f);
             } else if (gamepad2.b) {
-                planeRotator.setPosition(0.1f);
+                planeRotator.setPosition(0.12f);
             }
 
             if (gamepad1.dpad_down) {
@@ -172,16 +172,29 @@ public class MecanumTeleOp extends LinearOpMode {
 //                DriveController.setLifterStringLength();
             }
 
+//            if (gamepad2.x) {
+//                drive.autoCalibrateScore(2);
+//            }
+
             telemetry.addData("plane rotator pos",planeRotator.getPosition());
 
             driveController.rotateArm((-gamepad2.right_stick_y/3f));
 //            driveController.checkAndToggleRotator(gamepad2.right_stick_button);
             driveController.moveSlide(-gamepad2.left_stick_y);
 
-            if (gamepad1.y) {
-                int tagID = autoCalibrateScore(drive, cameraController, drive.getPoseEstimate());
-                telemetry.addData("Tag Found for Calibration:", tagID);
+            AprilTagDetection tag;
+            if(gamepad1.x) {
+                tag = driveController.autoCalibrateScore(drive,cameraController,5);
+                if (tag!=null) {
+                    telemetry.addData("Tag Calibrating:", tag.id);
+                }
+            } else {
+                tag = cameraController.detectAprilTag();
+                if (tag!=null) {
+                    telemetry.addData("Tag Found for Calibration:", tag.id);
+                }
             }
+
 
             telemetry.addData("Claw Servo:", clawServo.getPosition());
             telemetry.addData("Claw Left:", leftClaw.getPosition());
@@ -194,6 +207,21 @@ public class MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Back Right (right odom):", backRight.getCurrentPosition());
             telemetry.addData("Front Left (back odom):", frontLeft.getCurrentPosition());
             telemetry.addData("STRING LENGTH TICKS WOOOOOO: ", liftMotor.getCurrentPosition());
+            if(tag != null) {
+                telemetry.addData("Tag Center:", tag.center);
+                telemetry.addData("Tag Corners:", tag.corners);
+                telemetry.addData("Tag Rot X:", tag.pose.x);
+                telemetry.addData("Tag Rot Y:", tag.pose.y);
+                telemetry.addData("Tag Rot Z:", tag.pose.z);
+                Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+                telemetry.addLine(String.format("\nDetected tag ID=%d", tag.id));
+                telemetry.addLine(String.format("Translation X: %.2f feet", tag.pose.x*3.28084)); //meter to feet
+                telemetry.addLine(String.format("Translation Y: %.2f feet", tag.pose.y*3.28084));
+                telemetry.addLine(String.format("Translation Z: %.2f feet", tag.pose.z*3.28084));
+                telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
+                telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
+                telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
+            }
             telemetry.update();
 
         }
