@@ -22,12 +22,13 @@ public class AprilTagTesting extends LinearOpMode{
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawCubeProjection(true)
                 .setDrawTagID(true)
+//                .setLensIntrinsics() //if it doesnt work here: https://www.youtube.com/watch?v=bTcCY3DZM0k
                 .build();
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .setCameraResolution(new Size(640, 480))
+                .setCameraResolution(new Size(640, 360))
                 .build();
 
         waitForStart();
