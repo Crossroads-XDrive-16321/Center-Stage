@@ -451,12 +451,23 @@ public class DriveController {
         }
 
         //TODO: this approach doesn't seem to work and is very broken
-        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
 
         um.followTrajectorySequence(um.trajectorySequenceBuilder(um.getPoseEstimate())
-                        .turn(-Math.toRadians(um.getPoseEstimate().getHeading()+rot.firstAngle))
-                        .strafeRight(4)
-                        .forward(4)
+                .strafeRight((tag.pose.x+.50f)*7.6f)
+                .waitSeconds(.5f)
+                .build());
+        tag = cameraController.detectAprilTag(tagID);
+        if(tag == null) {return null;}
+        um.followTrajectorySequence(um.trajectorySequenceBuilder(um.getPoseEstimate())
+                .forward(((tag.pose.z-0.9f)*7.6))
+                .waitSeconds(.5f)
+                .build());
+        tag = cameraController.detectAprilTag(tagID);
+        if(tag == null) {return null;}
+        Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+        um.followTrajectorySequence(um.trajectorySequenceBuilder(um.getPoseEstimate())
+                        .turn(Math.toRadians(-rot.firstAngle-7.0f))
+                        .waitSeconds(.5f)
                         .build());
 
 

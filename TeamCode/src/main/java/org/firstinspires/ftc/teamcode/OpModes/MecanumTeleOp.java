@@ -215,9 +215,9 @@ public class MecanumTeleOp extends LinearOpMode {
                 telemetry.addData("Tag Rot Z:", tag.pose.z);
                 Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
                 telemetry.addLine(String.format("\nDetected tag ID=%d", tag.id));
-                telemetry.addLine(String.format("Translation X: %.2f feet", tag.pose.x*3.28084)); //meter to feet
-                telemetry.addLine(String.format("Translation Y: %.2f feet", tag.pose.y*3.28084));
-                telemetry.addLine(String.format("Translation Z: %.2f feet", tag.pose.z*3.28084));
+                telemetry.addLine(String.format("Translation X: %.2f feet", tag.pose.x)); //meter to feet
+                telemetry.addLine(String.format("Translation Y: %.2f feet", tag.pose.y));
+                telemetry.addLine(String.format("Translation Z: %.2f feet", tag.pose.z));
                 telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
                 telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
                 telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));

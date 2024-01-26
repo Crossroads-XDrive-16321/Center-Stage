@@ -14,7 +14,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.core.Mat;
 
 import java.util.ArrayList;
-
+@TeleOp
 public class AprilTagTesting extends LinearOpMode{
 
     public void runOpMode() {
@@ -22,7 +22,7 @@ public class AprilTagTesting extends LinearOpMode{
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawCubeProjection(true)
                 .setDrawTagID(true)
-//                .setLensIntrinsics() //if it doesnt work here: https://www.youtube.com/watch?v=bTcCY3DZM0k
+                .setLensIntrinsics(952.817f, 952.817f, 659.539f, 383.43f) //if it doesnt work here: https://www.youtube.com/watch?v=bTcCY3DZM0k
                 .build();
 
         VisionPortal visionPortal = new VisionPortal.Builder()
@@ -43,6 +43,7 @@ public class AprilTagTesting extends LinearOpMode{
                 telemetry.addData("pitch",tag.ftcPose.pitch);
                 telemetry.addData("yaw",tag.ftcPose.yaw);
                 telemetry.addData("roll",tag.ftcPose.roll);
+                telemetry.addData("tag id", tag.id);
 
             }
 

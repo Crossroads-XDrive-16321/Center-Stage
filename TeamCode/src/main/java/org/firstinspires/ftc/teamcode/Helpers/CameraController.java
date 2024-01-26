@@ -4,12 +4,11 @@ import android.util.Size;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.OpModes.OpenCVExample;
 import org.firstinspires.ftc.teamcode.OpenCV.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -36,7 +35,7 @@ public class CameraController {
     public void initAprilTags(HardwareMap hardwareMap) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         cam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(0.166, 578.272, 578.272, 402.145, 221.506);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(0.166, 578.272f, 578.272f, 402.145f, 221.506f);
 
         cam.setPipeline(aprilTagDetectionPipeline); //lmao - finding out that this code was missing broke and breaking the whole controller took me 2 hours :D
         cam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -53,6 +52,12 @@ public class CameraController {
 
             }
         });
+
+        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+                .setDrawCubeProjection(true)
+                .setDrawTagID(true)
+                .setLensIntrinsics(952.817f, 952.817f, 659.539f, 383.43f) //if it doesnt work here: https://www.youtube.com/watch?v=bTcCY3DZM0k
+                .build();
     }
 
     public void initTfod(HardwareMap hardwareMap, float minConfidence) {
