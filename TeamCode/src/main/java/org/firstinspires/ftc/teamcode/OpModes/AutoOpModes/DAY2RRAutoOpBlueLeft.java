@@ -173,11 +173,14 @@ public class DAY2RRAutoOpBlueLeft extends LinearOpMode {
         }
 
         driveController.setArmScoringPos(.5f);
-        driveController.setSlidePos(0.3f,0.8f);
-        sleep(800);
-        clawController.toggleRightClaw();
-        clawController.toggleLeftClaw();
         sleep(500);
+        driveController.setSlidePos(0.5f,0.8f);
+        sleep(800);
+        clawController.toggleRightClaw(); //open
+        clawController.toggleLeftClaw(); //open
+        sleep(500);
+        clawController.toggleRightClaw(); //close
+        clawController.toggleLeftClaw(); //close
         driveController.setSlidePos(0,0.4f);
         driveController.setArmGrabbingPos(.5f);
         sleep(500);
